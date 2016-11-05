@@ -48,10 +48,10 @@
                                         <a href="<?php echo base_url($this->app_name).'/kelas_edit/'.$row['id_kelas']; ?>"><?php echo $row['Nama_Kelas']?></a>
                                     </td>
                                     <td>
-                                        <?php echo $row['id_jurusan']?>
+                                        <?php echo $row['keterangan']; ?>
                                     </td>                                       
                                     <td>
-                                        <?php echo $row['id_guru']?>
+                                        <?php echo $row['nama']; ?>
                                     </td>                                    
                                     <td><a href="<?php echo base_url($this->app_name).'/kelas_edit/'.$row['id_kelas']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/kelas_remove/'.$row['id_kelas']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
@@ -70,8 +70,9 @@
                 <tfoot>
                 <tr>
                   <th>ID</th>
-                  <th>Kode Jurusan</th>
+                  <th>Nama Kelas</th>
                   <th>Nama Jurusan</th>
+                  <th>Wali Kelas</th>
                   <th>Aksi</th>
                 </tr>
                 </tfoot>
@@ -130,7 +131,6 @@
                       <option value=''>=== PILIH WALI KELAS ===</option>
                       <?php
                         foreach ($guru as $key => $value) {
-                          var_dump($value);
                             echo '<option value='.$value['id_guru'].'>'.$value['nama'].'</option>';
                         }
                         ?>
@@ -163,27 +163,38 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Edit Jurusan</h3>
+              <h3 class="box-title">Edit Kelas</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
             <!-- form start -->
-            <form action="<?= base_url( $this->app_name ).'/jurusan_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?= base_url( $this->app_name ).'/kelas_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Kode Jurusan</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
 
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nama" name="nama" value="<?= rebackPost('nama', $datadb['nama']) ?>" placeholder="Input Nama Jurusan">
+                    <input type="text" class="form-control" id="Nama_Kelas" name="Nama_Kelas" value="<?= rebackPost('Nama_Kelas', $datadb['Nama_Kelas']) ?>" placeholder="Input Nama Jurusan">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Jurusan</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">Wali Kelas</label>
 
                   <div class="col-sm-10">
-                    <textarea class="form-control" id="keterangan" name="keterangan"><?= rebackPost('keterangan', $datadb['keterangan']) ?></textarea>
+                    <select class="form-control" name="id_guru">
+                     <option value="">=== PILIH WALI KELAS ===</option>
+                        <?php
+                        foreach($guru as $row){
+                              
+                              if( $row['No'] == $datadb['id_guru'] )$sel = 'selected';
+                              else $sel = '';
+                              
+                              echo '<option value="'.$row['No'].'" '.$sel.'>'.ucfirst($row['nama']).'</option>';
+                        }
+                        ?>
+                 </select>                  
                   </div>
                 </div>                     
               </div>

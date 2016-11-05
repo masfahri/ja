@@ -78,14 +78,14 @@ class Mapp_master extends CI_Model{
     }    
 
     public function getKelas(){
-        
         $this->db->select('*');
         $this->db->from('ja_kelas');
-        $this->db->order_by('id_kelas', 'ASC');
+        $this->db->join('ja_jurusan', 'ja_kelas.id_jurusan=ja_jurusan.id_jurusan', 'LEFT');
+        $this->db->join('ja_guru','ja_guru.No=ja_kelas.id_guru', 'LEFT');
         $query = $this->db->get();
-        if($query->num_rows() > 0){
-                return $query->result_array();
-        }else return null;
+        if($query->num_rows() > 0)
+            return $query->result_array();
+        else return null;         
     }
 
     public function grapKelas($initial_id){
@@ -97,6 +97,26 @@ class Mapp_master extends CI_Model{
         if($query->num_rows() > 0)return $query->row_array();
         else return null;
     }    
+
+    public function getKaryawan(){
+        $this->db->select('*');
+        $this->db->from('ja_karyawan');
+        $this->db->order_by('id_karyawan', 'ASC');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->result_array();
+        }else return null;       
+    }
+
+    public function grapKaryawan($initial_id){
+        
+        $this->db->select('*');
+        $this->db->from('ja_karyawan');
+        $this->db->where('id_karyawan', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }        
 
 
     /**

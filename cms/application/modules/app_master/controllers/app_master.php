@@ -26,6 +26,7 @@ class App_master extends MX_Controller {
        $this->load->helper( array(  
         'image/image'
        ));        
+       $this->load->model('app_siswa/Mapp_siswa'); 
     }
     
     protected function init(){
@@ -48,7 +49,8 @@ class App_master extends MX_Controller {
          define("REG_VALIDATION", strtolower( __CLASS__ ));
          define("REG_VALIDATION_JURUSAN", 'jurusan');
          define("REG_VALIDATION_KELAS", 'kelas');
-         define("REG_VALIDATION_SISWA", 'siswa');             
+         define("REG_VALIDATION_SISWA", 'siswa'); 
+         define("REG_VALIDATION_KARYAWAN", 'karyawan');                          
     }    
 
     private function getContent($args = array()){
@@ -57,10 +59,10 @@ class App_master extends MX_Controller {
             if($this->uri->segment(2)=="siswa" || $this->uri->segment(2)=="siswa_add" || $this->uri->segment(2)=="siswa_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_siswa'], $args, TRUE);
             }   
-            elseif($this->uri->segment(2)=="guru" || $this->uri->segment(2)=="guru_add"){
+            elseif($this->uri->segment(2)=="guru" || $this->uri->segment(2)=="guru_add" || $this->uri->segment(2)=="guru_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_guru'], $args, TRUE);
             } 
-            elseif($this->uri->segment(2)=="karyawan"){
+            elseif($this->uri->segment(2)=="karyawan" || $this->uri->segment(2)=="karyawan_add" || $this->uri->segment(2)=="karyawan_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_karyawan'], $args, TRUE);
             }
             elseif($this->uri->segment(2)=="jurusan" || $this->uri->segment(2)=="jurusan_add" || $this->uri->segment(2)=="jurusan_edit"){
@@ -80,18 +82,20 @@ class App_master extends MX_Controller {
   
     public function index(){
        $params['datadb'] =  $this->coredb->getGuru();
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $this->getContent($params);
 	}
 
     /*  Siswa Function */
     public function siswa(){
-      
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $params['datadb'] =  $this->coredb->getSiswa();
        $params['kelas'] =  $this->coredb->getKelas();      
        $this->getContent($params);
     }    
 
     public function siswa_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] =  $this->coredb->getKelas();
         $params['datadb'] = $this->coredb->grapSiswa($this->session->userdata('nis'));
         $nip = $this->input->post('nis');
@@ -147,6 +151,7 @@ class App_master extends MX_Controller {
     } 
     
     public function siswa_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['datadb'] = $this->coredb->grapSiswa($id_finger);
         $params['kelas'] =  $this->coredb->getKelas();
         $params['kelamin'] =  $this->coredb->getKelamin($id_finger);
@@ -219,7 +224,7 @@ class App_master extends MX_Controller {
 
     /*  Guru Function */
     public function guru(){
-      
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $params['datadb'] =  $this->coredb->getGuru();
         if( $_POST ){     
 
@@ -240,6 +245,7 @@ class App_master extends MX_Controller {
     }    
 
     public function guru_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['datadb'] = $this->coredb->grapGuru($this->session->userdata('nip'));
         $nip = $this->input->post('nip');
         $validate = 'true';       
@@ -294,6 +300,7 @@ class App_master extends MX_Controller {
     } 
     
     public function guru_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['datadb'] =  $this->coredb->grapGuru($this->initial_id); 
         $validate = 'true';           
         if( $_POST ){
@@ -364,7 +371,7 @@ class App_master extends MX_Controller {
 
     /* Jurusan Function */
     public function jurusan(){
-      
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $params['datadb'] =  $this->coredb->getJurusan();
         if( $_POST ){     
 
@@ -422,6 +429,7 @@ class App_master extends MX_Controller {
     } 
     
     public function jurusan_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['datadb'] =  $this->coredb->grapJurusan($this->initial_id); 
         $validate = 'true';           
         if( $_POST ){
@@ -469,7 +477,7 @@ class App_master extends MX_Controller {
 
     /* Kelas Function */
     public function kelas(){
-      
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $params['datadb'] =  $this->coredb->getKelas();
         if( $_POST ){     
 
@@ -490,6 +498,7 @@ class App_master extends MX_Controller {
     }    
 
     public function kelas_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] = $this->coredb->getKelas();
         $params['jurusan'] = $this->coredb->getJurusan();
         $params['guru'] = $this->coredb->getGuru();
@@ -530,23 +539,25 @@ class App_master extends MX_Controller {
     } 
     
     public function kelas_edit($id_finger){
-        $params['datadb'] =  $this->coredb->grapJurusan($this->initial_id); 
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['guru'] = $this->coredb->getGuru();
+        $params['datadb'] =  $this->coredb->grapKelas($this->initial_id); 
         $validate = 'true';           
         if( $_POST ){
             
-            if( $this->form_validation->run( REG_VALIDATION_JURUSAN ) !== FALSE ){
+            if( $this->form_validation->run( REG_VALIDATION_KELAS ) !== FALSE ){
                
             if( $validate == 'true' ){             
             if( $validate !== 'false' ){                
                # update data
                $this->load->library('uidcontroll');
-               $db_config['where'] = array('id', $this->initial_id);
-               $db_config['table'] = 'ja_jurusan';
+               $db_config['where'] = array('id_kelas', $this->initial_id);
+               $db_config['table'] = 'ja_kelas';
                $db_config['data']  =  bindProcessing($_POST);
                if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
 
                     $this->session->set_flashdata('msg_success', 'Success Update Data');
-                    redirect( base_url($this->app_name).'/jurusan' );
+                    redirect( base_url($this->app_name).'/kelas' );
                     
                }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
               }
@@ -564,21 +575,112 @@ class App_master extends MX_Controller {
 
         $this->load->library('uidcontroll');  
 
-        $dataRemove = array('id', $this->initial_id); 
-        if( $this->uidcontroll->removeData('ja_jurusan', $dataRemove) == TRUE ){
+        $dataRemove = array('id_kelas', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_kelas', $dataRemove) == TRUE ){
 
             $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
             $this->session->set_flashdata('msg_success', 'Success Remove Data');
        }
-        redirect(base_url($this->app_name).'/jurusan');
+        redirect(base_url($this->app_name).'/kelas');
 
     } 
     /* End Kelas Function */
 
+    /* Karyawan Function */
     public function karyawan(){
-      
-       $this->getContent();
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+       $params['datadb'] =  $this->coredb->getKaryawan();         
+       $this->getContent($params);
     }    
+
+    public function karyawan_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] = $this->coredb->getKelas();
+        $params['jurusan'] = $this->coredb->getJurusan();
+        $params['guru'] = $this->coredb->getGuru();
+        $params['datadb'] = $this->coredb->grapKelas($this->session->userdata('id'));
+        $id_kelas = $this->input->post('kelas');
+        $validate = 'true';       
+        if( $_POST ){
+             if( $this->form_validation->run(REG_VALIDATION_KARYAWAN) !== FALSE ){
+
+               # check jurusan available
+                if( $this->coredb->checkAvailableKelas($_POST['nup']) == TRUE ){
+                    
+                    $validate = 'false';
+                    $this->messagecontroll->delivered('msg_error', 'NUP sudah ada dalam database, masukkan NUP lainnya.');
+                    $this->form_validation->run();
+                }
+
+             # -------------------------------------------------------------------------------------
+
+
+
+            if( $validate == 'true' ){           
+            if( $validate !== 'false' ){
+                # record database    
+                $this->load->library('uidcontroll');
+                if( $this->uidcontroll->insertData('ja_karyawan', bindProcessing($_POST) ) !== FALSE){
+                    
+                    $this->session->set_flashdata('msg_success', 'Success Save Data');  
+                    redirect( base_url($this->app_name).'/karyawan' );
+                
+                }else{$this->session->set_flashdata('msg_success', 'Invalid Data to Save !');}
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    } 
+    
+    public function karyawan_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['guru'] = $this->coredb->getGuru();
+        $params['datadb'] =  $this->coredb->grapKaryawan($this->initial_id); 
+        $validate = 'true';           
+        if( $_POST ){
+            
+            if( $this->form_validation->run( REG_VALIDATION_KARYAWAN ) !== FALSE ){
+               
+            if( $validate == 'true' ){             
+            if( $validate !== 'false' ){                
+               # update data
+               $this->load->library('uidcontroll');
+               $db_config['where'] = array('id_karyawan', $this->initial_id);
+               $db_config['table'] = 'ja_karyawan';
+               $db_config['data']  =  bindProcessing($_POST);
+               if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                    $this->session->set_flashdata('msg_success', 'Success Update Data');
+                    redirect( base_url($this->app_name).'/karyawan' );
+                    
+               }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
+              }
+            }                
+
+                
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); }   
+        }
+
+        $this->getContent($params);  
+    }    
+
+    public function karyawan_remove(){
+
+
+        $this->load->library('uidcontroll');  
+
+        $dataRemove = array('id_karyawan', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_karyawan', $dataRemove) == TRUE ){
+
+            $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
+            $this->session->set_flashdata('msg_success', 'Success Remove Data');
+       }
+        redirect(base_url($this->app_name).'/karyawan');
+
+    } 
+    /* End Karyawan Function */
 
     /**                  
     * @desc Encryption String for Password Secure

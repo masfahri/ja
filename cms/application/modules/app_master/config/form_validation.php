@@ -102,7 +102,44 @@ $config = array(
                     'label' => 'Kelas',
                     'rules' => 'required|max_length[50]|xss_clean'
                  ),                                                                                                                                      
-            )                       
+            ),
+          'karyawan' => array(
+           array(
+                    'field' => 'nup',
+                    'label' => 'NUP',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),           
+           array(
+                    'field' => 'id_finger',
+                    'label' => 'ID Finger',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'nama',
+                    'label' => 'Nama Karyawan',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ), 
+           array(
+                    'field' => 'kelamin',
+                    'label' => 'Jenis Kelamin',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'tempat_lahir',
+                    'label' => 'Tempat Lahir',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'tgl_lahir',
+                    'label' => 'Tanggal Lahir',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'agama',
+                    'label' => 'Agama',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),                                                                                                                                   
+            )                                    
 
         )
 ?>

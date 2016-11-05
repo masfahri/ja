@@ -392,8 +392,8 @@
                             <li class="treeview-menu">
                                 <a href="#"></a>
                                     <?php 
-                                        if( count($datadb) > 0 ){
-                                            foreach($datadb as $row){  
+                                        if( count($datadbkelas) > 0 ){
+                                            foreach($datadbkelas as $row){  
                                                 echo '<li class="<?php if($this->uri->segment(1)==" app_siswa "){echo "active ";}?>">';
                                                 echo '<a href="'.base_url('app_siswa/').'/kelas/'.$row['id_kelas'].'"><i class="fa fa-circle-o"></i> KELAS '.$row['Nama_Kelas'].' <span class="pull-right-container"></span></a>';
                                                 echo '</li>';

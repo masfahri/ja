@@ -9,33 +9,32 @@
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Master</a></li>
-        <li class="active">Siswa</li>
+        <li class="active">Karyawan</li>
       </ol>
     </section>
-    <?php if($this->initial_template == '' || $this->initial_template == 'siswa'): ?>
+    <?php if($this->initial_template == '' || $this->initial_template == 'karyawan'): ?>
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Master Siswa</h3>
+              <h3 class="box-title">Master Karyawan</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
-              <a href="<?= base_url($this->app_name) ?>/siswa_add" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah baru</a>
+              <a href="<?= base_url($this->app_name) ?>/karyawan_add" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah baru</a>
               <br /><br />
 
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>ID FINGER</th>
-                  <th>No. Absen</th>
-                  <th>Nama Siswa</th>
-                  <th>Kelas</th>
+                  <th>NUP</th>
+                  <th>ID Finger</th>
+                  <th>Nama Karyawan</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -44,16 +43,17 @@
                     if( count($datadb) > 0 ){
                         foreach($datadb as $row){   ?>            
                                 <tr>
-                                    <td><span><?php echo $row['id'] ?></span></td>
-                                    <td><span><?php echo $row['id_finger'] ?></span></td>
-                                    <td><span><?php echo $row['absen'] ?></span></td>
+                                    <td><span><?php echo $row['id_karyawan'] ?></span></td>
                                     <td>
-                                        <a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>"><?php echo $row['nama_panggilan']?></a>
+                                        <a href="<?php echo base_url($this->app_name).'/karyawan_edit/'.$row['id_karyawan']; ?>"><?php echo $row['nup']?></a>
                                     </td>
                                     <td>
-                                        <?php echo $row['Nama_Kelas']?>
-                                    </td>                                                                         
-                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                        <?php echo $row['id_finger']; ?>
+                                    </td>                                       
+                                    <td>
+                                        <?php echo $row['nama']; ?>
+                                    </td>                                    
+                                    <td><a href="<?php echo base_url($this->app_name).'/karyawan_edit/'.$row['id_karyawan']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/karyawan_remove/'.$row['id_karyawan']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
                       <?php  }}else{ ?>
                                 <tr>
@@ -70,10 +70,9 @@
                 <tfoot>
                 <tr>
                   <th>ID</th>
-                  <th>ID FINGER</th>
-                  <th>No. Absen</th>
-                  <th>Nama Siswa</th>
-                  <th>Kelas</th>
+                  <th>NUP</th>
+                  <th>ID Finger</th>
+                  <th>Nama Karyawan</th>
                   <th>Aksi</th>
                 </tr>
                 </tfoot>
@@ -88,27 +87,27 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-    <?php elseif( $this->initial_template == 'siswa_add'): ?>
+    <?php elseif( $this->initial_template == 'karyawan_add'): ?>
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Tambah Siswa</h3>
+              <h3 class="box-title">Tambah Karyawan</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
             <!-- form start -->
-            <form action="<?= base_url('app_master/siswa_add') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?= base_url('app_master/karyawan_add') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">NIS</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">NUP</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nis" name="nis" placeholder="Input NIS">
+                   <input type="text" class="form-control" id="nup" name="nup" placeholder="Input NUP">
                   </div>
                 </div>              
                 <div class="form-group">
@@ -119,26 +118,12 @@
                   </div>
                 </div>  
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">No. Absen</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Karyawan</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen">
+                   <input type="text" class="form-control" id="nama" name="nama" placeholder="Input Nama Karyawan">
                   </div>
-                </div> 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" placeholder="Input Nama Siswa">
-                  </div>
-                </div>                 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Panggilan (nama yang muncul pada fingerprint)</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" placeholder="Input Nama Panggilan">
-                  </div>
-                </div>                                             
+                </div>                                                          
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Jenis Kelamin</label>
 
@@ -184,20 +169,6 @@
                   </div>
                 </div>                                               
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="id_kelas">
-                      <option value=''>=== PILIH KELAS ===</option>
-                      <?php
-                        foreach ($kelas as $key => $value) {
-                            echo '<option value='.$value['id_kelas'].'>'.$value['Nama_Kelas'].'</option>';
-                        }
-                        ?>
-                    </select>
-                  </div>
-                </div> 
-                <div class="form-group">
                   <label for="exampleInputFile" class="col-sm-2 control-label">Unggah foto</label>
 
                   <div class="col-sm-10">
@@ -223,65 +194,51 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-    <?php elseif( $this->initial_template == 'siswa_edit'): ?>
+    <?php elseif( $this->initial_template == 'karyawan_edit'): ?>
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Edit Siswa</h3>
+              <h3 class="box-title">Edit Karyawan</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
             <!-- form start -->
-            <form action="<?= base_url( $this->app_name ).'/siswa_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?= base_url( $this->app_name ).'/karyawan_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">NIS</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">NUP</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nis" name="nis" value="<?= rebackPost('nis', $datadb['nis']) ?>" placeholder="Input NIS">
+                   <input type="text" class="form-control" id="nup" value="<?= rebackPost('nup', $datadb['nup']) ?>" name="nup" placeholder="Input NUP">
                   </div>
                 </div>              
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Finger ID</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="id_finger" name="id_finger" value="<?= rebackPost('id_finger', $datadb['id_finger']) ?>" placeholder="Input ID Finger">
+                   <input type="text" class="form-control" id="id_finger" value="<?= rebackPost('id_finger', $datadb['id_finger']) ?>" name="id_finger" placeholder="Input ID Finger">
                   </div>
                 </div>  
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">No. Absen</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Karyawan</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="absen" name="absen" value="<?= rebackPost('absen', $datadb['absen']) ?>" placeholder="Input No. Absen">
+                   <input type="text" class="form-control" id="nama" name="nama" value="<?= rebackPost('nama', $datadb['nama']) ?>" placeholder="Input Nama Karyawan">
                   </div>
-                </div> 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" value="<?= rebackPost('nama_siswa', $datadb['nama_siswa']) ?>" placeholder="Input Nama Siswa">
-                  </div>
-                </div>                 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Panggilan (nama yang muncul pada fingerprint)</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" value="<?= rebackPost('nama_panggilan', $datadb['nama_panggilan']) ?>" placeholder="Input Nama Panggilan">
-                  </div>
-                </div>                                             
+                </div>                                                          
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Jenis Kelamin</label>
 
                   <div class="col-sm-10">
                     <select class="form-control" name="kelamin">
-                    <option value="">-- PILIH KELAMIN --</option>
-                      <option <?php if($kelamin['kelamin'] == "L") echo "selected"; ?>>Laki-Laki</option>
-                      <option <?php if($kelamin['kelamin'] == "P") echo "selected"; ?>>Perempuan</option>
+                    <option <?php if($datadb['kelamin'] == "") echo "selected"; ?> value=''>== Pilih Jenis Kelamin ==</option>
+                      <option <?php if($datadb['kelamin'] == "L") echo "selected"; ?>>Laki-Laki</option>
+                      <option <?php if($datadb['kelamin'] == "P") echo "selected"; ?>>Perempuan</option>
                     </select>                   
                   </div>
                 </div>
@@ -319,32 +276,12 @@
                   </div>
                 </div>                                               
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="id_kelas">
-                    <option value="">-- CHOOSE TYPE --</option>
-                      <?php
-                         if($kelas != ''){
-                          foreach($kelas as $row){
-                              
-                              if( $row['id_kelas'] == $datadb['id_kelas'])$sel  = 'selected';
-                              else $sel  = '';
-                                
-                                echo '<option value="'.$row['id_kelas'].'" '.$sel.'>'.ucfirst($row['Nama_Kelas']).'</option>';
-                            }                                      
-                         }
-                     ?>
-                    </select>
-                  </div>
-                </div> 
-                <div class="form-group">
                   <label for="exampleInputFile" class="col-sm-2 control-label">Unggah foto</label>
 
                   <div class="col-sm-10">
                     <input id="form-file" type="file" id="file" name="file">
                   </div>
-                </div>                       
+                </div>                                                                         
               </div>
        
               <!-- /.box-body -->
@@ -370,8 +307,15 @@
 
   <!-- page script -->
 <script>
-    //Date picker
-    $('#datepicker').datepicker({
-      autoclose: true
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
     });
+  });
 </script>

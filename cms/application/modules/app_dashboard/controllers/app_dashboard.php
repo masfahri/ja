@@ -20,7 +20,9 @@ class App_dashboard extends MX_Controller {
        // initial helper
        $this->load->helper( array(  
         'image/image'
-       ));    	}
+       ));    	
+       $this->load->model('app_siswa/Mapp_siswa'); 
+     }
     
     protected function init(){
     
@@ -50,25 +52,27 @@ class App_dashboard extends MX_Controller {
     }
   
     public function index(){
-       $this->load->model('app_siswa/Mapp_siswa'); 
-        $params['datadb'] =  $this->Mapp_siswa->getKelas();
+
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();
        $this->getContent($params);
 	}
 
     public function siswa(){
 
-      
-       $this->getContent();
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();
+       $this->getContent($params);
     }    
 
     public function guru(){
       
-       $this->getContent();
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();
+       $this->getContent($params);
     }    
 
     public function karyawan(){
       
-       $this->getContent();
+      $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();      
+       $this->getContent($params);
     }    
 }
 ?>

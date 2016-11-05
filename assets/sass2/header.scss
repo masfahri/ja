@@ -1,0 +1,143 @@
+header#topnav {
+    ul.navigation-menu {
+        li.has-submenu {
+            ul.submenu {
+                background-color: rgba(25, 27, 29, 0.5);
+                border: 0px;
+                li {
+                    background-color: none;
+                    a {
+                        color: #fff;
+                        &:hover {
+                            color: #cb2a30;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.scroll {
+        background-color: #191b1d;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        .menu-extras {
+            .menu-item {
+                border: 0px;
+            }
+        }
+        ul.navigation-menu {
+            li {
+                a {
+                    color: #fff;
+                }
+            }
+            & > li.has-submenu {
+                ul.submenu {
+                    background-color: #191b1d;
+                    li {
+                        background-color: #191b1d;
+                        color: #fff;
+                        a {}
+                    }
+                }
+            }
+        }
+        a.trigger {
+            top: 13px;
+            span {
+                background-color: #fff;
+                &:before {
+                    background-color: #fff;
+                }
+                &:after {
+                    background-color: #fff;
+                }
+            }
+            &.active {
+                top: 5px;
+            }
+        }
+    }
+    a.trigger {
+        float: left;
+        width: 40px;
+        height: 25px;
+        position: relative;
+        z-index: 1080;
+        overflow: hidden;
+        transition: 0.3s ease all;
+        top: 20px;
+        opacity: 1;
+        span {
+            float: left;
+            width: 20px;
+            height: 1.5px;
+            background: #fff;
+            position: relative;
+            top: 10px;
+            transition: 0.3s;
+            border-radius: 1.8px;
+            left: 12.5px;
+            transition: all 0.6s ease-in-out;
+            &:before,&::before {
+                content: '';
+                width: 20px;
+                height: 1.5px;
+                background: #fff;
+                position: absolute;
+                top: -8px;
+                left: 0;
+                opacity: 1;
+                border-radius: 1.8px;
+                transition: all 0.55s ease-in-out;
+            }
+            &:after,&::after {
+                content: '';
+                width: 20px;
+                height: 1.5px;
+                background: #fff;
+                position: absolute;
+                bottom: -8px;
+                left: 0;
+                opacity: 1;
+                border-radius: 1.8px;
+                transition: all 0.55s ease-in-out;
+            }
+        }
+        &.active {
+            transform: rotate(270deg);
+            -moz-transform: rotate(270deg);
+            -webkit-transform: rotate(270deg);
+            -o-transform: rotate(270deg);
+            top: 10px;
+            span {
+                background: transparent;
+                opacity: 1;
+                height: 1.5px;
+                left: 0;
+                transition: all 0.4s ease-in-out;
+                &:before,&::before {
+                    width: 25px;
+                    height: 1.5px;
+                    top: 0;
+                    opacity: 1;
+                    transform: rotate(45deg);
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform: rotate(45deg);
+                    -o-transform: rotate(45deg);
+                    transition: all 0.4s ease-in-out;
+                }
+                &:after,::after {
+                    width: 25px;
+                    height: 1.5px;
+                    bottom: 0;
+                    opacity: 1;
+                    transform: rotate(-45deg);
+                    -webkit-transform: rotate(-45deg);
+                    -moz-transform: rotate(-45deg);
+                    -o-transform: rotate(-45deg);
+                    transition: all 0.4s ease-in-out;
+                }
+            }
+        }
+    }
+}

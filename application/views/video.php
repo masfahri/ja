@@ -1,0 +1,1 @@
+<iframe width="100%" height="380" src="https://www.youtube.com/embed/<?= $datadb ?>" frameborder="0" allowfullscreen></iframe>

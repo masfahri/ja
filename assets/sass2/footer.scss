@@ -1,0 +1,31 @@
+footer {
+    &#footer-widgets {
+        background-color: #0F1113;
+        border: 0px;
+        .widget {
+            h6 {
+                color: #fff;
+            }
+            ul.list-unstyled {
+                li {
+                    a {
+                        color: #6d747c;
+                    }
+                }
+            }
+        }
+        .go-top {
+            background-color: #0F1113;
+            border: 1px solid #0F1113;
+            i {
+                color: #fff;
+            }
+        }
+    }
+    &#footer {
+        background-color: #0F1113;
+        .footer-wrap {
+            border-top-color: #494e53;
+        }
+    }
+}

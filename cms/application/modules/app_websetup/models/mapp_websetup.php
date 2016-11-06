@@ -22,6 +22,25 @@ class Mapp_websetup extends CI_Model{
             }else return null;
       }
 
+    /**
+    * @desc Check available username on table
+    * @params string
+    * @params int
+    * @return array 
+    */ 
+    function checkAvailableFp($username, $initial_id = ''){
+        
+        $this->db->select('ip');
+        $this->db->from('ja_fp');
+        if( $initial_id !== "" ){
+            $this->db->where_not_in('ip', $initial_id);
+        }
+        $this->db->where('ip', $username);
+        $query = $this->db->get();
+        if( $query->num_rows() > 0 )return TRUE;
+        else FALSE;
+    }
+
       public function getFp(){
           
           $this->db->select('*');
@@ -34,6 +53,16 @@ class Mapp_websetup extends CI_Model{
           }else return null;
       }      
       
+    public function grapFp($initial_id){
+        
+        $this->db->select('*');
+        $this->db->from('ja_fp');
+        $this->db->where('id', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }
+
       public function getDataLang(){
         
             $this->db->select('*');

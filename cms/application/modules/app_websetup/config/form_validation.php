@@ -18,6 +18,19 @@ $config = array(
                     'label' => 'Google Analyrics',
                     'rules' => 'trim|xss_clean'
                  ),             
-            )
+            ),
+          'fp' => array(
+           array(
+                    'field' => 'ip',
+                    'label' => 'IP Mesin',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),          
+           array(
+                    'field' => 'key',
+                    'label' => 'Key',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 )  
+
+            )           
           )
 ?>

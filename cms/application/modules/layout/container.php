@@ -480,7 +480,12 @@
                         <a href="<?= base_url('app_websetup/fp') ?>">
                             <i class="fa fa-gears"></i> <span>Pengaturan Fingerprint</span>
                         </a>
-                    </li>                     
+                    </li>
+                    <li class="treeview">
+                        <a href="<?= base_url('app_websetup/fp') ?>">
+                            <i class="fa fa-gears"></i> <span>Pengaturan In / Out</span>
+                        </a>
+                    </li>                                          
                 </ul>
             </section>
             <!-- /.sidebar -->

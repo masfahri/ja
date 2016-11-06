@@ -52,8 +52,8 @@
                                     </td>
                                     <td>
                                         <?php echo $row['Nama_Kelas']?>
-                                    </td>                                                                         
-                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                    </td>                                                                   
+                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$row['id_finger']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
                       <?php  }}else{ ?>
                                 <tr>

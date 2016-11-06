@@ -21,6 +21,18 @@ class Mapp_websetup extends CI_Model{
                 
             }else return null;
       }
+
+      public function getFp(){
+          
+          $this->db->select('*');
+          $this->db->from('ja_fp');
+
+          $this->db->order_by('id', 'ASC');
+          $query = $this->db->get();
+          if($query->num_rows() > 0){
+                  return $query->result_array();
+          }else return null;
+      }      
       
       public function getDataLang(){
         

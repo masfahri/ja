@@ -48,10 +48,16 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '192.168.0.16';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'jempolasik';
+// $db['default']['hostname'] = 'localhost';
+// $db['default']['username'] = 'root';
+// $db['default']['password'] = '';
+// $db['default']['database'] = 'jempolasik';
+
+
+$db['default']['hostname'] = '23.226.70.243';
+$db['default']['username'] = 'hilmzpw_fp';
+$db['default']['password'] = 'jempolasik2016';
+$db['default']['database'] = 'hilmzpw_fp';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

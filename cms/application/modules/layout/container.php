@@ -400,6 +400,7 @@
                                         }}
                                     ?>
                         </ul>
+                    </li>    
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span>Presensi Guru</span>
@@ -474,6 +475,12 @@
                             </ul>
                         </a>
                     </li>
+                    <li class="header">SETUP</li>
+                    <li class="treeview">
+                        <a href="<?= base_url('app_websetup/fp') ?>">
+                            <i class="fa fa-gears"></i> <span>Pengaturan Fingerprint</span>
+                        </a>
+                    </li>                     
                 </ul>
             </section>
             <!-- /.sidebar -->

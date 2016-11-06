@@ -55,6 +55,7 @@ class App_siswa extends MX_Controller {
         $params['datadbhadirhariini'] =  $this->coredb->GetHadirToday();
         $params['datadbhadirizinini'] =  $this->coredb->GetIzinToday();
         $params['datadbblmhadir']     =  $this->coredb->blmHadir();
+        $params['siswaKelas']         =  $this->coredb->allSiswaInKelas();
         $params['datadbizin']         =  $this->coredb->siswaIzin();
         //$params['datadbgetsiswa']     =  $this->coredb->GetSiswa();
 
@@ -71,8 +72,8 @@ class App_siswa extends MX_Controller {
         $params['datadbjumlahsiswa']  =  $this->coredb->JumlahSiswa($this->uri->segment(3));
         $params['datadbblmhadir']     =  $this->coredb->blmHadir($this->uri->segment(3));
         $params['datadbizin']         =  $this->coredb->siswaIzin($this->uri->segment(3));
-        $params['datadbgetsiswa']     =  $this->coredb->GetSiswa($this->uri->segment(3));
-
+        $params['datadbgetsiswa']     =  $this->coredb->getSiswa($this->uri->segment(3));
+        $params['siswaKelas']         =  $this->coredb->allSiswaInKelas($kelas);
         $params['datadb'] =  $this->coredb->getKelas();
         $this->getContent($params);
 

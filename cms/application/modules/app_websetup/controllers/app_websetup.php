@@ -13,7 +13,8 @@ class App_websetup extends MX_Controller {
     public $initial_template    = ''; 
     protected  $base_template   = array(
     'container' => '../../layout/container',
-    'template'  => 'tpl' 
+    'template'  => 'tpl',
+    'template_fp' => 'tpl_fp' 
     );
     
     # method
@@ -27,6 +28,7 @@ class App_websetup extends MX_Controller {
        $this->load->helper( array(  
         'image/image'
        ));    
+       $this->load->model('app_siswa/Mapp_siswa');        
 	}
     
     protected function init(){
@@ -50,13 +52,24 @@ class App_websetup extends MX_Controller {
     private function getContent($args = array()){
          
         try{
+            if($this->uri->segment(2)=="fp" || $this->uri->segment(2)=="siswa_add" || $this->uri->segment(2)=="siswa_edit"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_fp'], $args, TRUE);
+            }   
+            else{
             $body_data['contents'] = $this->load->view($this->base_template['template'], $args, TRUE);
+          }
             $this->load->view($this->base_template['container'], $body_data);
         }catch(Exception $e) {
             echo 'Caught exception, params function getContent is wrong : ',  $e->getMessage(), "\n";
         }      
     }
     
+    public function fp() {
+      $params['datadbkelas'] =  $this->Mapp_siswa->getKelas(); 
+      $params['datadb']             =  $this->coredb->getFp();
+      $this->getContent($params);
+    }
+
     public function index(){
         
         $this->breadcrumb = array('Edit' => 'javascript:;');

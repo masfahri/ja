@@ -33,8 +33,29 @@ class Mapp_siswa extends CI_Model{
         if ($initial_id != '') {
             $this->db->where('id_kelas', $initial_id);
         }
+            $tgl = date('Y-m-d');
             $this->db->select('*')
-                     ->from('ja_siswa');
+                     ->from('ja_siswa')
+                     ->join('ja_absensi_siswa','ja_siswa.nis=ja_absensi_siswa.nis')
+                     ->where(array('keterangan =' => 'Hadir', 'tanggal =' => $tgl));
+            $query = $this->db->get();
+
+                if($query->num_rows() > 0){
+                        return $query->result_array();
+                }else return null;
+    }
+
+    public function allSiswaInKelas($initial_id='')
+    {
+        if ($initial_id != '') {
+            $this->db->where('ja_siswa.id_kelas', $initial_id);
+        }
+            $tgl = date('Y-m-d');
+            $this->db->select('ja_kelas.*,ja_absensi_siswa.*,ja_siswa.*')
+                     ->join('ja_absensi_siswa','ja_absensi_siswa.kd_kelas=ja_siswa.id_kelas','LEFT')                     
+                     ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
+                     ->from('ja_siswa')
+                     ->order_by('ja_siswa.absen', 'ASC');
             $query = $this->db->get();
 
                 if($query->num_rows() > 0){

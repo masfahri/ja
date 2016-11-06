@@ -135,46 +135,6 @@
                             </div>
                             <!-- /.col -->
                         </div>
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>No Absen</th>
-                                        <th>Nis</th>
-                                        <th>Nama Siswa</th>
-                                        <th>Hadir</th>
-                                        <th>Alfa</th>
-                                        <th>Izin</th>
-                                        <th>Sakit</th>
-                                        <th>Kelas</th>
-                                        <th>Telat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    $i   = 0;
-                                    $menit = 0;
-                                    if ( count($siswaKelas) > 0 ) {     
-                                        foreach ($siswaKelas as $row) {
-                                            echo '<tr>';
-                                            echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
-                                            echo "<td>".$row['nis']."</td>";
-                                            echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Hadir' ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' />
-                                                </td>";
-
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Alpha' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
-                                            echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td><button onclick='check()'>Check Checkbox</button><td>";
-                                        }
-                                    }
-                                    $i++
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
                         <!-- /.row -->
                     </div>
                     <!-- ./box-body -->

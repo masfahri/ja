@@ -9,7 +9,8 @@ class App_master extends MX_Controller {
     'template_guru'  => 'tpl_guru',
     'template_karyawan'  => 'tpl_karyawan',
     'template_jurusan'  => 'tpl_jurusan',
-    'template_kelas' => 'tpl_kelas' 
+    'template_kelas' => 'tpl_kelas',
+    'template_hr_libur' => 'tpl_hr_libur',     
     );
 
     # initial file image
@@ -52,7 +53,8 @@ class App_master extends MX_Controller {
          define("REG_VALIDATION_JURUSAN", 'jurusan');
          define("REG_VALIDATION_KELAS", 'kelas');
          define("REG_VALIDATION_SISWA", 'siswa'); 
-         define("REG_VALIDATION_KARYAWAN", 'karyawan');                          
+         define("REG_VALIDATION_KARYAWAN", 'karyawan');
+         define("REG_VALIDATION_LIBUR", 'libur');                                    
     }    
 
     private function getContent($args = array()){
@@ -72,7 +74,10 @@ class App_master extends MX_Controller {
             }
             elseif($this->uri->segment(2)=="kelas" || $this->uri->segment(2)=="kelas_add" || $this->uri->segment(2)=="kelas_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_kelas'], $args, TRUE);
-            }                             
+            }  
+            elseif($this->uri->segment(2)=="hari_libur" || $this->uri->segment(2)=="hari_libur_add" || $this->uri->segment(2)=="hari_libur_edit"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_hr_libur'], $args, TRUE);
+            }                                         
             else {
                 $body_data['contents'] = $this->load->view($this->base_template['template_guru'], $args, TRUE);
             }                                     
@@ -87,6 +92,91 @@ class App_master extends MX_Controller {
        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $this->getContent($params);
 	}
+
+    /*  Hari libur Function */
+    public function hari_libur(){
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+       $params['datadb'] =  $this->coredb->getHariLibur(); 
+       $this->getContent($params);
+    }    
+
+    public function hari_libur_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['datadb'] = $this->coredb->grapHariLibur($this->session->userdata('id'));
+        $nip = $this->input->post('id');
+        $validate = 'true';       
+        if( $_POST ){
+             if( $this->form_validation->run(REG_VALIDATION_LIBUR) !== FALSE ){
+
+               # check nip available
+                if( $this->coredb->checkAvailableUser($_POST['id']) == TRUE ){
+                    
+                    $validate = 'false';
+                    $this->messagecontroll->delivered('msg_error', 'Hari Libur sudah ada dalam database, masukkan Hari Libur lainnya.');
+                    $this->form_validation->run();
+                }
+
+                if( $validate == 'true' ){
+                // Get All Fingerprint device
+                $params['device'] = $this->Mapp_websetup->getFp();
+
+                    if( count($params['device']) > 0 ){
+                        foreach($params['device'] as $row){    
+
+                  if($row['ip'] != '' && $row['key'] != '') {
+                   # processing input to fingerprint
+                        $IP=$row['ip'];
+                        $Key=$row['key'];
+                        $ud=$_POST['id_finger'];
+                        $nama_panggilan = $_POST['nama_panggilan'];
+
+                        $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                          if($Connect){
+                            
+                          
+                            $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".
+                            $ud."</PIN><Name>".$nama_panggilan."</Name></Arg></SetUserInfo>";
+                            $newLine="\r\n";
+                            fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                              fputs($Connect, "Content-Type: text/xml".$newLine);
+                              fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                              fputs($Connect, $soap_request.$newLine);
+                            $buffer="";
+                            while($Response=fgets($Connect, 1024)){
+                              $buffer=$buffer.$Response;
+                            }
+                          }//else echo "Koneksi Gagal";
+                            
+                          echo $buffer;
+                          $buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
+
+                        }
+                        else{
+                              echo "<small class='label bg-red'>Data Siswa belum lengkap</small>";
+                         }                    
+                      }
+                    }
+                    //=================
+
+
+
+            if( $validate !== 'false' ){
+                # record database    
+                $this->load->library('uidcontroll');
+                if( $this->uidcontroll->insertData('ja_hari_libur', bindProcessing($_POST) ) !== FALSE){
+                    $this->session->set_flashdata('msg_success', 'Success Save Data');  
+                    redirect( base_url($this->app_name).'/hari_libur' );
+                
+                }else{$this->session->set_flashdata('msg_success', 'Invalid Data to Save !');}
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    } 
+    /* End Hari Libur function */
 
     /*  Siswa Function */
     public function siswa(){

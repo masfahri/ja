@@ -55,7 +55,28 @@ class Mapp_master extends CI_Model{
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->row_array();
         else return null;
+    } 
+
+    public function getHariLibur($initial_id = ''){
+        $this->db->select('*');
+        $this->db->from('ja_hari_libur');
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->result_array();
+        }else return null;
     }    
+
+    public function grapHariLibur($initial_id){
+        
+        $this->db->select('*');
+        $this->db->from('ja_hari_libur');
+        $this->db->where('id', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }    
+
     public function getJurusan(){
         
         $this->db->select('*');

@@ -43,6 +43,28 @@ $config = array(
                  )
 
             ),
+          'libur' => array(
+           array(
+                    'field' => 'keterangan',
+                    'label' => 'Keterangan',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'tanggal_mulai',
+                    'label' => 'Tanggal Mulai',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),    
+           array(
+                    'field' => 'tanggal_akhir',
+                    'label' => 'Tanggal Akhir',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),                        
+           array(
+                    'field' => 'tipe',
+                    'label' => 'Tipe libur',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+            ),          
           'kelas' => array(
            array(
                     'field' => 'Nama_Kelas',

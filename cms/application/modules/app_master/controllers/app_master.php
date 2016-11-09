@@ -104,7 +104,8 @@ class App_master extends MX_Controller {
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] =  $this->coredb->getKelas();
         $params['datadb'] = $this->coredb->grapHariLibur($this->session->userdata('id'));
-        $nip = $this->input->post('id');
+        $id_kelas = $this->input->post('id_kelas');
+        $tipe = $this->input->post('tipe');
         $validate = 'true';       
         if( $_POST ){
              if( $this->form_validation->run(REG_VALIDATION_LIBUR) !== FALSE ){
@@ -118,50 +119,10 @@ class App_master extends MX_Controller {
                 }
 
                 if( $validate == 'true' ){
-                // Get All Fingerprint device
-                $params['device'] = $this->Mapp_websetup->getFp();
-
-                    if( count($params['device']) > 0 ){
-                        foreach($params['device'] as $row){    
-
-                  if($row['ip'] != '' && $row['key'] != '') {
-                   # processing input to fingerprint
-                        $IP=$row['ip'];
-                        $Key=$row['key'];
-                        $ud=$_POST['id_finger'];
-                        $nama_panggilan = $_POST['nama_panggilan'];
-
-                        $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
-                          if($Connect){
-                            
-                          
-                            $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".
-                            $ud."</PIN><Name>".$nama_panggilan."</Name></Arg></SetUserInfo>";
-                            $newLine="\r\n";
-                            fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
-                              fputs($Connect, "Content-Type: text/xml".$newLine);
-                              fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
-                              fputs($Connect, $soap_request.$newLine);
-                            $buffer="";
-                            while($Response=fgets($Connect, 1024)){
-                              $buffer=$buffer.$Response;
-                            }
-                          }//else echo "Koneksi Gagal";
-                            
-                          echo $buffer;
-                          $buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
-
-                        }
-                        else{
-                              echo "<small class='label bg-red'>Data Siswa belum lengkap</small>";
-                         }                    
-                      }
-                    }
-                    //=================
-
-
 
             if( $validate !== 'false' ){
+                $_POST['id_kelas'] = $id_kelas;
+                $_POST['tipe'] = $tipe;
                 # record database    
                 $this->load->library('uidcontroll');
                 if( $this->uidcontroll->insertData('ja_hari_libur', bindProcessing($_POST) ) !== FALSE){
@@ -176,6 +137,53 @@ class App_master extends MX_Controller {
         }
         $this->getContent($params);  
     } 
+
+    public function hari_libur_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['datadb'] = $this->coredb->grapHariLibur($id_finger);
+        $validate = 'true';           
+        if( $_POST ){
+            
+            if( $this->form_validation->run( REG_VALIDATION_LIBUR ) !== FALSE ){
+               
+                if( $validate == 'true' ){
+             # -------------------------------------------------------------------------------------
+             
+            if( $validate !== 'false' ){                
+               # update data
+               $this->load->library('uidcontroll');
+               $db_config['where'] = array('id', $this->initial_id);
+               $db_config['table'] = 'ja_hari_libur';
+               $db_config['data']  =  bindProcessing($_POST);
+               if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                    $this->session->set_flashdata('msg_success', 'Success Update Data');
+                    redirect( base_url($this->app_name).'/hari_libur' );
+                    
+               }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
+              }
+            }                
+
+                
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); }   
+        }
+
+        $this->getContent($params);  
+    }    
+
+    public function hari_libur_remove($id_finger){
+
+        $this->load->library('uidcontroll');  
+        $dataRemove = array('id', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_hari_libur', $dataRemove) == TRUE ){
+
+            $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
+            $this->session->set_flashdata('msg_success', 'Success Remove Data');
+       }
+        redirect(base_url($this->app_name).'/hari_libur');
+
+    } 
+
     /* End Hari Libur function */
 
     /*  Siswa Function */

@@ -57,9 +57,16 @@ class App_siswa extends MX_Controller {
         $params['datadbblmhadir']     =  $this->coredb->blmHadir();
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas();
         $params['datadbizin']         =  $this->coredb->siswaIzin();
+        $params['absen']              =  $this->coredb->getabsen();
         //$params['datadbgetsiswa']     =  $this->coredb->GetSiswa();
 
-        var_dump($params['datadbhadirizinini']);
+         $this->load->model('app_siswa/mapp_siswa');
+        $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
+        //var_dump($params['absen']);
+
+
+
+        //var_dump($params['datadbhadirizinini']);
         // var_dump($params['datadbsiswa']);
         // $tgl = date('yyyy-mm-dd');
         // var_dump($tgl);

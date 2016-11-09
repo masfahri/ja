@@ -45,7 +45,7 @@
                         foreach($datadb as $row){   ?>            
                                 <tr>
                                     <td><span><?php echo $row['id'] ?></span></td>
-                                    <td><span><?php echo $row['id_finger'] ?></span></td>
+                                    <td><span><?php echo $row['pin'] ?></span></td>
                                     <td><span><?php echo $row['absen'] ?></span></td>
                                     <td>
                                         <a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>"><?php echo $row['nama_panggilan']?></a>
@@ -53,7 +53,7 @@
                                     <td>
                                         <?php echo $row['Nama_Kelas']?>
                                     </td>                                                                   
-                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$row['id_finger']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$row['pin']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
                       <?php  }}else{ ?>
                                 <tr>

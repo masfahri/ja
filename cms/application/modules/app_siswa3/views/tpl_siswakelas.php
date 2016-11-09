@@ -10,8 +10,9 @@
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="active">Dashboard</li>
         </ol>
-    </section><br>
-    <?php if($this->initial_template == '' || $this->initial_template == 'siswa'): ?>
+    </section>
+    <?php if($this->initial_template == ''): ?>
+
     <!-- Main content -->
     <section class="content">
         <!-- Info boxes -->
@@ -34,9 +35,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Hadir Hari ini</span></strong>
-                        <span class="info-box-number">
-                            <?php echo $datadbhadirhariini['$js']; ?>
-                          </span>
+                        <span class="info-box-number"><?php echo $datadbsiswa['$hadir'];?></span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -51,11 +50,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Belum Hadir</span></strong>
-                        <span class="info-box-number">
-                            <?php $blmhadir = $datadbjumlahsiswa['$js'] - $datadbhadirhariini['$js'] - $datadbhadirizinini['$js'];
-                                echo $blmhadir;
-                            ?>
-                        </span>
+                        <span class="info-box-number"><?php echo $datadbblmhadir['$blmHadir'];?></span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -68,7 +63,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Izin Hari ini</span></strong>
-                        <span class="info-box-number"><?php echo $datadbhadirizinini['$js'];?></span>
+                        <span class="info-box-number"><?php echo $datadbizin['$izin'];?></span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -99,43 +94,12 @@
                             <!-- /.col -->
                             <div class="col-md-4">
                                 <p class="text-center">
-                                    <strong>Top 5 Siswa</strong>
+                                    <strong>Top 3 Siswa</strong>
                                 </p>
-                                <div class="table-responsive">
-                                    <table class="table no-margin">
-                                        <thead>
-                                            <tr>
-                                                <th>Order ID</th>
-                                                <th>Item</th>
-                                                <th>Status</th>
-                                                <th>Popularity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                                <td>iPhone 6 Plus</td>
-                                                <td><span class="label label-danger">Delivered</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                                <td>Call of Duty IV</td>
-                                                <td><span class="label label-success">Shipped</span></td>
-                                                <td>
-                                                    <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                                 <!-- /.table-responsive -->
                             </div>
                             <!-- /.col -->
                         </div>
-                        <strong><h1>SEMUA SISWA</h1></strong>
                         <div class="table-responsive">
                             <table class="table no-margin">
                                 <thead>
@@ -147,8 +111,8 @@
                                         <th>Alfa</th>
                                         <th>Izin</th>
                                         <th>Sakit</th>
-                                        <th>Kelas</th>
-                                        <!-- <th>Telat</th> -->
+                                        <th>Telat</th>
+                                        <th>Waktu Telat</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -161,14 +125,30 @@
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == '0' ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' />
+                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Hadir' ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' id='cek' />
                                                 </td>";
 
-                                            echo "<td><input type='radio' ".($row['keterangan'] == '1' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
-                                            echo "<td>".$row['Nama_Kelas']."</td>";
-                                            // echo "<td><button onclick='check()'>Check Checkbox</button><td>";
+                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Alpha' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa' id='cek'  /></td>";
+                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin' id='cek'  /></td>";
+                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit' id='cek' onclick='cekk()'  /></td>";
+                                            echo "<td><input onclick='check()' id='telat' type='checkbox' name='blmHadir_".$row['absen']."' value='Belum Hadir'/></td>";
+                                            // echo "<td><input onclick='check()'><td>";
+                                            echo "<td>";
+                                            echo "Jam :";
+                                            echo "<select id='jam' disabled>";
+                                                for ($x = 0; $x <= 10; $x++) {
+                                                  echo "<option value='$x'>$x</option>";
+                                                }
+                                            echo "</select>";
+                                            echo "&nbsp;Menit&nbsp;:&nbsp;<select id='menit' disabled>";
+                                                for ($x = 0; $x <= 59; $x++) {
+                                                  echo "<option value='$x'>$x</option>";
+                                                }
+                                            echo "</select>";
+                                            echo "</td>";
+                                            // echo "<td><span class='label label-danger'>Delivered</span></td>";
+                                            // echo "</td>"; 
+                                            // echo "</tr>";
                                         }
                                     }
                                     $i++
@@ -176,43 +156,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <strong><h1>SISWA HADIR HARI INI</h1></strong>
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Id Finger</th>
-                                        <th>Nama Siswa</th>
-                                        <th>SMS</th>
-                                        <th>Kelas</th>
-                                        <th>Jam Datang</th>
-                                        <th>Jam Pulang</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    $i     = 1;
-                                    if ( count($absen) > 0 ) {   
-                                        foreach ($absen as $row) {
-                                            echo '<tr>';
-                                            echo "<td>".$i++."</a></td>";
-                                            echo "<td>".$row['pin']."</td>";
-                                            echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td>".$row['status']."</td>";
-                                            // echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin'  /></td>";
-                                            // echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
-                                            // echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td>".$row['date_time']."</td>";
-                                            echo "<td>".$row['date_time']."</td>";
-                                            echo "</tr>";
-                                        }
-                                    }
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
+                            <input align="right" type="button" class="btn btn-success" value="Simpan Absen" >
                         <!-- /.row -->
                     </div>
                     <!-- ./box-body -->
@@ -227,3 +171,19 @@
 </div>
 <!-- /.content-wrapper -->
     <?php endif; ?>
+<script type="text/javascript">
+// CEK BOK
+    function check() {
+        document.getElementById("jam").disabled= false;
+        document.getElementById("menit").disabled= false;
+        document.getElementById("cek").checked=true;        
+
+    }
+// RADIO DALEM
+    function cekk() {
+        document.getElementById("menit").disabled= true;
+        document.getElementById("jam").disabled= true;
+        document.getElementById("telat").checked= false;
+                document.getElementById("cek").checked=false;
+    }
+</script>

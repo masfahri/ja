@@ -103,8 +103,8 @@ class Mapp_siswa extends CI_Model{
         $tgl      = date('Y-m-d');
         $js = 'JumlahSiswaHadirHariIni';
         $this->db->select('count(nis) as $js')
-            ->from('ja_absensi_siswa')
-            ->where(array('keterangan =' => 'Izin' , 'tanggal =' => $tgl));
+                 ->from('ja_absensi_siswa')
+                 ->where(array('keterangan =' => 'Izin' , 'tanggal =' => $tgl));
         $query = $this->db->get();
 
         if($query->num_rows() > 0){
@@ -117,7 +117,7 @@ class Mapp_siswa extends CI_Model{
         if ($initial_id != '') {
             $this->db->where('kd_kelas', $initial_id);
         }
-            $tgl      = date('Y-m-d');
+            $tgl   = date('Y-m-d');
             $hadir = 'hadir';
             $this->db->select('count(distinct nis) as $hadir')
                      ->from('ja_absensi_siswa')
@@ -173,4 +173,96 @@ class Mapp_siswa extends CI_Model{
         if($query->num_rows() > 0)return $query->result_array();
         else return null;
     }
+
+    public function getabsen($value='')
+    {
+        $this->db->select('ja_data_absen.*, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_kelas.Nama_Kelas')
+                 ->from('ja_data_absen')
+                 ->join('ja_siswa','ja_data_absen.pin = ja_siswa.pin','LEFT')                     
+                 ->join('ja_kelas','ja_siswa.id_kelas = ja_kelas.id_kelas','LEFT')
+                 ->group_by('pin');
+                     // ->order_by('ja_siswa.absen', 'ASC');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        }else 
+            return null;
+    }
+
+    public function get_data_absen() {
+        error_reporting(0);
+        $IP = '192.168.0.110';
+        $Key = '1';
+        if($IP!=""){
+        $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+            if($Connect){
+                $soap_request="<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
+                $newLine="\r\n";
+                fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                fputs($Connect, "Content-Type: text/xml".$newLine);
+                fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                fputs($Connect, $soap_request.$newLine);
+                $buffer="";
+                while($Response=fgets($Connect, 1024)){
+                    $buffer=$buffer.$Response;
+                }
+                $buffer = $this->Parse_Data($buffer,"<GetAttLogResponse>","</GetAttLogResponse>");
+                $buffer = explode("\r\n",$buffer);
+                for($a=0;$a<count($buffer);$a++){
+                    $data = $this->Parse_Data($buffer[$a],"<Row>","</Row>");
+                    $PIN = $this->Parse_Data($data,"<PIN>","</PIN>");
+                    $DateTime = $this->Parse_Data($data,"<DateTime>","</DateTime>");
+                    $Verified = $this->Parse_Data($data,"<Verified>","</Verified>");
+                    $Status = $this->Parse_Data($data,"<Status>","</Status>");
+                    $ins = array(
+                            "pin"       =>  $PIN,
+                            "date_time" =>  $DateTime,
+                            "ver"       =>  $Verified,
+                            "status"    =>  $Status
+                            );
+                    if (!$this->if_exist_check($PIN, $DateTime) && $PIN && $DateTime) {
+                        $this->db->insert('ja_data_absen', $ins);
+                    }
+                        // echo "<META HTTP-EQUIV='Refresh' Content='5'; URL=app_siswa'>"; 
+
+                }
+                if($buffer){
+                    return '<div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success !</h4>
+                        Anda terhubung dengan mesin.
+                    </div>';
+                } else {
+                    return '<div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                        Anda tidak terhubung dengan mesin !
+                    </div>';
+                }
+            }
+        } 
+    }
+
+    public function if_exist_check($PIN, $DateTime){
+      $this->db->select('*');
+        $this->db->from('ja_data_absen');
+        $this->db->where(array('pin' => $PIN, 'date_time' => $DateTime));
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->result_array();
+        else return null;
+        return $data;
+    }
+
+    public function Parse_Data($data,$p1,$p2){
+    $data=" ".$data;
+    $hasil="";
+    $awal=strpos($data,$p1);
+    if($awal!=""){
+        $akhir=strpos(strstr($data,$p1),$p2);
+        if($akhir!=""){
+            $hasil=substr($data,$awal+strlen($p1),$akhir-strlen($p1));
+        }
+    }
+    return $hasil;  
+}
 }

@@ -124,7 +124,7 @@ class App_master extends MX_Controller {
                    # processing input to fingerprint
                         $IP=$row['ip'];
                         $Key=$row['key'];
-                        $ud=$_POST['id_finger'];
+                        $ud=$_POST['pin'];
                         $nama_panggilan = $_POST['nama_panggilan'];
 
                         $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Oct 31, 2016 at 09:38 AM
+-- Generation Time: Nov 09, 2016 at 06:10 AM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -667,7 +667,7 @@ CREATE TABLE `ja_absensi_siswa` (
   `id` int(111) NOT NULL,
   `nis` bigint(11) NOT NULL,
   `id_finger` int(5) NOT NULL,
-  `keterangan` text NOT NULL,
+  `keterangan` enum('Alpha','Hadir','Sakit','Izin','Telat') NOT NULL,
   `tanggal` date NOT NULL,
   `bulan` varchar(222) NOT NULL,
   `tahun` varchar(111) DEFAULT NULL,
@@ -685,12 +685,51 @@ CREATE TABLE `ja_absensi_siswa` (
 --
 
 INSERT INTO `ja_absensi_siswa` (`id`, `nis`, `id_finger`, `keterangan`, `tanggal`, `bulan`, `tahun`, `kd_kelas`, `selesai`, `waktu`, `terlambat`, `in_out`, `tahun_ajaran`, `semester`) VALUES
-(1, 300, 1, 'Hadir', '2016-10-30', '10', '2016', 33, NULL, '', '', '', '2016/2017', '1'),
-(51, 301, 2, 'Hadir', '2016-10-30', '10', '2016', 33, NULL, '', '', '', '2016/2017', '1'),
-(52, 302, 3, 'Alpha', '2016-10-30', '10', '2016', 33, NULL, '', '', '', '2016/2017', '1'),
-(53, 303, 4, 'Sakit', '2016-10-30', '10', '2016', 33, NULL, '', '', '', '2016/2017', '1'),
-(54, 304, 5, 'Belum', '2016-10-30', '', '2016', 33, NULL, '', '', '', '2016/2017', '1'),
-(56, 304, 0, '', '2016-10-31', '', NULL, 0, NULL, '', '', '', '', '');
+(58, 407, 1, 'Alpha', '2016-11-05', '', NULL, 40, NULL, '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_data_absen`
+--
+
+CREATE TABLE `ja_data_absen` (
+  `id` int(10) NOT NULL,
+  `pin` int(10) NOT NULL,
+  `date_time` datetime NOT NULL,
+  `ver` int(10) NOT NULL,
+  `status` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_data_absen`
+--
+
+INSERT INTO `ja_data_absen` (`id`, `pin`, `date_time`, `ver`, `status`) VALUES
+(34, 1, '2016-11-09 20:53:48', 0, 0),
+(35, 2, '2016-11-09 21:06:20', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_fp`
+--
+
+CREATE TABLE `ja_fp` (
+  `id` int(111) NOT NULL,
+  `ip` varchar(111) NOT NULL,
+  `key` int(111) NOT NULL,
+  `keterangan` text
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_fp`
+--
+
+INSERT INTO `ja_fp` (`id`, `ip`, `key`, `keterangan`) VALUES
+(2, '192.168.0.110', 1, 'Kelas X-1'),
+(3, '192.168.0.10', 2, 'Kelas X-3'),
+(6, '192.168.0.19', 1, 'ruang guru');
 
 -- --------------------------------------------------------
 
@@ -713,7 +752,82 @@ CREATE TABLE `ja_guru` (
 --
 
 INSERT INTO `ja_guru` (`No`, `nip`, `id_finger`, `nama`, `pasword`, `id_pel`, `foto`) VALUES
-(23, 43, 43, 'Hilmy Syarif', 'ceedf12f8fe3dc63d35b2567a59b93bd62ff729a', NULL, 'uploads/image/user/berlin-denim_161031073404.jpg');
+(26, 1, 1, 'Hilmy Syarif', 'fe703d258c7ef5f50b71e06565a65aa07194907f', NULL, 'uploads/image/user/berlin-maroon_161101010533.jpg'),
+(27, 2, 2, 'hilmysyarif@gmail.com', '2589742ece77aca7be8c4ca22ed69257bdd229a3', NULL, ''),
+(28, 3, 3, 'hilmysyarif@gmail.com2', '2589742ece77aca7be8c4ca22ed69257bdd229a3', NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_hari_libur`
+--
+
+CREATE TABLE `ja_hari_libur` (
+  `id` int(111) NOT NULL,
+  `tanggal_mulai` varchar(111) NOT NULL,
+  `tanggal_akhir` varchar(111) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `tipe` varchar(255) NOT NULL,
+  `id_kelas` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_hari_libur`
+--
+
+INSERT INTO `ja_hari_libur` (`id`, `tanggal_mulai`, `tanggal_akhir`, `keterangan`, `tipe`, `id_kelas`) VALUES
+(4, '2016-11-09', '2016-11-10', 'test', 'Kelas', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_jurusan`
+--
+
+CREATE TABLE `ja_jurusan` (
+  `id_jurusan` int(111) NOT NULL,
+  `nama` varchar(111) NOT NULL,
+  `keterangan` varchar(222) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_jurusan`
+--
+
+INSERT INTO `ja_jurusan` (`id_jurusan`, `nama`, `keterangan`) VALUES
+(15, '1', 'TKJ'),
+(16, '23', 'RPL'),
+(17, '3', 'MM'),
+(18, '4', 'TKJTKJTKJTKJTKJ'),
+(19, '5', 'TKJTKJTKJTKJTKJTKJTKJTKJ'),
+(20, 'ASD', 'asd');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_karyawan`
+--
+
+CREATE TABLE `ja_karyawan` (
+  `id_karyawan` int(222) NOT NULL,
+  `nup` bigint(222) NOT NULL,
+  `id_finger` int(5) NOT NULL,
+  `nama` varchar(222) NOT NULL,
+  `kelamin` varchar(3) NOT NULL,
+  `tempat_lahir` varchar(222) NOT NULL,
+  `tgl_lahir` date NOT NULL,
+  `alamat` text NOT NULL,
+  `agama` varchar(222) NOT NULL,
+  `foto` varchar(222) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_karyawan`
+--
+
+INSERT INTO `ja_karyawan` (`id_karyawan`, `nup`, `id_finger`, `nama`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `alamat`, `agama`, `foto`) VALUES
+(1, 1, 10, '1k', 'Lak', '1k', '0000-00-00', '1k', 'Islam', ''),
+(10, 3, 3, 'Hilmy2', 'Per', 'Tangerang Selatan', '1993-12-13', 'Perum. Pondok Aren Indah Jl. Akasia III blok B3/6\nPondok Aren, Tangerang selatan', 'Islam', '');
 
 -- --------------------------------------------------------
 
@@ -722,9 +836,9 @@ INSERT INTO `ja_guru` (`No`, `nip`, `id_finger`, `nama`, `pasword`, `id_pel`, `f
 --
 
 CREATE TABLE `ja_kelas` (
-  `id` int(222) NOT NULL,
+  `id_kelas` int(222) NOT NULL,
   `Nama_Kelas` varchar(222) NOT NULL,
-  `id_jurusan` varchar(111) NOT NULL,
+  `id_jurusan` int(111) NOT NULL,
   `id_guru` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -732,27 +846,10 @@ CREATE TABLE `ja_kelas` (
 -- Dumping data for table `ja_kelas`
 --
 
-INSERT INTO `ja_kelas` (`id`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUES
-(31, 'X-RPL1', '13 X', '18'),
-(32, 'XI-RPL1', '13 XI', '18'),
-(33, 'XII-RPL1', '13 XII', '18'),
-(34, 'X-TKJ', '14 X', '18'),
-(35, 'XI-TKJ', '14 XI', '18'),
-(36, 'XII-TKJ', '14 XII', '18'),
-(37, 'X-1', '15 X', '18'),
-(38, 'XI-1', '15 XI', '18'),
-(39, 'XII-1', '15 XII', '18'),
-(40, 'X-2', '16 X', '18'),
-(41, 'XII-2', '16 XII', '18'),
-(42, 'X-3', '17 X', '18'),
-(43, 'XI-3', '17 XI', '18'),
-(44, 'XII-3', '17 XII', '18'),
-(45, 'X-4', '18 X', '18'),
-(46, 'X-5', '19 X', '18'),
-(47, 'XI-4', '18 XI', '18'),
-(48, 'XII-4', '18 XII', '18'),
-(49, 'XI-5', '19 XI', '18'),
-(50, 'XII-5', '19 XII', '18');
+INSERT INTO `ja_kelas` (`id_kelas`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUES
+(40, 'X-2', 16, '26'),
+(51, 'X-1', 15, ''),
+(52, 'X-3', 15, '');
 
 -- --------------------------------------------------------
 
@@ -763,8 +860,8 @@ INSERT INTO `ja_kelas` (`id`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUES
 CREATE TABLE `ja_siswa` (
   `id` int(50) NOT NULL,
   `nis` bigint(111) NOT NULL,
-  `id_finger` int(5) NOT NULL,
-  `Nama_siswa` varchar(50) NOT NULL,
+  `pin` int(5) NOT NULL,
+  `nama_siswa` varchar(50) NOT NULL,
   `nama_panggilan` varchar(111) NOT NULL,
   `kelamin` varchar(1) NOT NULL,
   `tempat_lahir` varchar(100) NOT NULL,
@@ -781,16 +878,11 @@ CREATE TABLE `ja_siswa` (
 -- Dumping data for table `ja_siswa`
 --
 
-INSERT INTO `ja_siswa` (`id`, `nis`, `id_finger`, `Nama_siswa`, `nama_panggilan`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `alamat`, `password`, `id_kelas`, `absen`, `foto`) VALUES
-(69, 300, 0, 'Lorem', 'Suketi', 'L', 'Jauh', '1997-10-10', 'Islam', 'Jauh dah pokoknya', 'password', 33, 1, NULL),
-(70, 301, 2, 'Agus Sakti', 'Sakti', 'P', 'Unknown', '1997-01-01', 'Islam', 'Jauh bener', 'password', 33, 2, '\r\n'),
-(71, 302, 3, 'bejo sanusi', 'bejo', 'P', 'Kolem Ikan', '1997-09-09', 'Islam', 'Jauh', 'aaaaa', 33, 3, NULL),
-(72, 303, 4, 'Joko Sutomo', 'Sutomo', 'P', 'Tng', '1998-03-04', 'Islam', 'Pondok Aren', '12345', 33, 4, NULL),
-(73, 304, 5, 'Bejo Sanusi', 'Bejo', 'P', 'Empank', '1996-01-10', 'Islam', 'Palsu', '0000', 33, 5, NULL),
-(74, 305, 6, 'Roy Martil', 'Martil', 'L', 'Di got', '1996-10-10', 'Islam', 'Ulujami', 'asdfghjkl', 33, 6, NULL),
-(75, 400, 7, 'Budi Palu', 'Palu', 'P', 'Digidaw', '1996-02-19', 'Islam', 'Arinda', '1111', 40, 7, NULL),
-(76, 401, 8, 'Billy Paku', 'Paku', 'P', 'Dijedodin', '1999-10-20', 'Islam', 'Pondok Aren', '23333', 40, 8, NULL),
-(77, 402, 9, 'Agung Aje', 'Aa', 'L', 'Pondok', '1999-10-10', 'Islam', 'Pondok Kacang', '9999', 40, 9, NULL);
+INSERT INTO `ja_siswa` (`id`, `nis`, `pin`, `nama_siswa`, `nama_panggilan`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `alamat`, `password`, `id_kelas`, `absen`, `foto`) VALUES
+(1, 1411501438, 1, 'Muhmmad Fakhrizal', 'Fakhri', 'L', 'Jakarta', '1997-01-06', 'Islam', 'Pondok Kacang Prima', 'h4rdjump', 40, 1, NULL),
+(2, 1411501422, 2, 'Hesti Lutfiyan', 'Hesti', 'P', 'Tangerang Selatan', '1996-10-30', 'Islam', 'Jurang Mangu Permai', 'hesticantik', 40, 2, NULL),
+(3, 1411501423, 3, 'Lorem', 'Ipsum', 'L', 'Jauh', '1996-10-10', 'Islam', 'Jauh bgt', 'iyuwh', 40, 3, NULL),
+(4, 1412501445, 4, 'Teguh Pangestu', 'Teguh', 'L', 'Tangerang', '1990-10-10', 'Islam', 'Pondok Kacang', 'anjinganjing', 51, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -1672,7 +1764,22 @@ ALTER TABLE `gallery_get`
 --
 ALTER TABLE `ja_absensi_siswa`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `nis` (`nis`);
+  ADD KEY `nis` (`nis`),
+  ADD KEY `kd_kelas` (`kd_kelas`);
+
+--
+-- Indexes for table `ja_data_absen`
+--
+ALTER TABLE `ja_data_absen`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `pin` (`pin`) USING BTREE,
+  ADD KEY `pin_2` (`pin`);
+
+--
+-- Indexes for table `ja_fp`
+--
+ALTER TABLE `ja_fp`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ja_guru`
@@ -1683,18 +1790,40 @@ ALTER TABLE `ja_guru`
   ADD UNIQUE KEY `pelajaran` (`id_pel`);
 
 --
+-- Indexes for table `ja_hari_libur`
+--
+ALTER TABLE `ja_hari_libur`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ja_jurusan`
+--
+ALTER TABLE `ja_jurusan`
+  ADD PRIMARY KEY (`id_jurusan`),
+  ADD UNIQUE KEY `nama` (`nama`);
+
+--
+-- Indexes for table `ja_karyawan`
+--
+ALTER TABLE `ja_karyawan`
+  ADD PRIMARY KEY (`id_karyawan`),
+  ADD UNIQUE KEY `nup` (`nup`);
+
+--
 -- Indexes for table `ja_kelas`
 --
 ALTER TABLE `ja_kelas`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_kelas`);
 
 --
 -- Indexes for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nis` (`nis`),
-  ADD KEY `id_kelas` (`id_kelas`);
+  ADD UNIQUE KEY `id_finger` (`pin`),
+  ADD UNIQUE KEY `nis_2` (`nis`),
+  ADD KEY `id_kelas` (`id_kelas`),
+  ADD KEY `nis` (`nis`) USING BTREE;
 
 --
 -- Indexes for table `log_album_loved`
@@ -1965,22 +2094,47 @@ ALTER TABLE `gallery_get`
 -- AUTO_INCREMENT for table `ja_absensi_siswa`
 --
 ALTER TABLE `ja_absensi_siswa`
-  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+--
+-- AUTO_INCREMENT for table `ja_data_absen`
+--
+ALTER TABLE `ja_data_absen`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- AUTO_INCREMENT for table `ja_fp`
+--
+ALTER TABLE `ja_fp`
+  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `ja_guru`
 --
 ALTER TABLE `ja_guru`
-  MODIFY `No` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `No` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT for table `ja_hari_libur`
+--
+ALTER TABLE `ja_hari_libur`
+  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `ja_jurusan`
+--
+ALTER TABLE `ja_jurusan`
+  MODIFY `id_jurusan` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT for table `ja_karyawan`
+--
+ALTER TABLE `ja_karyawan`
+  MODIFY `id_karyawan` int(222) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `ja_kelas`
 --
 ALTER TABLE `ja_kelas`
-  MODIFY `id` int(222) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id_kelas` int(222) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `log_album_loved`
 --
@@ -2129,13 +2283,19 @@ ALTER TABLE `web_setup`
 -- Constraints for table `ja_absensi_siswa`
 --
 ALTER TABLE `ja_absensi_siswa`
-  ADD CONSTRAINT `ja_absensi_siswa_ibfk_1` FOREIGN KEY (`nis`) REFERENCES `ja_siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ja_absensi_siswa_ibfk_2` FOREIGN KEY (`kd_kelas`) REFERENCES `ja_kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ja_data_absen`
+--
+ALTER TABLE `ja_data_absen`
+  ADD CONSTRAINT `ja_data_absen_ibfk_1` FOREIGN KEY (`pin`) REFERENCES `ja_siswa` (`pin`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
-  ADD CONSTRAINT `ja_siswa_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `ja_kelas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ja_siswa_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `ja_kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

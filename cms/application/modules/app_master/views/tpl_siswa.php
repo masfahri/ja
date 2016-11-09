@@ -115,7 +115,7 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Finger ID</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="id_finger" name="id_finger" placeholder="Input ID Finger">
+                   <input type="text" class="form-control" id="pin" name="pin" placeholder="Input ID Finger">
                   </div>
                 </div>  
                 <div class="form-group">
@@ -250,7 +250,7 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">Finger ID</label>
 
                   <div class="col-sm-10">
-                   <input type="text" class="form-control" id="id_finger" name="id_finger" value="<?= rebackPost('id_finger', $datadb['id_finger']) ?>" placeholder="Input ID Finger">
+                   <input type="text" class="form-control" id="pin" name="pin" value="<?= rebackPost('pin', $datadb['pin']) ?>" placeholder="Input ID Finger">
                   </div>
                 </div>  
                 <div class="form-group">

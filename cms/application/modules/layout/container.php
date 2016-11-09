@@ -322,8 +322,8 @@
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/siswa') ?>"><i class="fa fa-circle-o"></i> Siswa</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/karyawan') ?>"><i class="fa fa-circle-o"></i> Karyawan</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/hari_libur') ?>"><i class="fa fa-circle-o"></i> Hari Libur</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/pengumuman') ?>"><i class="fa fa-circle-o"></i> Kategori Izin</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/pengumuman') ?>"><i class="fa fa-circle-o"></i> Pengumuman</a></li>
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/kategori_izin') ?>"><i class="fa fa-circle-o"></i> Kategori Izin</a></li>
+                            <!--li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/pengumuman') ?>"><i class="fa fa-circle-o"></i> Pengumuman</a></li-->
                         </ul>
                     </li>
                     <li class="header">SMS</li>

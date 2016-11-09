@@ -10,7 +10,8 @@ class App_master extends MX_Controller {
     'template_karyawan'  => 'tpl_karyawan',
     'template_jurusan'  => 'tpl_jurusan',
     'template_kelas' => 'tpl_kelas',
-    'template_hr_libur' => 'tpl_hr_libur',     
+    'template_hr_libur' => 'tpl_hr_libur',
+    'template_kategori_izin' => 'tpl_izin',          
     );
 
     # initial file image
@@ -77,7 +78,10 @@ class App_master extends MX_Controller {
             }  
             elseif($this->uri->segment(2)=="hari_libur" || $this->uri->segment(2)=="hari_libur_add" || $this->uri->segment(2)=="hari_libur_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_hr_libur'], $args, TRUE);
-            }                                         
+            }
+            elseif($this->uri->segment(2)=="kategori_izin" || $this->uri->segment(2)=="kategori_izin_add" || $this->uri->segment(2)=="kategori_izin_edit"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_kategori_izin'], $args, TRUE);
+            }                                                       
             else {
                 $body_data['contents'] = $this->load->view($this->base_template['template_guru'], $args, TRUE);
             }                                     
@@ -92,6 +96,15 @@ class App_master extends MX_Controller {
        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $this->getContent($params);
 	}
+
+    /*  Kategori izin Function */
+    public function kategori_izin(){
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+       $params['datadb'] =  $this->coredb->getKatIzin(); 
+       $this->getContent($params);
+    }    
+
+    /* End Kategori izin function */
 
     /*  Hari libur Function */
     public function hari_libur(){
@@ -310,7 +323,7 @@ class App_master extends MX_Controller {
                    # processing input to fingerprint
                         $IP=$row['ip'];
                         $Key=$row['key'];
-                        $ud=$_POST['id_finger'];
+                        $ud=$_POST['pin'];
                         $nama_panggilan = $_POST['nama_panggilan'];
 
                         $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
@@ -432,7 +445,7 @@ class App_master extends MX_Controller {
                     }
                     //=================
 
-        $dataRemove = array('id_finger', $this->initial_id); 
+        $dataRemove = array('pin', $this->initial_id); 
         if( $this->uidcontroll->removeData('ja_siswa', $dataRemove) == TRUE ){
 
             $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);

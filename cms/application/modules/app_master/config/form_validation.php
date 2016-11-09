@@ -80,7 +80,7 @@ $config = array(
                     'rules' => 'required|max_length[50]|xss_clean'
                  ),           
            array(
-                    'field' => 'id_finger',
+                    'field' => 'pin',
                     'label' => 'ID Finger',
                     'rules' => 'required|max_length[50]|xss_clean'
                  ),

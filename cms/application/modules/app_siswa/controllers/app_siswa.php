@@ -62,7 +62,7 @@ class App_siswa extends MX_Controller {
 
          $this->load->model('app_siswa/mapp_siswa');
         $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
-        //var_dump($params['absen']);
+       // var_dump($params['absen']);
 
 
 

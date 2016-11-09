@@ -204,8 +204,8 @@
                                             // echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
                                             // echo "<td>".$row['Nama_Kelas']."</td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td>".$row['date_time']."</td>";
-                                            echo "<td>".$row['date_time']."</td>";
+                                            echo "<td>".$row['jam_masuk']."</td>";
+                                            echo "<td>".$row['jam_pulang']."</td>";
                                             echo "</tr>";
                                         }
                                     }

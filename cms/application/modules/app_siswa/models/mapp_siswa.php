@@ -174,14 +174,14 @@ class Mapp_siswa extends CI_Model{
         else return null;
     }
 
-    public function getabsen($value='')
-    {
+    public function getabsen($jam='')
+    {         
         $this->db->select('ja_data_absen.*, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_kelas.Nama_Kelas')
                  ->from('ja_data_absen')
                  ->join('ja_siswa','ja_data_absen.pin = ja_siswa.pin','LEFT')                     
                  ->join('ja_kelas','ja_siswa.id_kelas = ja_kelas.id_kelas','LEFT')
-                 ->group_by('pin');
-                     // ->order_by('ja_siswa.absen', 'ASC');
+                 ->order_by('ja_data_absen.pin', 'DESC')
+                 ->group_by('ja_data_absen.pin');                               
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();
@@ -214,16 +214,36 @@ class Mapp_siswa extends CI_Model{
                     $DateTime = $this->Parse_Data($data,"<DateTime>","</DateTime>");
                     $Verified = $this->Parse_Data($data,"<Verified>","</Verified>");
                     $Status = $this->Parse_Data($data,"<Status>","</Status>");
-                    $ins = array(
-                            "pin"       =>  $PIN,
-                            "date_time" =>  $DateTime,
-                            "ver"       =>  $Verified,
-                            "status"    =>  $Status
-                            );
-                    if (!$this->if_exist_check($PIN, $DateTime) && $PIN && $DateTime) {
-                        $this->db->insert('ja_data_absen', $ins);
+                    if (!$this->if_exist_check($PIN, $DateTime) && $PIN && $DateTime) {                  
+                        if($Status == '1') {
+                            $this->session->set_userdata('status', '0');  
+                            if($this->session->userdata('status') == '1') {
+
+                            }
+                            else {
+                            $this->session->set_userdata('status', '1');    
+                            $ins = array(
+                                    "pin"       =>  $PIN,
+                                    "jam_pulang" =>  $DateTime,
+                                    "ver"       =>  $Verified,
+                                    );
+                            $this->db->where('ja_data_absen.pin', $PIN);
+                            $this->db->update('ja_data_absen', $ins);
+                            }                                                                              
+                        }
+                        else {
+                            $ins = array(
+                                    "pin"       =>  $PIN,
+                                    "jam_masuk" =>  $DateTime,
+                                    "jam_pulang" => '',
+                                    "ver"       =>  $Verified,
+                                    );
+                            $this->db->insert('ja_data_absen', $ins);                                                              
+                        }                    
                     }
-                        // echo "<META HTTP-EQUIV='Refresh' Content='5'; URL=app_siswa'>"; 
+
+                    //echo "<META HTTP-EQUIV='Refresh' Content='5'; URL=app_siswa'>"; 
+                    
 
                 }
                 if($buffer){
@@ -246,7 +266,7 @@ class Mapp_siswa extends CI_Model{
     public function if_exist_check($PIN, $DateTime){
       $this->db->select('*');
         $this->db->from('ja_data_absen');
-        $this->db->where(array('pin' => $PIN, 'date_time' => $DateTime));
+        $this->db->where(array('pin' => $PIN, 'jam_pulang' => $DateTime, 'jam_masuk' => $DateTime));
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->result_array();
         else return null;

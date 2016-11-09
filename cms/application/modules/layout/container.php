@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Date picker -->
+    <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/datepicker/datepicker3.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Theme style -->
@@ -679,6 +681,8 @@
     <!-- jvectormap -->
     <script src="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
     <script src="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- Date Picker -->
+    <script src="<?= config_item('assets') ?>plugins/datepicker/bootstrap-datepicker.js"></script>
     <!-- SlimScroll 1.3.0 -->
     <script src="<?= config_item('assets') ?>plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
@@ -689,6 +693,17 @@
     <script src="<?= config_item('assets') ?>dist/js/demo.js"></script>
     <!-- tinymce -->
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        //Date picker
+    $('#datepicker').datepicker({
+      format: 'yyyy-mm-dd',        
+      autoclose: true
+    });
+    $('#datepicker2').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true
+    });
+    </script>
 </body>
 
 </html>

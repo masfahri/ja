@@ -9,7 +9,8 @@ class App_master extends MX_Controller {
     'template_guru'  => 'tpl_guru',
     'template_karyawan'  => 'tpl_karyawan',
     'template_jurusan'  => 'tpl_jurusan',
-    'template_kelas' => 'tpl_kelas' 
+    'template_kelas' => 'tpl_kelas',
+    'template_hr_libur' => 'tpl_hr_libur',     
     );
 
     # initial file image
@@ -52,7 +53,8 @@ class App_master extends MX_Controller {
          define("REG_VALIDATION_JURUSAN", 'jurusan');
          define("REG_VALIDATION_KELAS", 'kelas');
          define("REG_VALIDATION_SISWA", 'siswa'); 
-         define("REG_VALIDATION_KARYAWAN", 'karyawan');                          
+         define("REG_VALIDATION_KARYAWAN", 'karyawan');
+         define("REG_VALIDATION_LIBUR", 'libur');                                    
     }    
 
     private function getContent($args = array()){
@@ -72,7 +74,10 @@ class App_master extends MX_Controller {
             }
             elseif($this->uri->segment(2)=="kelas" || $this->uri->segment(2)=="kelas_add" || $this->uri->segment(2)=="kelas_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_kelas'], $args, TRUE);
-            }                             
+            }  
+            elseif($this->uri->segment(2)=="hari_libur" || $this->uri->segment(2)=="hari_libur_add" || $this->uri->segment(2)=="hari_libur_edit"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_hr_libur'], $args, TRUE);
+            }                                         
             else {
                 $body_data['contents'] = $this->load->view($this->base_template['template_guru'], $args, TRUE);
             }                                     
@@ -87,6 +92,99 @@ class App_master extends MX_Controller {
        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $this->getContent($params);
 	}
+
+    /*  Hari libur Function */
+    public function hari_libur(){
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+       $params['datadb'] =  $this->coredb->getHariLibur(); 
+       $this->getContent($params);
+    }    
+
+    public function hari_libur_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['datadb'] = $this->coredb->grapHariLibur($this->session->userdata('id'));
+        $id_kelas = $this->input->post('id_kelas');
+        $tipe = $this->input->post('tipe');
+        $validate = 'true';       
+        if( $_POST ){
+             if( $this->form_validation->run(REG_VALIDATION_LIBUR) !== FALSE ){
+
+               # check nip available
+                if( $this->coredb->checkAvailableUser($_POST['id']) == TRUE ){
+                    
+                    $validate = 'false';
+                    $this->messagecontroll->delivered('msg_error', 'Hari Libur sudah ada dalam database, masukkan Hari Libur lainnya.');
+                    $this->form_validation->run();
+                }
+
+                if( $validate == 'true' ){
+
+            if( $validate !== 'false' ){
+                $_POST['id_kelas'] = $id_kelas;
+                $_POST['tipe'] = $tipe;
+                # record database    
+                $this->load->library('uidcontroll');
+                if( $this->uidcontroll->insertData('ja_hari_libur', bindProcessing($_POST) ) !== FALSE){
+                    $this->session->set_flashdata('msg_success', 'Success Save Data');  
+                    redirect( base_url($this->app_name).'/hari_libur' );
+                
+                }else{$this->session->set_flashdata('msg_success', 'Invalid Data to Save !');}
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    } 
+
+    public function hari_libur_edit($id_finger){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['datadb'] = $this->coredb->grapHariLibur($id_finger);
+        $validate = 'true';           
+        if( $_POST ){
+            
+            if( $this->form_validation->run( REG_VALIDATION_LIBUR ) !== FALSE ){
+               
+                if( $validate == 'true' ){
+             # -------------------------------------------------------------------------------------
+             
+            if( $validate !== 'false' ){                
+               # update data
+               $this->load->library('uidcontroll');
+               $db_config['where'] = array('id', $this->initial_id);
+               $db_config['table'] = 'ja_hari_libur';
+               $db_config['data']  =  bindProcessing($_POST);
+               if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                    $this->session->set_flashdata('msg_success', 'Success Update Data');
+                    redirect( base_url($this->app_name).'/hari_libur' );
+                    
+               }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
+              }
+            }                
+
+                
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); }   
+        }
+
+        $this->getContent($params);  
+    }    
+
+    public function hari_libur_remove($id_finger){
+
+        $this->load->library('uidcontroll');  
+        $dataRemove = array('id', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_hari_libur', $dataRemove) == TRUE ){
+
+            $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
+            $this->session->set_flashdata('msg_success', 'Success Remove Data');
+       }
+        redirect(base_url($this->app_name).'/hari_libur');
+
+    } 
+
+    /* End Hari Libur function */
 
     /*  Siswa Function */
     public function siswa(){

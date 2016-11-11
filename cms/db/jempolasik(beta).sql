@@ -2,10 +2,10 @@
 -- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: 09 Nov 2016 pada 18.06
--- Versi Server: 10.1.10-MariaDB
--- PHP Version: 5.6.19
+-- Host: localhost:3306
+-- Generation Time: Nov 11, 2016 at 01:31 PM
+-- Server version: 10.1.9-MariaDB-log
+-- PHP Version: 5.6.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ads`
+-- Table structure for table `ads`
 --
 
 CREATE TABLE `ads` (
@@ -38,7 +38,7 @@ CREATE TABLE `ads` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ads`
+-- Dumping data for table `ads`
 --
 
 INSERT INTO `ads` (`ads_id`, `title`, `ads_place_id`, `file`, `extension`, `url`, `expired`, `status`) VALUES
@@ -56,7 +56,7 @@ INSERT INTO `ads` (`ads_id`, `title`, `ads_place_id`, `file`, `extension`, `url`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ads_place`
+-- Table structure for table `ads_place`
 --
 
 CREATE TABLE `ads_place` (
@@ -65,7 +65,7 @@ CREATE TABLE `ads_place` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ads_place`
+-- Dumping data for table `ads_place`
 --
 
 INSERT INTO `ads_place` (`ads_place_id`, `place_name`) VALUES
@@ -79,7 +79,7 @@ INSERT INTO `ads_place` (`ads_place_id`, `place_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `banner`
+-- Table structure for table `banner`
 --
 
 CREATE TABLE `banner` (
@@ -96,7 +96,7 @@ CREATE TABLE `banner` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `banner`
+-- Dumping data for table `banner`
 --
 
 INSERT INTO `banner` (`banner_id`, `banner_page_id`, `banner_category_id`, `banner_size_id`, `banner_name`, `banner_caption`, `banner_url`, `file`, `extention`, `author`) VALUES
@@ -107,7 +107,7 @@ INSERT INTO `banner` (`banner_id`, `banner_page_id`, `banner_category_id`, `bann
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `banner_category`
+-- Table structure for table `banner_category`
 --
 
 CREATE TABLE `banner_category` (
@@ -117,7 +117,7 @@ CREATE TABLE `banner_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `banner_category`
+-- Dumping data for table `banner_category`
 --
 
 INSERT INTO `banner_category` (`banner_category_id`, `page_id`, `category_name`) VALUES
@@ -131,7 +131,7 @@ INSERT INTO `banner_category` (`banner_category_id`, `page_id`, `category_name`)
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `banner_size`
+-- Table structure for table `banner_size`
 --
 
 CREATE TABLE `banner_size` (
@@ -142,7 +142,7 @@ CREATE TABLE `banner_size` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `banner_size`
+-- Dumping data for table `banner_size`
 --
 
 INSERT INTO `banner_size` (`banner_size_id`, `banner_category_id`, `size`, `size_name`) VALUES
@@ -156,7 +156,7 @@ INSERT INTO `banner_size` (`banner_size_id`, `banner_category_id`, `size`, `size
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog`
+-- Table structure for table `blog`
 --
 
 CREATE TABLE `blog` (
@@ -174,7 +174,7 @@ CREATE TABLE `blog` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `blog`
+-- Dumping data for table `blog`
 --
 
 INSERT INTO `blog` (`blog_id`, `blog_category_id`, `page_id`, `status`, `filetype`, `file`, `extention`, `youtube_id`, `view`, `create_date`, `author`) VALUES
@@ -185,7 +185,7 @@ INSERT INTO `blog` (`blog_id`, `blog_category_id`, `page_id`, `status`, `filetyp
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog_category`
+-- Table structure for table `blog_category`
 --
 
 CREATE TABLE `blog_category` (
@@ -199,7 +199,7 @@ CREATE TABLE `blog_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `blog_category`
+-- Dumping data for table `blog_category`
 --
 
 INSERT INTO `blog_category` (`blog_category_id`, `page_id`, `blog_category_name`, `blog_category_desc`, `order_no`, `create_date`, `author`) VALUES
@@ -208,7 +208,7 @@ INSERT INTO `blog_category` (`blog_category_id`, `page_id`, `blog_category_name`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog_child_category`
+-- Table structure for table `blog_child_category`
 --
 
 CREATE TABLE `blog_child_category` (
@@ -220,7 +220,7 @@ CREATE TABLE `blog_child_category` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog_image_size`
+-- Table structure for table `blog_image_size`
 --
 
 CREATE TABLE `blog_image_size` (
@@ -231,7 +231,7 @@ CREATE TABLE `blog_image_size` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `blog_image_size`
+-- Dumping data for table `blog_image_size`
 --
 
 INSERT INTO `blog_image_size` (`blog_size_id`, `category_id`, `size`, `size_name`) VALUES
@@ -246,7 +246,7 @@ INSERT INTO `blog_image_size` (`blog_size_id`, `category_id`, `size`, `size_name
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog_static`
+-- Table structure for table `blog_static`
 --
 
 CREATE TABLE `blog_static` (
@@ -263,7 +263,7 @@ CREATE TABLE `blog_static` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `blog_static`
+-- Dumping data for table `blog_static`
 --
 
 INSERT INTO `blog_static` (`blog_id`, `blog_category_id`, `status`, `filetype`, `file`, `extention`, `youtube_id`, `view`, `create_date`, `author`) VALUES
@@ -277,7 +277,7 @@ INSERT INTO `blog_static` (`blog_id`, `blog_category_id`, `status`, `filetype`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `blog_static_category`
+-- Table structure for table `blog_static_category`
 --
 
 CREATE TABLE `blog_static_category` (
@@ -290,7 +290,7 @@ CREATE TABLE `blog_static_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `blog_static_category`
+-- Dumping data for table `blog_static_category`
 --
 
 INSERT INTO `blog_static_category` (`blog_category_id`, `page_id`, `blog_category_name`, `order_no`, `create_date`, `author`) VALUES
@@ -307,7 +307,7 @@ INSERT INTO `blog_static_category` (`blog_category_id`, `page_id`, `blog_categor
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ci_sessions`
+-- Table structure for table `ci_sessions`
 --
 
 CREATE TABLE `ci_sessions` (
@@ -319,7 +319,7 @@ CREATE TABLE `ci_sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ci_sessions`
+-- Dumping data for table `ci_sessions`
 --
 
 INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
@@ -329,7 +329,7 @@ INSERT INTO `ci_sessions` (`session_id`, `ip_address`, `user_agent`, `last_activ
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `client`
+-- Table structure for table `client`
 --
 
 CREATE TABLE `client` (
@@ -342,7 +342,7 @@ CREATE TABLE `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `client`
+-- Dumping data for table `client`
 --
 
 INSERT INTO `client` (`client_id`, `client_name`, `file`, `extention`, `date`, `author`) VALUES
@@ -353,7 +353,7 @@ INSERT INTO `client` (`client_id`, `client_name`, `file`, `extention`, `date`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `contact_message`
+-- Table structure for table `contact_message`
 --
 
 CREATE TABLE `contact_message` (
@@ -367,7 +367,7 @@ CREATE TABLE `contact_message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `contact_message`
+-- Dumping data for table `contact_message`
 --
 
 INSERT INTO `contact_message` (`contact_id`, `name`, `email`, `subject`, `message`, `send_date`, `status`) VALUES
@@ -377,7 +377,7 @@ INSERT INTO `contact_message` (`contact_id`, `name`, `email`, `subject`, `messag
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `countries`
+-- Table structure for table `countries`
 --
 
 CREATE TABLE `countries` (
@@ -391,7 +391,7 @@ CREATE TABLE `countries` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `countries`
+-- Dumping data for table `countries`
 --
 
 INSERT INTO `countries` (`countries_id`, `countries_idx`, `countries_name`, `countries_name_flag`, `file`, `extention`, `active`) VALUES
@@ -566,7 +566,7 @@ INSERT INTO `countries` (`countries_id`, `countries_idx`, `countries_name`, `cou
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `gallery`
+-- Table structure for table `gallery`
 --
 
 CREATE TABLE `gallery` (
@@ -584,7 +584,7 @@ CREATE TABLE `gallery` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `gallery`
+-- Dumping data for table `gallery`
 --
 
 INSERT INTO `gallery` (`gallery_id`, `gallery_album_id`, `file`, `extention`, `type`, `title`, `url_link`, `video_intro`, `video_desc`, `author`, `date`) VALUES
@@ -597,7 +597,7 @@ INSERT INTO `gallery` (`gallery_id`, `gallery_album_id`, `file`, `extention`, `t
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `gallery_album`
+-- Table structure for table `gallery_album`
 --
 
 CREATE TABLE `gallery_album` (
@@ -612,7 +612,7 @@ CREATE TABLE `gallery_album` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `gallery_album`
+-- Dumping data for table `gallery_album`
 --
 
 INSERT INTO `gallery_album` (`gallery_album_id`, `album_name`, `album_title`, `album_description`, `date`, `file`, `extention`, `author`) VALUES
@@ -623,7 +623,7 @@ INSERT INTO `gallery_album` (`gallery_album_id`, `album_name`, `album_title`, `a
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `gallery_get`
+-- Table structure for table `gallery_get`
 --
 
 CREATE TABLE `gallery_get` (
@@ -633,7 +633,7 @@ CREATE TABLE `gallery_get` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `gallery_get`
+-- Dumping data for table `gallery_get`
 --
 
 INSERT INTO `gallery_get` (`id_banner`, `file`, `ext`) VALUES
@@ -642,7 +642,7 @@ INSERT INTO `gallery_get` (`id_banner`, `file`, `ext`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `get_shop`
+-- Table structure for table `get_shop`
 --
 
 CREATE TABLE `get_shop` (
@@ -651,7 +651,7 @@ CREATE TABLE `get_shop` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `get_shop`
+-- Dumping data for table `get_shop`
 --
 
 INSERT INTO `get_shop` (`id`, `page_desc`) VALUES
@@ -660,7 +660,7 @@ INSERT INTO `get_shop` (`id`, `page_desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_absensi_siswa`
+-- Table structure for table `ja_absensi_siswa`
 --
 
 CREATE TABLE `ja_absensi_siswa` (
@@ -681,7 +681,7 @@ CREATE TABLE `ja_absensi_siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_absensi_siswa`
+-- Dumping data for table `ja_absensi_siswa`
 --
 
 INSERT INTO `ja_absensi_siswa` (`id`, `nis`, `id_finger`, `keterangan`, `tanggal`, `bulan`, `tahun`, `kd_kelas`, `selesai`, `waktu`, `terlambat`, `in_out`, `tahun_ajaran`, `semester`) VALUES
@@ -690,29 +690,30 @@ INSERT INTO `ja_absensi_siswa` (`id`, `nis`, `id_finger`, `keterangan`, `tanggal
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_data_absen`
+-- Table structure for table `ja_data_absen`
 --
 
 CREATE TABLE `ja_data_absen` (
   `id` int(10) NOT NULL,
   `pin` int(10) NOT NULL,
-  `date_time` datetime NOT NULL,
+  `jam_masuk` datetime NOT NULL,
+  `jam_pulang` datetime NOT NULL,
   `ver` int(10) NOT NULL,
-  `status` int(10) NOT NULL
+  `status` int(10) NOT NULL,
+  `sms_status` enum('0','1','2') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_data_absen`
+-- Dumping data for table `ja_data_absen`
 --
 
-INSERT INTO `ja_data_absen` (`id`, `pin`, `date_time`, `ver`, `status`) VALUES
-(34, 1, '2016-11-09 20:53:48', 0, 0),
-(35, 2, '2016-11-09 21:06:20', 0, 0);
+INSERT INTO `ja_data_absen` (`id`, `pin`, `jam_masuk`, `jam_pulang`, `ver`, `status`, `sms_status`) VALUES
+(1, 4, '2016-11-12 03:04:03', '2016-11-12 03:17:55', 1, 1, '2');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_fp`
+-- Table structure for table `ja_fp`
 --
 
 CREATE TABLE `ja_fp` (
@@ -723,7 +724,7 @@ CREATE TABLE `ja_fp` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_fp`
+-- Dumping data for table `ja_fp`
 --
 
 INSERT INTO `ja_fp` (`id`, `ip`, `key`, `keterangan`) VALUES
@@ -734,7 +735,7 @@ INSERT INTO `ja_fp` (`id`, `ip`, `key`, `keterangan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_guru`
+-- Table structure for table `ja_guru`
 --
 
 CREATE TABLE `ja_guru` (
@@ -748,7 +749,7 @@ CREATE TABLE `ja_guru` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_guru`
+-- Dumping data for table `ja_guru`
 --
 
 INSERT INTO `ja_guru` (`No`, `nip`, `id_finger`, `nama`, `pasword`, `id_pel`, `foto`) VALUES
@@ -759,7 +760,7 @@ INSERT INTO `ja_guru` (`No`, `nip`, `id_finger`, `nama`, `pasword`, `id_pel`, `f
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_hari_libur`
+-- Table structure for table `ja_hari_libur`
 --
 
 CREATE TABLE `ja_hari_libur` (
@@ -771,10 +772,17 @@ CREATE TABLE `ja_hari_libur` (
   `id_kelas` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `ja_hari_libur`
+--
+
+INSERT INTO `ja_hari_libur` (`id`, `tanggal_mulai`, `tanggal_akhir`, `keterangan`, `tipe`, `id_kelas`) VALUES
+(4, '2016-11-09', '2016-11-10', 'test', 'Kelas', 0);
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_jurusan`
+-- Table structure for table `ja_jurusan`
 --
 
 CREATE TABLE `ja_jurusan` (
@@ -784,7 +792,7 @@ CREATE TABLE `ja_jurusan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_jurusan`
+-- Dumping data for table `ja_jurusan`
 --
 
 INSERT INTO `ja_jurusan` (`id_jurusan`, `nama`, `keterangan`) VALUES
@@ -798,7 +806,7 @@ INSERT INTO `ja_jurusan` (`id_jurusan`, `nama`, `keterangan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_karyawan`
+-- Table structure for table `ja_karyawan`
 --
 
 CREATE TABLE `ja_karyawan` (
@@ -815,7 +823,7 @@ CREATE TABLE `ja_karyawan` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_karyawan`
+-- Dumping data for table `ja_karyawan`
 --
 
 INSERT INTO `ja_karyawan` (`id_karyawan`, `nup`, `id_finger`, `nama`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `alamat`, `agama`, `foto`) VALUES
@@ -825,28 +833,7 @@ INSERT INTO `ja_karyawan` (`id_karyawan`, `nup`, `id_finger`, `nama`, `kelamin`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_kategori_izin`
---
-
-CREATE TABLE `ja_kategori_izin` (
-  `id` int(11) NOT NULL,
-  `keterangan` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `ja_kategori_izin`
---
-
-INSERT INTO `ja_kategori_izin` (`id`, `keterangan`) VALUES
-(1, 'Alpha'),
-(2, 'Hadir'),
-(3, 'Izin'),
-(4, 'Sakit');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `ja_kelas`
+-- Table structure for table `ja_kelas`
 --
 
 CREATE TABLE `ja_kelas` (
@@ -857,7 +844,7 @@ CREATE TABLE `ja_kelas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_kelas`
+-- Dumping data for table `ja_kelas`
 --
 
 INSERT INTO `ja_kelas` (`id_kelas`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUES
@@ -868,7 +855,7 @@ INSERT INTO `ja_kelas` (`id_kelas`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUE
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `ja_siswa`
+-- Table structure for table `ja_siswa`
 --
 
 CREATE TABLE `ja_siswa` (
@@ -889,18 +876,19 @@ CREATE TABLE `ja_siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `ja_siswa`
+-- Dumping data for table `ja_siswa`
 --
 
 INSERT INTO `ja_siswa` (`id`, `nis`, `pin`, `nama_siswa`, `nama_panggilan`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `alamat`, `password`, `id_kelas`, `absen`, `foto`) VALUES
 (1, 1411501438, 1, 'Muhmmad Fakhrizal', 'Fakhri', 'L', 'Jakarta', '1997-01-06', 'Islam', 'Pondok Kacang Prima', 'h4rdjump', 40, 1, NULL),
 (2, 1411501422, 2, 'Hesti Lutfiyan', 'Hesti', 'P', 'Tangerang Selatan', '1996-10-30', 'Islam', 'Jurang Mangu Permai', 'hesticantik', 40, 2, NULL),
-(3, 1411501423, 3, 'Lorem', 'Ipsum', 'L', 'Jauh', '1996-10-10', 'Islam', 'Jauh bgt', 'iyuwh', 40, 3, NULL);
+(3, 1411501423, 6, 'Lorem', 'Ipsum', 'L', 'Jauh', '1996-10-10', 'Islam', 'Jauh bgt', 'iyuwh', 40, 3, NULL),
+(5, 100200202, 4, 'hilmy', 'hilmy', 'L', 'Tangerang', '1993-12-13', 'Islam', 'Pondok aren', '', 40, 1, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `log_album_loved`
+-- Table structure for table `log_album_loved`
 --
 
 CREATE TABLE `log_album_loved` (
@@ -913,7 +901,7 @@ CREATE TABLE `log_album_loved` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `log_album_view`
+-- Table structure for table `log_album_view`
 --
 
 CREATE TABLE `log_album_view` (
@@ -924,7 +912,7 @@ CREATE TABLE `log_album_view` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `log_album_view`
+-- Dumping data for table `log_album_view`
 --
 
 INSERT INTO `log_album_view` (`id_log`, `album_id`, `view`, `date`) VALUES
@@ -934,7 +922,7 @@ INSERT INTO `log_album_view` (`id_log`, `album_id`, `view`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `log_article_loved`
+-- Table structure for table `log_article_loved`
 --
 
 CREATE TABLE `log_article_loved` (
@@ -945,7 +933,7 @@ CREATE TABLE `log_article_loved` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `log_article_loved`
+-- Dumping data for table `log_article_loved`
 --
 
 INSERT INTO `log_article_loved` (`log_id`, `blog_id`, `loved`, `date`) VALUES
@@ -955,7 +943,7 @@ INSERT INTO `log_article_loved` (`log_id`, `blog_id`, `loved`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `log_article_view`
+-- Table structure for table `log_article_view`
 --
 
 CREATE TABLE `log_article_view` (
@@ -966,7 +954,7 @@ CREATE TABLE `log_article_view` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `log_article_view`
+-- Dumping data for table `log_article_view`
 --
 
 INSERT INTO `log_article_view` (`id_log`, `blog_id`, `view`, `date`) VALUES
@@ -982,7 +970,7 @@ INSERT INTO `log_article_view` (`id_log`, `blog_id`, `view`, `date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `membership`
+-- Table structure for table `membership`
 --
 
 CREATE TABLE `membership` (
@@ -1009,7 +997,7 @@ CREATE TABLE `membership` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `membership`
+-- Dumping data for table `membership`
 --
 
 INSERT INTO `membership` (`id_membership`, `first_name`, `last_name`, `phone`, `province`, `address`, `zipcode`, `reg_date`, `no_member`, `ktp`, `sim`, `home_phone`, `office`, `email`, `blood_type`, `tsize`, `status`, `model2`, `chapter`, `mem2`) VALUES
@@ -1018,7 +1006,7 @@ INSERT INTO `membership` (`id_membership`, `first_name`, `last_name`, `phone`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `membership_car`
+-- Table structure for table `membership_car`
 --
 
 CREATE TABLE `membership_car` (
@@ -1033,7 +1021,7 @@ CREATE TABLE `membership_car` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `membership_car`
+-- Dumping data for table `membership_car`
 --
 
 INSERT INTO `membership_car` (`id_car`, `id_membership`, `model`, `seri_mc`, `year`, `license_plate`, `chasis_no`, `engine_no`) VALUES
@@ -1044,7 +1032,7 @@ INSERT INTO `membership_car` (`id_car`, `id_membership`, `model`, `seri_mc`, `ye
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `membership_get`
+-- Table structure for table `membership_get`
 --
 
 CREATE TABLE `membership_get` (
@@ -1072,7 +1060,7 @@ CREATE TABLE `membership_get` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `membership_get`
+-- Dumping data for table `membership_get`
 --
 
 INSERT INTO `membership_get` (`get_id`, `desc`, `form_url`, `titone`, `descone`, `tittwo`, `desctwo`, `tittri`, `desctri`, `titco1`, `descco1`, `titco2`, `descco2`, `titco3`, `descco3`, `titco4`, `descco4`, `titco5`, `descco5`, `titco6`, `descco6`) VALUES
@@ -1082,7 +1070,7 @@ INSERT INTO `membership_get` (`get_id`, `desc`, `form_url`, `titone`, `descone`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `officer`
+-- Table structure for table `officer`
 --
 
 CREATE TABLE `officer` (
@@ -1094,7 +1082,7 @@ CREATE TABLE `officer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `officer`
+-- Dumping data for table `officer`
 --
 
 INSERT INTO `officer` (`id`, `name`, `jobs`, `file`, `extention`) VALUES
@@ -1106,7 +1094,7 @@ INSERT INTO `officer` (`id`, `name`, `jobs`, `file`, `extention`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page`
+-- Table structure for table `page`
 --
 
 CREATE TABLE `page` (
@@ -1117,7 +1105,7 @@ CREATE TABLE `page` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page`
+-- Dumping data for table `page`
 --
 
 INSERT INTO `page` (`page_id`, `page_name`, `banner`, `blog`) VALUES
@@ -1127,7 +1115,7 @@ INSERT INTO `page` (`page_id`, `page_name`, `banner`, `blog`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_about`
+-- Table structure for table `page_about`
 --
 
 CREATE TABLE `page_about` (
@@ -1137,7 +1125,7 @@ CREATE TABLE `page_about` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_about`
+-- Dumping data for table `page_about`
 --
 
 INSERT INTO `page_about` (`about_id`, `title`, `desc`) VALUES
@@ -1149,7 +1137,7 @@ INSERT INTO `page_about` (`about_id`, `title`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_contact`
+-- Table structure for table `page_contact`
 --
 
 CREATE TABLE `page_contact` (
@@ -1164,7 +1152,7 @@ CREATE TABLE `page_contact` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_contact`
+-- Dumping data for table `page_contact`
 --
 
 INSERT INTO `page_contact` (`contact_id`, `contact_office`, `opening_hour`, `contact_email`, `contact_phone`, `geolocation`, `create_date`, `author`) VALUES
@@ -1173,7 +1161,7 @@ INSERT INTO `page_contact` (`contact_id`, `contact_office`, `opening_hour`, `con
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_content`
+-- Table structure for table `page_content`
 --
 
 CREATE TABLE `page_content` (
@@ -1186,7 +1174,7 @@ CREATE TABLE `page_content` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_content`
+-- Dumping data for table `page_content`
 --
 
 INSERT INTO `page_content` (`page_content_id`, `page_category`, `content_id`, `id_countries`, `title`, `content`) VALUES
@@ -1197,7 +1185,7 @@ INSERT INTO `page_content` (`page_content_id`, `page_category`, `content_id`, `i
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_event`
+-- Table structure for table `page_event`
 --
 
 CREATE TABLE `page_event` (
@@ -1218,7 +1206,7 @@ CREATE TABLE `page_event` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_event`
+-- Dumping data for table `page_event`
 --
 
 INSERT INTO `page_event` (`event_id`, `event_name`, `place`, `desc`, `file`, `extention`, `file2`, `extension2`, `file3`, `extension3`, `date`, `is_slide`, `status`, `author`) VALUES
@@ -1230,7 +1218,7 @@ INSERT INTO `page_event` (`event_id`, `event_name`, `place`, `desc`, `file`, `ex
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_gallery`
+-- Table structure for table `page_gallery`
 --
 
 CREATE TABLE `page_gallery` (
@@ -1240,7 +1228,7 @@ CREATE TABLE `page_gallery` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_gallery`
+-- Dumping data for table `page_gallery`
 --
 
 INSERT INTO `page_gallery` (`id`, `file`, `extention`) VALUES
@@ -1249,7 +1237,7 @@ INSERT INTO `page_gallery` (`id`, `file`, `extention`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_membership`
+-- Table structure for table `page_membership`
 --
 
 CREATE TABLE `page_membership` (
@@ -1258,7 +1246,7 @@ CREATE TABLE `page_membership` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_membership`
+-- Dumping data for table `page_membership`
 --
 
 INSERT INTO `page_membership` (`id_membership`, `desc`) VALUES
@@ -1267,7 +1255,7 @@ INSERT INTO `page_membership` (`id_membership`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `page_merchant`
+-- Table structure for table `page_merchant`
 --
 
 CREATE TABLE `page_merchant` (
@@ -1281,7 +1269,7 @@ CREATE TABLE `page_merchant` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `page_merchant`
+-- Dumping data for table `page_merchant`
 --
 
 INSERT INTO `page_merchant` (`id`, `page_desc`, `merchant_name`, `merchant_place`, `merchant_desc`, `file`, `extention`) VALUES
@@ -1292,7 +1280,7 @@ INSERT INTO `page_merchant` (`id`, `page_desc`, `merchant_name`, `merchant_place
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `product`
+-- Table structure for table `product`
 --
 
 CREATE TABLE `product` (
@@ -1314,7 +1302,7 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`product_id`, `product_category`, `product_brand`, `product_name`, `product_price`, `product_price_disc`, `product_desc`, `product_spec`, `deals`, `location`, `file`, `extention`, `url_link`, `author`, `create_date`) VALUES
@@ -1325,7 +1313,7 @@ INSERT INTO `product` (`product_id`, `product_category`, `product_brand`, `produ
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `product_category`
+-- Table structure for table `product_category`
 --
 
 CREATE TABLE `product_category` (
@@ -1336,7 +1324,7 @@ CREATE TABLE `product_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `product_category`
+-- Dumping data for table `product_category`
 --
 
 INSERT INTO `product_category` (`product_category_id`, `category_name`, `date`, `author`) VALUES
@@ -1347,7 +1335,7 @@ INSERT INTO `product_category` (`product_category_id`, `category_name`, `date`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `product_image`
+-- Table structure for table `product_image`
 --
 
 CREATE TABLE `product_image` (
@@ -1358,7 +1346,7 @@ CREATE TABLE `product_image` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `product_image`
+-- Dumping data for table `product_image`
 --
 
 INSERT INTO `product_image` (`product_image_id`, `product_id`, `file`, `extention`) VALUES
@@ -1415,7 +1403,7 @@ INSERT INTO `product_image` (`product_image_id`, `product_id`, `file`, `extentio
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `quotes`
+-- Table structure for table `quotes`
 --
 
 CREATE TABLE `quotes` (
@@ -1433,7 +1421,7 @@ CREATE TABLE `quotes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `quotes`
+-- Dumping data for table `quotes`
 --
 
 INSERT INTO `quotes` (`quotes_id`, `layout`, `word`, `moment_by`, `template`, `file`, `extention`, `use_for`, `link`, `author`, `create_date`) VALUES
@@ -1444,7 +1432,7 @@ INSERT INTO `quotes` (`quotes_id`, `layout`, `word`, `moment_by`, `template`, `f
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `shop`
+-- Table structure for table `shop`
 --
 
 CREATE TABLE `shop` (
@@ -1466,7 +1454,7 @@ CREATE TABLE `shop` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `shop`
+-- Dumping data for table `shop`
 --
 
 INSERT INTO `shop` (`shop_id`, `prod_name`, `desc_prod`, `price_prod`, `file`, `extention`, `file2`, `extention2`, `file3`, `extention3`, `file4`, `extention4`, `file5`, `extention5`, `contact`) VALUES
@@ -1476,7 +1464,7 @@ INSERT INTO `shop` (`shop_id`, `prod_name`, `desc_prod`, `price_prod`, `file`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `social`
+-- Table structure for table `social`
 --
 
 CREATE TABLE `social` (
@@ -1489,7 +1477,7 @@ CREATE TABLE `social` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `social`
+-- Dumping data for table `social`
 --
 
 INSERT INTO `social` (`id_social`, `facebook`, `twitter`, `google`, `instagram`, `youtube`) VALUES
@@ -1498,7 +1486,7 @@ INSERT INTO `social` (`id_social`, `facebook`, `twitter`, `google`, `instagram`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `socmed`
+-- Table structure for table `socmed`
 --
 
 CREATE TABLE `socmed` (
@@ -1514,7 +1502,7 @@ CREATE TABLE `socmed` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `socmed`
+-- Dumping data for table `socmed`
 --
 
 INSERT INTO `socmed` (`socmed_id`, `socmed_arrangement`, `socmed_name`, `socmed_link`, `file`, `extention`, `icon_class`, `author`, `create`) VALUES
@@ -1525,7 +1513,7 @@ INSERT INTO `socmed` (`socmed_id`, `socmed_arrangement`, `socmed_name`, `socmed_
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sponsors`
+-- Table structure for table `sponsors`
 --
 
 CREATE TABLE `sponsors` (
@@ -1537,7 +1525,7 @@ CREATE TABLE `sponsors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `sponsors`
+-- Dumping data for table `sponsors`
 --
 
 INSERT INTO `sponsors` (`id_sponsors`, `brand_name`, `desc_brand`, `file`, `ext`) VALUES
@@ -1548,7 +1536,7 @@ INSERT INTO `sponsors` (`id_sponsors`, `brand_name`, `desc_brand`, `file`, `ext`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sys_administrator`
+-- Table structure for table `sys_administrator`
 --
 
 CREATE TABLE `sys_administrator` (
@@ -1564,7 +1552,7 @@ CREATE TABLE `sys_administrator` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `sys_administrator`
+-- Dumping data for table `sys_administrator`
 --
 
 INSERT INTO `sys_administrator` (`id_administrator`, `id_privileges`, `nickname`, `username`, `password`, `salt`, `image`, `extention`, `create_date`) VALUES
@@ -1574,7 +1562,7 @@ INSERT INTO `sys_administrator` (`id_administrator`, `id_privileges`, `nickname`
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `sys_privileges`
+-- Table structure for table `sys_privileges`
 --
 
 CREATE TABLE `sys_privileges` (
@@ -1583,7 +1571,7 @@ CREATE TABLE `sys_privileges` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `sys_privileges`
+-- Dumping data for table `sys_privileges`
 --
 
 INSERT INTO `sys_privileges` (`sys_privileges_id`, `sys_privileges_name`) VALUES
@@ -1593,7 +1581,7 @@ INSERT INTO `sys_privileges` (`sys_privileges_id`, `sys_privileges_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `testimonial_charter`
+-- Table structure for table `testimonial_charter`
 --
 
 CREATE TABLE `testimonial_charter` (
@@ -1607,7 +1595,7 @@ CREATE TABLE `testimonial_charter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `testimonial_charter`
+-- Dumping data for table `testimonial_charter`
 --
 
 INSERT INTO `testimonial_charter` (`tc_id`, `charter_id`, `file`, `extention`, `comment`, `user`, `date`) VALUES
@@ -1618,7 +1606,7 @@ INSERT INTO `testimonial_charter` (`tc_id`, `charter_id`, `file`, `extention`, `
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `u_subscribe`
+-- Table structure for table `u_subscribe`
 --
 
 CREATE TABLE `u_subscribe` (
@@ -1629,7 +1617,7 @@ CREATE TABLE `u_subscribe` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `u_subscribe`
+-- Dumping data for table `u_subscribe`
 --
 
 INSERT INTO `u_subscribe` (`u_subscribe_id`, `name`, `u_subscribe_email`, `register_date`) VALUES
@@ -1638,7 +1626,7 @@ INSERT INTO `u_subscribe` (`u_subscribe_id`, `name`, `u_subscribe_email`, `regis
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `web_setup`
+-- Table structure for table `web_setup`
 --
 
 CREATE TABLE `web_setup` (
@@ -1653,7 +1641,7 @@ CREATE TABLE `web_setup` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `web_setup`
+-- Dumping data for table `web_setup`
 --
 
 INSERT INTO `web_setup` (`web_setup_id`, `status`, `site_url`, `google_analytics`, `file`, `extention`, `favicon`, `active_lang`) VALUES
@@ -1821,12 +1809,6 @@ ALTER TABLE `ja_jurusan`
 ALTER TABLE `ja_karyawan`
   ADD PRIMARY KEY (`id_karyawan`),
   ADD UNIQUE KEY `nup` (`nup`);
-
---
--- Indexes for table `ja_kategori_izin`
---
-ALTER TABLE `ja_kategori_izin`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ja_kelas`
@@ -2118,7 +2100,7 @@ ALTER TABLE `ja_absensi_siswa`
 -- AUTO_INCREMENT for table `ja_data_absen`
 --
 ALTER TABLE `ja_data_absen`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `ja_fp`
 --
@@ -2145,11 +2127,6 @@ ALTER TABLE `ja_jurusan`
 ALTER TABLE `ja_karyawan`
   MODIFY `id_karyawan` int(222) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT for table `ja_kategori_izin`
---
-ALTER TABLE `ja_kategori_izin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
 -- AUTO_INCREMENT for table `ja_kelas`
 --
 ALTER TABLE `ja_kelas`
@@ -2158,7 +2135,7 @@ ALTER TABLE `ja_kelas`
 -- AUTO_INCREMENT for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `log_album_loved`
 --
@@ -2300,23 +2277,23 @@ ALTER TABLE `u_subscribe`
 ALTER TABLE `web_setup`
   MODIFY `web_setup_id` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `ja_absensi_siswa`
+-- Constraints for table `ja_absensi_siswa`
 --
 ALTER TABLE `ja_absensi_siswa`
   ADD CONSTRAINT `ja_absensi_siswa_ibfk_2` FOREIGN KEY (`kd_kelas`) REFERENCES `ja_kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `ja_data_absen`
+-- Constraints for table `ja_data_absen`
 --
 ALTER TABLE `ja_data_absen`
   ADD CONSTRAINT `ja_data_absen_ibfk_1` FOREIGN KEY (`pin`) REFERENCES `ja_siswa` (`pin`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `ja_siswa`
+-- Constraints for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
   ADD CONSTRAINT `ja_siswa_ibfk_1` FOREIGN KEY (`id_kelas`) REFERENCES `ja_kelas` (`id_kelas`) ON DELETE CASCADE ON UPDATE CASCADE;

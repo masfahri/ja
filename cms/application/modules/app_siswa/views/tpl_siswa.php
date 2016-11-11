@@ -199,13 +199,10 @@
                                             echo "<td>".$i++."</a></td>";
                                             echo "<td>".$row['pin']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td>".$row['status']."</td>";
-                                            // echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin'  /></td>";
-                                            // echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
-                                            // echo "<td>".$row['Nama_Kelas']."</td>";
+                                            echo "<td><input type='radio' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td>".$row['jam_masuk']."</td>";
-                                            echo "<td>".$row['jam_pulang']."</td>";
+                                            echo "<td>".$row['jm']."</td>";
+                                            echo "<td>".$row['jp']."</td>";
                                             echo "</tr>";
                                         }
                                     }

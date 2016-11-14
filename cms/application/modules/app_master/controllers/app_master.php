@@ -976,6 +976,46 @@ class App_master extends MX_Controller {
 
             if( $validate == 'true' ){           
             if( $validate !== 'false' ){
+                // Get All Fingerprint device
+                $params['device'] = $this->Mapp_websetup->getFp();
+
+                    if( count($params['device']) > 0 ){
+                        foreach($params['device'] as $row){    
+
+                  if($row['ip'] != '' && $row['key'] != '') {
+                   # processing input to fingerprint
+                        $IP=$row['ip'];
+                        $Key=$row['key'];
+                        $ud=$_POST['pin'];
+                        $nama_panggilan = $_POST['nama'];
+
+                        $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                          if($Connect){
+                            
+                          
+                            $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".
+                            $ud."</PIN><Name>".$nama_panggilan."</Name></Arg></SetUserInfo>";
+                            $newLine="\r\n";
+                            fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                              fputs($Connect, "Content-Type: text/xml".$newLine);
+                              fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                              fputs($Connect, $soap_request.$newLine);
+                            $buffer="";
+                            while($Response=fgets($Connect, 1024)){
+                              $buffer=$buffer.$Response;
+                            }
+                          }//else echo "Koneksi Gagal";
+                            
+                          echo $buffer;
+                          $buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
+
+                        }
+                        else{
+                              echo "<small class='label bg-red'>Data Siswa belum lengkap</small>";
+                         }                    
+                      }
+                    }
+                    //=================              
                 # record database    
                 $this->load->library('uidcontroll');
                 if( $this->uidcontroll->insertData('ja_karyawan', bindProcessing($_POST) ) !== FALSE){
@@ -1002,7 +1042,49 @@ class App_master extends MX_Controller {
             if( $this->form_validation->run( REG_VALIDATION_KARYAWAN ) !== FALSE ){
                
             if( $validate == 'true' ){             
-            if( $validate !== 'false' ){                
+            if( $validate !== 'false' ){     
+
+                // Get All Fingerprint device
+                $params['device'] = $this->Mapp_websetup->getFp();
+
+                    if( count($params['device']) > 0 ){
+                        foreach($params['device'] as $row){    
+
+                  if($row['ip'] != '' && $row['key'] != '') {
+                   # processing input to fingerprint
+                        $IP=$row['ip'];
+                        $Key=$row['key'];
+                        $ud=$_POST['pin'];
+                        $nama_panggilan = $_POST['nama'];
+
+                        $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                          if($Connect){
+                            
+                          
+                            $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".
+                            $ud."</PIN><Name>".$nama_panggilan."</Name></Arg></SetUserInfo>";
+                            $newLine="\r\n";
+                            fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                              fputs($Connect, "Content-Type: text/xml".$newLine);
+                              fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                              fputs($Connect, $soap_request.$newLine);
+                            $buffer="";
+                            while($Response=fgets($Connect, 1024)){
+                              $buffer=$buffer.$Response;
+                            }
+                          }//else echo "Koneksi Gagal";
+                            
+                          echo $buffer;
+                          $buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
+
+                        }
+                        else{
+                              echo "<small class='label bg-red'>Data Siswa belum lengkap</small>";
+                         }                    
+                      }
+                    }
+                    //=================
+                       
                # update data
                $this->load->library('uidcontroll');
                $db_config['where'] = array('id_karyawan', $this->initial_id);
@@ -1024,12 +1106,53 @@ class App_master extends MX_Controller {
         $this->getContent($params);  
     }    
 
-    public function karyawan_remove(){
+    public function karyawan_remove($id_finger){
 
 
         $this->load->library('uidcontroll');  
 
-        $dataRemove = array('id_karyawan', $this->initial_id); 
+                // Get All Fingerprint device
+                $params['device'] = $this->Mapp_websetup->getFp();
+
+                    if( count($params['device']) > 0 ){
+                        foreach($params['device'] as $row){    
+
+                  if($row['ip'] != '' && $row['key'] != '') {
+                   # processing input to fingerprint
+                        $IP=$row['ip'];
+                        $Key=$row['key'];
+                        $ud=$id_finger;
+
+
+
+                      $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                        if($Connect){
+                          
+                          $soap_request="<DeleteUser><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</DeleteUser>
+                                      <Arg><PIN xsi:type='xsd:integer'>".$ud."</PIN><Name></Name></Arg></ClearData>";
+                          $newLine="\r\n";
+                          fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                            fputs($Connect, "Content-Type: text/xml".$newLine);
+                            fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                            fputs($Connect, $soap_request.$newLine);
+                          $buffer="";
+                          while($Response=fgets($Connect, 1024)){
+                            $buffer=$buffer.$Response;
+                          }
+                        }//else //echo "Koneksi Gagal";
+                          //echo $buffer;
+                          $buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
+
+                        }
+                        else{
+                              echo "<small class='label bg-red'>Data Siswa belum lengkap</small>";
+                         }                    
+                      }
+                    }
+                    //=================
+
+
+        $dataRemove = array('id_finger', $this->initial_id); 
         if( $this->uidcontroll->removeData('ja_karyawan', $dataRemove) == TRUE ){
 
             $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);

@@ -48,14 +48,18 @@ class Mapp_siswa extends CI_Model{
     public function allSiswaInKelas($initial_id='')
     {
         if ($initial_id != '') {
-            $this->db->where('ja_siswa.id_kelas', $initial_id);
+            $this->db->select('count(ja_data_absen.pin) as hadir, ja_siswa.*')
+                     ->where('ja_siswa.id_kelas', $initial_id)
+                     ->order_by('ja_siswa.absen', 'ASC');
+
         }
             $tgl = date('Y-m-d');
-            $this->db->select('ja_kelas.*,ja_absensi_siswa.*,ja_siswa.*')
+            $this->db->select('ja_kelas.*,ja_absensi_siswa.*,ja_siswa.*, ja_data_absen.*')
                      ->join('ja_absensi_siswa','ja_absensi_siswa.kd_kelas=ja_siswa.id_kelas','LEFT')                     
+                     ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
                      ->from('ja_siswa')
-                     ->order_by('ja_siswa.absen', 'ASC');
+                     ->order_by('ja_siswa.id_kelas', 'ASC');
             $query = $this->db->get();
 
                 if($query->num_rows() > 0){
@@ -85,9 +89,9 @@ class Mapp_siswa extends CI_Model{
         }
         $tgl      = date('Y-m-d');
         $js = 'JumlahSiswaHadirHariIni';
-        $this->db->select('count(nis) as $js')
-                 ->from('ja_absensi_siswa')
-                 ->where(array('keterangan =' => 'Hadir' , 'tanggal =' => $tgl));
+        $this->db->select('count(pin) as $js')
+                 ->from('ja_data_absen')
+                 ->where(array('sms_status =' => '1' , 'jam_masuk =' => $tgl));
         $query = $this->db->get();
 
         if($query->num_rows() > 0){
@@ -98,7 +102,7 @@ class Mapp_siswa extends CI_Model{
     public function GetIzinToday ($initial_id = '')
     {
         if ($initial_id != '') {
-            $this->db->where('id_kelas', $initial_id);
+            $this->db->where('kd_kelas', $initial_id);
         }
         $tgl      = date('Y-m-d');
         $js = 'JumlahSiswaHadirHariIni';
@@ -120,8 +124,7 @@ class Mapp_siswa extends CI_Model{
             $tgl   = date('Y-m-d');
             $hadir = 'hadir';
             $this->db->select('count(distinct nis) as $hadir')
-                     ->from('ja_absensi_siswa')
-                     ->where(array('keterangan =' => 'Hadir', 'tanggal =' => $tgl));
+                     ->from('ja_absensi_siswa');
             $query = $this->db->get();
 
                 if($query->num_rows() > 0){
@@ -176,13 +179,14 @@ class Mapp_siswa extends CI_Model{
 
     public function getabsen($jam='')
     {         
-        $this->db->select('ja_data_absen.*, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_kelas.Nama_Kelas')
+        $this->db->select('ja_data_absen.*, ja_siswa.id_kelas, ja_kelas.Nama_Kelas')
+                 ->select('ja_siswa.nama_siswa as nama')
                  ->select('time(jam_masuk) as jm')
                  ->select('time(jam_pulang) as jp')
                  ->from('ja_data_absen')
                  ->join('ja_siswa','ja_data_absen.pin = ja_siswa.pin','LEFT')                     
                  ->join('ja_kelas','ja_siswa.id_kelas = ja_kelas.id_kelas','LEFT')
-                 ->order_by('ja_data_absen.pin', 'DESC')
+                 ->order_by('ja_data_absen.pin', 'ASC')
                  ->group_by('ja_data_absen.pin');                               
         $query = $this->db->get();
         if($query->num_rows() > 0){
@@ -193,9 +197,10 @@ class Mapp_siswa extends CI_Model{
 
     public function get_data_absen() {
         error_reporting(0);
-
+        $this->load->model('app_master/mapp_master');
         // FUNGSI DIBAWAH INI HARUS GRAB DARI WAKTU MASUK YG DISET DARI WAKTU MASUK GLOBAL
-        $data = $this->getabsen();
+        $data  = $this->getabsen();
+        $data2 = $this->mapp_master->getSiswa();
         // END FUNGSI
         //var_dump($data);
         $IP       = '192.168.0.110';
@@ -227,44 +232,50 @@ class Mapp_siswa extends CI_Model{
                         $PIN2 = $PIN;
                         $DateTime2 = $DateTime;
                         $Verified2 = $Verified;
-
                             //var_dump($this->Parse_Data($buffer[$a],"<DateTime>","</DateTime>"));
-
                             $dapet = $a;
-
-
                     }
                 }    
-                                        $datapulang  = $this->getabsen();
+                $datapulang  = $this->getabsen();
+                for ($dapet=0;$dapet<1;$dapet++) {
+                    $datapulang3 = $datapulang[$dapet]['jam_masuk'];
+                    $tgl      = date('H:i', strtotime($datapulang3));
+                    $waktu    = date('H:i', strtotime($datapulang3.'+10 minutes'));
 
-                                        $datapulang3 = $datapulang[$dapet]['jam_masuk'];
-                        for ($dapet=0;$dapet<1;$dapet++) {
-                            $tgl      = date('H:i', $datapulang3);
-                            $waktu    = date('H:i', strtotime($datapulang3.'+5 hours'));
 
+                    $dapet++;
+                    // var_dump($datapulang3);  
+                    // var_dump($waktu); var_dump('>=');
+                    // var_dump($tgl);
+                    // var_dump($dapet);
+                    // var_dump($data2['nama_panggilan']);
+                }     
 
-                            $dapet++;
-                            var_dump($waktu);                                                       
-                        }     
-                    
                         switch ($Status2) {
                             case '0':
+                            $cek   = mysql_query("SELECT * FROM ja_data_absen WHERE pin=".$PIN2."");
+                            $count = mysql_num_rows($cek);
+                            if ($count != 0) {
+                                
+                            }else{
                                 $ins = array(
                                         'pin'        => $PIN2,
                                         'jam_masuk'  => $DateTime2,
                                         'ver'        => $Verified2,
                                         'status'     => $Status2,
+                                        'sms_status' => '1',
                                          );
                                 $this->db->insert('ja_data_absen', $ins);
+
                                 //extract data from the post
                                 //set POST variables
                                 $url    = 'http://smsgateway.me/api/v3/messages/send';
                                 $fields = array(
-                                    'email'     => 'hilmysyarif@gmail.com',
-                                    'password'  => 'benjo99',
-                                    'device'    => '32955',
+                                    'email'     => 'hsevfakhri@gmail.com',
+                                    'password'  => 'H4rdjump',
+                                    'device'    => '33026',
                                     'number'    => '087887496695',
-                                    'message'   => 'Anak anda '.$PIN2.' sudah di kelas',
+                                    'message'   => 'Anak anda '.$data2['nama_panggilan'].' Sudah Masuk kelas',
                                     'send_at'   => date()
                                 );
 
@@ -285,85 +296,107 @@ class Mapp_siswa extends CI_Model{
 
                                 //close connection
                                 curl_close($ch);
+
+                                //var_dump($data2['nama_panggilan']);
 
                                 if ($result) {
                                     $upd = array('sms_status' => '1', );
                                     $this->db->where('ja_data_absen.pin', $PIN2);
                                     $this->db->update('ja_data_absen', $upd);
                                 }
+                            }
                                 break;
 
                             case '1':
-                            if ($tgl >= $waktu) {
+
+
+                            if ($waktu >= $tgl) {
+                            $cek   = mysql_query("SELECT * FROM ja_data_absen WHERE pin=".$PIN2." "AND" jam_pulang!='0000-00-00 00:00:00'");
+                            $count = mysql_num_rows($cek);
+                            if ($count != 0) {
+                                echo "ADA DATA";
+                            }else{
                                 $ins = array(
                                         'pin'        => $PIN2,
                                         'jam_pulang' => $DateTime2,
                                         'ver'        => $Verified2,
                                         'status'     => $Status2,
+                                        'sms_status' => '2',
                                          );
                                 $this->db->where('ja_data_absen.pin', $PIN2);
                                 $this->db->update('ja_data_absen', $ins);
-
+                            }
                                 if ($data[$dapet]['sms_status'] == 1) {
                                     # code...
-                                }else{
+                                } else {
 
-                                //extract data from the post
-                                //set POST variables
-                                $url    = 'http://smsgateway.me/api/v3/messages/send';
-                                $fields = array(
-                                    'email'     => 'hilmysyarif@gmail.com',
-                                    'password'  => 'benjo99',
-                                    'device'    => '32955',
-                                    'number'    => '087887496695',
-                                    'message'   => 'Anak anda '.$PIN2.' Keluar di kelas',
-                                    'send_at'   => date()
-                                );
+                                    //extract data from the post
+                                    //set POST variables
+                                    $url    = 'http://smsgateway.me/api/v3/messages/send';
+                                    $fields = array(
+                                        'email'     => 'hsevfakhri@gmail.com',
+                                        'password'  => 'H4rdjump',
+                                        'device'    => '33026',
+                                        'number'    => '087887496695',
+                                        'message'   => 'Anak anda '.$data2['nama_panggilan'].' Sudah keluar dari kelas',
+                                        'send_at'   => date()
+                                    );
 
-                                //url-ify the data for the POST
-                                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-                                rtrim($fields_string, '&');
+                                    //url-ify the data for the POST
+                                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                                    rtrim($fields_string, '&');
 
-                                //open connection
-                                $ch = curl_init();
+                                    //open connection
+                                    $ch = curl_init();
 
-                                //set the url, number of POST vars, POST data
-                                curl_setopt($ch,CURLOPT_URL, $url);
-                                curl_setopt($ch,CURLOPT_POST, count($fields));
-                                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                                    //set the url, number of POST vars, POST data
+                                    curl_setopt($ch,CURLOPT_URL, $url);
+                                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
 
-                                //execute post
-                                $result = curl_exec($ch);
+                                    //execute post
+                                    $result = curl_exec($ch);
 
-                                //close connection
-                                curl_close($ch);
+                                    //close connection
+                                    curl_close($ch);
 
-                                    if ($result) {
-                                        $upd = array('sms_status' => '2', );
-                                        $this->db->where('ja_data_absen.pin', $PIN2);
-                                        $this->db->update('ja_data_absen', $upd);
-                                    }
+                                        if ($result) {
+                                            $upd = array('sms_status' => '2', );
+                                            $this->db->where('ja_data_absen.pin', $PIN2);
+                                            $this->db->update('ja_data_absen', $upd);
+                                        }
                                 }
-                            }
-                            else {
-
-                            }
+                    }  
+                                break;
+                            
                             default:
                                 # code...
                                 break;
-                    }                
+                }
             }
         } 
     }
 
     public function if_exist_check($PIN, $DateTime){
-      $this->db->select('*');
+        $this->db->select('*');
         $this->db->from('ja_data_absen');
         $this->db->where(array('pin' => $PIN, 'jam_pulang' => $DateTime, 'jam_masuk' => $DateTime));
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->result_array();
         else return null;
         return $data;
+    }
+
+    public function hadirSemuaKelas()
+    {
+        $tgl      = date('Y-m-d');
+        $this->db->select('count(pin) as hadir')
+                 ->from('ja_data_absen')
+                 ->where('date(jam_masuk) =', $tgl);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row_array();
+        }else return null;
     }
 
     public function Parse_Data($data,$p1,$p2){

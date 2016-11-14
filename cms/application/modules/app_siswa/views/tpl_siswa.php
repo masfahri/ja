@@ -35,7 +35,7 @@
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Hadir Hari ini</span></strong>
                         <span class="info-box-number">
-                            <?php echo $datadbhadirhariini['$js']; ?>
+                            <?php echo $hadirSemuaKelas['hadir']; ?>
                           </span>
                     </div>
                     <!-- /.info-box-content -->
@@ -52,7 +52,7 @@
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Belum Hadir</span></strong>
                         <span class="info-box-number">
-                            <?php $blmhadir = $datadbjumlahsiswa['$js'] - $datadbhadirhariini['$js'] - $datadbhadirizinini['$js'];
+                            <?php $blmhadir = $datadbjumlahsiswa['$js'] - $hadirSemuaKelas['hadir'] - $datadbhadirizinini['$js'];
                                 echo $blmhadir;
                             ?>
                         </span>
@@ -143,10 +143,7 @@
                                         <th>No Absen</th>
                                         <th>Nis</th>
                                         <th>Nama Siswa</th>
-                                        <th>Hadir</th>
-                                        <th>Alfa</th>
-                                        <th>Izin</th>
-                                        <th>Sakit</th>
+                                        <th>Status</th>
                                         <th>Kelas</th>
                                         <!-- <th>Telat</th> -->
                                     </tr>
@@ -161,12 +158,10 @@
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == '0' ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' />
-                                                </td>";
-
-                                            echo "<td><input type='radio' ".($row['keterangan'] == '1' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit'  /></td>";
+                                            echo "<td>".($row['sms_status'] == 1 ? '<span class="label label-success">HADIR</span></td>' : 
+                                                         $row['sms_status'] == 2 ? '<span class="label label-success">PULANG</span></td>' :
+                                                          '<span class="label label-danger">BELUM HADIR</span></td>' )."
+                                                  </td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
                                             // echo "<td><button onclick='check()'>Check Checkbox</button><td>";
                                         }
@@ -198,8 +193,8 @@
                                             echo '<tr>';
                                             echo "<td>".$i++."</a></td>";
                                             echo "<td>".$row['pin']."</td>";
-                                            echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
+                                            echo "<td>".$row['nama']."</td>";
+                                            echo "<td><input type='checkbox' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
                                             echo "<td>".$row['jm']."</td>";
                                             echo "<td>".$row['jp']."</td>";

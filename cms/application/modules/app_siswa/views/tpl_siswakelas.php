@@ -35,7 +35,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Hadir Hari ini</span></strong>
-                        <span class="info-box-number"><?php echo $datadbsiswa['$hadir'];?></span>
+                        <span class="info-box-number"><?php echo $datadbsiswa['hadir'];?></span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -50,7 +50,9 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Belum Hadir</span></strong>
-                        <span class="info-box-number"><?php echo $datadbblmhadir['$blmHadir'];?></span>
+                        <span class="info-box-number"><?php $blmhadir = $datadbjumlahsiswa['$js'] - $hadirSemuaKelas['hadir'] - $datadbhadirizinini['$js'];
+                                echo $blmhadir;
+                            ?></span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -125,7 +127,7 @@
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Hadir' ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' id='cek' />
+                                            echo "<td><input type='radio' ".($row['sms_status'] == 1 ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' id='cek' />
                                                 </td>";
 
                                             echo "<td><input type='radio' ".($row['keterangan'] == 'Alpha' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa' id='cek'  /></td>";

@@ -53,6 +53,7 @@ class App_siswa extends MX_Controller {
         $params['datadbsiswa']        =  $this->coredb->countHadir();
         $params['datadbjumlahsiswa']  =  $this->coredb->JumlahSiswa();
         $params['datadbhadirhariini'] =  $this->coredb->GetHadirToday();
+        $params['hadirSemuaKelas']    =  $this->coredb->hadirSemuaKelas();
         $params['datadbhadirizinini'] =  $this->coredb->GetIzinToday();
         $params['datadbblmhadir']     =  $this->coredb->blmHadir();
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas();
@@ -62,9 +63,9 @@ class App_siswa extends MX_Controller {
 
          $this->load->model('app_siswa/mapp_siswa');
         $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
-       // var_dump($params['absen']);
-
-
+       var_dump($params['hadirSemuaKelas']);
+       $tgl      = date('Y-m-d');
+       var_dump($tgl);
 
         //var_dump($params['datadbhadirizinini']);
         // var_dump($params['datadbsiswa']);
@@ -75,11 +76,13 @@ class App_siswa extends MX_Controller {
     }
 
     public function kelas($kelas='') {
-        $params['datadbsiswa']        =  $this->coredb->countHadir($this->uri->segment(3));
+        $params['datadbsiswa']        =  $this->coredb->allSiswaInKelas($this->uri->segment(3));
         $params['datadbjumlahsiswa']  =  $this->coredb->JumlahSiswa($this->uri->segment(3));
         $params['datadbblmhadir']     =  $this->coredb->blmHadir($this->uri->segment(3));
         $params['datadbizin']         =  $this->coredb->siswaIzin($this->uri->segment(3));
         $params['datadbgetsiswa']     =  $this->coredb->getSiswa($this->uri->segment(3));
+        $params['hadirSemuaKelas']    =  $this->coredb->hadirSemuaKelas($this->uri->segment(3));
+        $params['datadbhadirizinini'] =  $this->coredb->GetIzinToday($this->uri->segment(3));
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas($kelas);
         $params['datadb'] =  $this->coredb->getKelas();
         $this->getContent($params);

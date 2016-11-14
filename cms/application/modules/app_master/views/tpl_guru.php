@@ -45,7 +45,7 @@
                                 <tr>
                                     <td><span><?php echo $row['nip'] ?></span></td>
                                     <td>
-                                        <a href="<?php echo base_url($this->app_name).'/guru_edit/'.$row['nip']; ?>"><?php echo $row['id_finger']?></a>
+                                        <a href="<?php echo base_url($this->app_name).'/guru_edit/'.$row['id_finger']; ?>"><?php echo $row['id_finger']?></a>
                                     </td>
                                     <td><?php echo $row['nama'] ?></td>
                                    <td><?php if($row['foto'] != '') { ?>
@@ -54,7 +54,7 @@
                                         <img src="http://placehold.it/30x30" width="30" height="30"></img>
                                         <?php }?>
                                         </td> 
-                                    <td><a href="<?php echo base_url($this->app_name).'/guru_edit/'.$row['nip']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/guru_remove/'.$row['nip']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                    <td><a href="<?php echo base_url($this->app_name).'/guru_edit/'.$row['id_finger']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/guru_remove/'.$row['id_finger']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
                       <?php  }}else{ ?>
                                 <tr>

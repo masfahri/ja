@@ -35,8 +35,8 @@
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Hadir Hari ini</span></strong>
                         <span class="info-box-number">
-                            <?php echo $hadirSemuaKelas['hadir']; ?>
-                          </span>
+                            <center><?php echo $hadirSemuaKelas['hadir']; ?></center>
+                        </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -144,6 +144,7 @@
                                         <th>Nis</th>
                                         <th>Nama Siswa</th>
                                         <th>Status</th>
+                                        <th>Pulang</th>
                                         <th>Kelas</th>
                                         <!-- <th>Telat</th> -->
                                     </tr>
@@ -152,16 +153,16 @@
                                     <?php 
                                     $i   = 0;
                                     $menit = 0;
+                                    $tgl = date('Y-m-d');
                                     if ( count($siswaKelas) > 0 ) {     
                                         foreach ($siswaKelas as $row) {
                                             echo '<tr>';
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td>".($row['sms_status'] == 1 ? '<span class="label label-success">HADIR</span></td>' : 
-                                                         $row['sms_status'] == 2 ? '<span class="label label-success">PULANG</span></td>' :
-                                                          '<span class="label label-danger">BELUM HADIR</span></td>' )."
-                                                  </td>";
+                                            echo "<td>".($row['jm'] == $tgl ? '<span class="label label-success">HADIR</span>' : '<span class="label label-danger">BELUM HADIR</span>').
+                                                 "</td>";
+                                            echo "<td><input type='checkbox' ".($row['jp'] == $tgl ? 'checked' : '' )."  name='' value='' /></td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
                                             // echo "<td><button onclick='check()'>Check Checkbox</button><td>";
                                         }

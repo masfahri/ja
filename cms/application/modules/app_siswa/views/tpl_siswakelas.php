@@ -50,7 +50,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Belum Hadir</span></strong>
-                        <span class="info-box-number"><?php $blmhadir = $datadbjumlahsiswa['$js'] - $hadirSemuaKelas['hadir'] - $datadbhadirizinini['$js'];
+                        <span class="info-box-number"><?php $blmhadir = $datadbjumlahsiswa['$js'] - $datadbsiswa['hadir'] - $datadbhadirizinini['$js'];
                                 echo $blmhadir;
                             ?></span>
                     </div>
@@ -109,6 +109,7 @@
                                         <th>No Absen</th>
                                         <th>Nis</th>
                                         <th>Nama Siswa</th>
+                                        <th>Tanggal</th>
                                         <th>Hadir</th>
                                         <th>Alfa</th>
                                         <th>Izin</th>
@@ -121,18 +122,25 @@
                                     <?php 
                                     $i   = 0;
                                     $menit = 0;
+                                    $tgl = date('Y-m-d');
                                     if ( count($siswaKelas) > 0 ) {     
                                         foreach ($siswaKelas as $row) {
                                             echo '<tr>';
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='radio' ".($row['sms_status'] == 1 ? 'checked' : '' )."  name='kehadiran_".$row['absen']."' value='".$row['keterangan']."' id='cek' />
-                                                </td>";
+                                            echo "<td>".$tgl."</td>";
+                                            echo "<td><input type='checkbox' ".($row['jp'] == $tgl ? 'checked' : '' )."  name='' value='' /></td>";
 
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Alpha' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Alfa' id='cek'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Izin' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Izin' id='cek'  /></td>";
-                                            echo "<td><input type='radio' ".($row['keterangan'] == 'Sakit' ? 'checked' : '' )." name='kehadiran_".$row['absen']."' value='Sakit' id='cek' onclick='cekk()'  /></td>";
+                                            echo "<td>".(($row['sms_status'] == 1)  ? 
+                                                            '<span class="label label-success">HADIR</span>' :
+                                                         ($row['sms_status'] == 2)  ?
+                                                            '<span class="label label-warning">PULANG</span>' :
+
+                                                            '<span class="label label-danger">BELUM HADIR</span>').
+                                                 "</td>";
+                                            echo "<td></td>";
+                                            echo "<td></td>";
                                             echo "<td><input onclick='check()' id='telat' type='checkbox' name='blmHadir_".$row['absen']."' value='Belum Hadir'/></td>";
                                             // echo "<td><input onclick='check()'><td>";
                                             echo "<td>";

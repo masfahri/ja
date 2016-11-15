@@ -48,16 +48,15 @@ class Mapp_siswa extends CI_Model{
     public function allSiswaInKelas($initial_id='')
     {
         if ($initial_id != '') {
-            $this->db->select('count(ja_data_absen.pin) as hadir, ja_siswa.*')
-                     ->where('ja_siswa.id_kelas', $initial_id)
-                     ->order_by('ja_siswa.absen', 'ASC');
-
+            $this->db->where('ja_data_absen.id_kelas', $initial_id);
         }
             $tgl = date('Y-m-d');
             $this->db->select('ja_kelas.*,ja_absensi_siswa.*,ja_siswa.*, ja_data_absen.*')
                      ->join('ja_absensi_siswa','ja_absensi_siswa.kd_kelas=ja_siswa.id_kelas','LEFT')                     
                      ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
+                     ->select('date(jam_masuk) as jm')
+                     ->select('date(jam_pulang) as jp')
                      ->from('ja_siswa')
                      ->order_by('ja_siswa.id_kelas', 'ASC');
             $query = $this->db->get();
@@ -195,6 +194,35 @@ class Mapp_siswa extends CI_Model{
             return null;
     }
 
+    public function hadirSemuaKelas()
+    {
+        $tgl      = date('Y-m-d');
+        $this->db->select('count(pin) as hadir')
+                 ->from('ja_data_absen')
+                 ->where('date(jam_masuk) =', $tgl);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row_array();
+        }else
+         return null;
+    }
+
+    public function hadirPerKelas($initial_id='')
+    {
+        if ($initial_id != '') {
+            $this->db->where('id_kelas', $initial_id);
+        }
+        $tgl      = date('Y-m-d');
+        $this->db->select('count(pin) as hadir')
+                 ->from('ja_data_absen')
+                 ->where('date(jam_masuk) =', $tgl);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row_array();
+        }else
+         return null;
+    }
+
     public function get_data_absen() {
         error_reporting(0);
         $this->load->model('app_master/mapp_master');
@@ -256,10 +284,11 @@ class Mapp_siswa extends CI_Model{
                             $cek   = mysql_query("SELECT * FROM ja_data_absen WHERE pin=".$PIN2."");
                             $count = mysql_num_rows($cek);
                             if ($count != 0) {
-                                
+                            
                             }else{
                                 $ins = array(
                                         'pin'        => $PIN2,
+                                        'id_kelas'   => '',
                                         'jam_masuk'  => $DateTime2,
                                         'ver'        => $Verified2,
                                         'status'     => $Status2,
@@ -385,18 +414,6 @@ class Mapp_siswa extends CI_Model{
         if($query->num_rows() > 0)return $query->result_array();
         else return null;
         return $data;
-    }
-
-    public function hadirSemuaKelas()
-    {
-        $tgl      = date('Y-m-d');
-        $this->db->select('count(pin) as hadir')
-                 ->from('ja_data_absen')
-                 ->where('date(jam_masuk) =', $tgl);
-        $query = $this->db->get();
-        if($query->num_rows() > 0){
-                return $query->row_array();
-        }else return null;
     }
 
     public function Parse_Data($data,$p1,$p2){

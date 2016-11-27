@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Date picker -->
     <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/datepicker/datepicker3.css">
+    <!-- Timepicker -->
+    <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/timepicker/bootstrap-timepicker.min.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
     <!-- Theme style -->
@@ -484,7 +486,7 @@
                         </a>
                     </li>
                     <li class="treeview">
-                        <a href="<?= base_url('app_websetup/fp') ?>">
+                        <a href="<?= base_url('app_websetup/in_out') ?>">
                             <i class="fa fa-gears"></i> <span>Pengaturan In / Out</span>
                         </a>
                     </li>                                          
@@ -683,6 +685,8 @@
     <script src="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <!-- Date Picker -->
     <script src="<?= config_item('assets') ?>plugins/datepicker/bootstrap-datepicker.js"></script>
+    <!-- Time Picker -->
+    <script src="<?= config_item('assets') ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>
     <!-- SlimScroll 1.3.0 -->
     <script src="<?= config_item('assets') ?>plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
@@ -703,6 +707,10 @@
       format: 'yyyy-mm-dd',
       autoclose: true
     });
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false
+    });   
     </script>
 </body>
 

@@ -14,7 +14,8 @@ class App_websetup extends MX_Controller {
     protected  $base_template   = array(
     'container' => '../../layout/container',
     'template'  => 'tpl',
-    'template_fp' => 'tpl_fp' 
+    'template_fp' => 'tpl_fp',
+    'template_in_out' => 'tpl_in_out'  
     );
     
     # method
@@ -47,7 +48,7 @@ class App_websetup extends MX_Controller {
     public function registerValidation(){
         
          define("REG_VALIDATION", strtolower( __CLASS__ ));
-         define("REG_VALIDATION_FP", 'fp');
+         define("REG_VALIDATION_IN_OUT", 'in_out');
     }
         
     private function getContent($args = array()){
@@ -55,7 +56,10 @@ class App_websetup extends MX_Controller {
         try{
             if($this->uri->segment(2)=="fp" || $this->uri->segment(2)=="fp_add" || $this->uri->segment(2)=="fp_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_fp'], $args, TRUE);
-            }   
+            }
+            elseif($this->uri->segment(2)=="in_out" || $this->uri->segment(2)=="in_out_add" || $this->uri->segment(2)=="in_out_edit"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_in_out'], $args, TRUE);
+            }                  
             else{
             $body_data['contents'] = $this->load->view($this->base_template['template'], $args, TRUE);
           }
@@ -64,6 +68,85 @@ class App_websetup extends MX_Controller {
             echo 'Caught exception, params function getContent is wrong : ',  $e->getMessage(), "\n";
         }      
     }
+
+    /* Start In/Out Function */    
+    public function in_out() {
+      $params['datadbkelas'] =  $this->Mapp_siswa->getKelas(); 
+      $params['datadb']             =  $this->coredb->getInOut();
+      $this->getContent($params);
+    }
+
+    public function in_out_add(){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['datadb'] = $this->coredb->grapFp($this->session->userdata('ip'));
+        $validate = 'true';       
+        if( $_POST ){
+             if( $this->form_validation->run(REG_VALIDATION_IN_OUT) !== FALSE ){
+
+                if( $validate == 'true' ){           
+                  if( $validate !== 'false' ){
+                      # record database    
+                      $this->load->library('uidcontroll');
+                      if( $this->uidcontroll->insertData('ja_in_out', bindProcessing($_POST) ) !== FALSE){
+                          
+                          $this->session->set_flashdata('msg_success', 'Success Save Data');  
+                          redirect( base_url($this->app_name).'/in_out' );
+                      
+                      }else{$this->session->set_flashdata('msg_success', 'Invalid Data to Save !');}
+                    }
+                  }
+                }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    }     
+
+    public function in_out_edit($id_fp){
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['datadb'] = $this->coredb->grapFp($id_fp);
+        $validate = 'true';           
+        if( $_POST ){
+            
+            if( $this->form_validation->run( REG_VALIDATION_FP ) !== FALSE ){
+               
+                if( $validate == 'true' ){
+                  if( $validate !== 'false' ){                
+                     # update data
+                     $this->load->library('uidcontroll');
+                     $db_config['where'] = array('id', $this->initial_id);
+                     $db_config['table'] = 'ja_fp';
+                     $db_config['data']  =  bindProcessing($_POST);
+                     if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                          $this->session->set_flashdata('msg_success', 'Success Update Data');
+                          redirect( base_url($this->app_name).'/fp' );
+                          
+                     }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
+                    }
+            }                
+
+                
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); }   
+        }
+
+        $this->getContent($params);  
+    }    
+
+    public function in_out_remove(){
+
+
+        $this->load->library('uidcontroll');  
+
+        $dataRemove = array('id', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_fp', $dataRemove) == TRUE ){
+
+            $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
+            $this->session->set_flashdata('msg_success', 'Success Remove Data');
+       }
+        redirect(base_url($this->app_name).'/fp');
+
+    } 
+    /* End In/Out Function */    
   
     /* Start Fingerprint Function */    
     public function fp() {

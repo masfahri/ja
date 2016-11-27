@@ -63,6 +63,28 @@ class Mapp_websetup extends CI_Model{
         else return null;
     }
 
+      public function getInOut(){
+          
+          $this->db->select('*');
+          $this->db->from('ja_in_out');
+
+          $this->db->order_by('id', 'ASC');
+          $query = $this->db->get();
+          if($query->num_rows() > 0){
+                  return $query->result_array();
+          }else return null;
+      }      
+      
+    public function grapInOut($initial_id){
+        
+        $this->db->select('*');
+        $this->db->from('ja_in_out');
+        $this->db->where('id', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }
+
       public function getDataLang(){
         
             $this->db->select('*');

@@ -187,6 +187,25 @@ class Mapp_master extends CI_Model{
     * @params int
     * @return array 
     */ 
+    function checkAvailableSiswa($username, $initial_id = ''){
+        
+        $this->db->select('nis');
+        $this->db->from('ja_siswa');
+        if( $initial_id !== "" ){
+            $this->db->where_not_in('nis', $initial_id);
+        }
+        $this->db->where('nis', $username);
+        $query = $this->db->get();
+        if( $query->num_rows() > 0 )return TRUE;
+        else FALSE;
+    }
+
+    /**
+    * @desc Check available username on table
+    * @params string
+    * @params int
+    * @return array 
+    */ 
     function checkAvailableKelas($nama, $initial_id = ''){
         
         $this->db->select('*');

@@ -61,16 +61,16 @@ class App_siswa extends MX_Controller {
         $params['absen']              =  $this->coredb->getabsen();
         //$params['datadbgetsiswa']     =  $this->coredb->GetSiswa();
 
-         $this->load->model('app_siswa/mapp_siswa');
+        $this->load->model('app_siswa/mapp_siswa');
         $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
-       $tgl      = date('Y-m-d');
-       var_dump($tgl);
+        $tgl      = date('Y-m-d');
+        var_dump($tgl);
 
         //var_dump($params['datadbhadirizinini']);
         // var_dump($params['datadbsiswa']);
         // $tgl = date('yyyy-mm-dd');
         // var_dump($tgl);
-        $this->getContent($params); 
+        $this->getContent($params);
 
     }
 

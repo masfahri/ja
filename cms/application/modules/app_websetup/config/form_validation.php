@@ -7,17 +7,27 @@
       This config will use for every form submit
 ***********************************************************/
 $config = array(
-           'app_websetup' => array(
+           'in_out' => array(
            array(
-                    'field' => 'file_img',
-                    'label' => 'Site Logo',
+                    'field' => 'hari',
+                    'label' => 'Hari',
                     'rules' => 'required|trim|xss_clean'
+                 ),            
+            array(
+                    'field' => 'jam_masuk',
+                    'label' => 'Jam Masuk',
+                    'rules' => 'trim|xss_clean'
                  ),
             array(
-                    'field' => 'google_analytics',
-                    'label' => 'Google Analyrics',
+                    'field' => 'jam_pulang',
+                    'label' => 'Jam Pulang',
                     'rules' => 'trim|xss_clean'
-                 ),             
+                 ),
+            array(
+                    'field' => 'status',
+                    'label' => 'Status',
+                    'rules' => 'trim|xss_clean'
+                 )                                                     
             ),
           'fp' => array(
            array(

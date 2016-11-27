@@ -173,6 +173,11 @@
                             </table>
                         </div>
                         <strong><h1>SISWA HADIR HARI INI</h1></strong>
+                        <div class="pull-right">
+                            <select name="" id="">
+                                <option value=""></option>
+                            </select>
+                        </div>
                         <div class="table-responsive">
                             <table class="table no-margin">
                                 <thead>
@@ -180,7 +185,7 @@
                                         <th>No</th>
                                         <th>Id Finger</th>
                                         <th>Nama Siswa</th>
-                                        <th>SMS</th>
+                                        <!-- <th>SMS</th> -->
                                         <th>Kelas</th>
                                         <th>Jam Datang</th>
                                         <th>Jam Pulang</th>
@@ -195,7 +200,7 @@
                                             echo "<td>".$i++."</a></td>";
                                             echo "<td>".$row['pin']."</td>";
                                             echo "<td>".$row['nama']."</td>";
-                                            echo "<td><input type='checkbox' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
+                                            // echo "<td><input type='checkbox' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
                                             echo "<td>".$row['Nama_Kelas']."</td>";
                                             echo "<td>".$row['jm']."</td>";
                                             echo "<td>".$row['jp']."</td>";

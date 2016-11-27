@@ -217,7 +217,7 @@ class App_master extends MX_Controller {
              if( $this->form_validation->run(REG_VALIDATION_SISWA) !== FALSE ){
 
                # check nip available
-                if( $this->coredb->checkAvailableUser($_POST['nis']) == TRUE ){
+                if( $this->coredb->checkAvailableSiswa($_POST['nis']) == TRUE ){
                     
                     $validate = 'false';
                     $this->messagecontroll->delivered('msg_error', 'NIS sudah ada dalam database, masukkan NIS lainnya.');

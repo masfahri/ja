@@ -109,7 +109,6 @@
                                         <th>No Absen</th>
                                         <th>Nis</th>
                                         <th>Nama Siswa</th>
-                                        <th>Tanggal</th>
                                         <th>Hadir</th>
                                         <th>Alfa</th>
                                         <th>Izin</th>
@@ -129,17 +128,11 @@
                                             echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td>".$tgl."</td>";
-                                            echo "<td><input type='checkbox' ".($row['jp'] == $tgl ? 'checked' : '' )."  name='' value='' /></td>";
+                                            echo "<td><input type='checkbox' ".($row['jm'] == $tgl ? 'checked' : '' )."  name='kehadiran' value='' /></td>";
 
-                                            echo "<td>".(($row['sms_status'] == 1)  ? 
-                                                            '<span class="label label-success">HADIR</span>' :
-                                                         ($row['sms_status'] == 2)  ?
-                                                            '<span class="label label-warning">PULANG</span>' :
+                                            echo "<td><input type='checkbox' ".($row['pin'] > 0 ? 'checked' : '' )."  name='kehadiran' value='' /></td>";
 
-                                                            '<span class="label label-danger">BELUM HADIR</span>').
-                                                 "</td>";
-                                            echo "<td></td>";
+                                            echo "<td>".$row['jm']."</td>";
                                             echo "<td></td>";
                                             echo "<td><input onclick='check()' id='telat' type='checkbox' name='blmHadir_".$row['absen']."' value='Belum Hadir'/></td>";
                                             // echo "<td><input onclick='check()'><td>";

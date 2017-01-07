@@ -28,6 +28,15 @@
     <link rel="icon" type="image/png" href="<?= base_url().getConfig()['favicon'] ?>" sizes="32x32">
     <!-- jQuery 2.2.3 -->
     <script src="<?= config_item('assets') ?>plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <!-- Include Required Prerequisites -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+
+    
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -330,20 +339,20 @@
                     </li>
                     <li class="header">SMS</li>
                     <li class="treeview">
-                        <a href="#">
+                        <a href="<?= base_url('app_sms/inbox') ?>">
                             <i class="fa fa-gears"></i> <span>Inbox</span>
                         </a>
                     </li>
                     <li class="treeview">
-                        <a href="#">
+                        <a href="<?= base_url('app_sms/outbox') ?>">
                             <i class="fa fa-gears"></i> <span>Outbox</span>
                         </a>
                     </li>
-                    <li class="treeview">
+                    <!--li class="treeview">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span>Terjadwal</span>
                         </a>
-                    </li>
+                    </li -->
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span>Phonebook</span>
@@ -364,12 +373,11 @@
                     </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/guru') ?>"><i class="fa fa-circle-o"></i> Ke Siswa</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> by Phonebook</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/kelas') ?>"><i class="fa fa-circle-o"></i> Input Nomor manual</a></li>
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/guru') ?>"><i class="fa fa-circle-o"></i> Ke Ortu Siswa</a></li>
+                            <!--li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> by Phonebook</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/siswa') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/karyawan') ?>"><i class="fa fa-circle-o"></i> Excel</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/hari_libur') ?>"><i class="fa fa-circle-o"></i> Kostum</a></li>
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/hari_libur') ?>"><i class="fa fa-circle-o"></i> Kostum</a></li -->
                         </ul>
                     </li>
                     <li class="treeview">
@@ -380,8 +388,8 @@
                     </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/guru') ?>"><i class="fa fa-circle-o"></i> Umum</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> SMS Auto</a></li>
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_sms/setting') ?>"><i class="fa fa-circle-o"></i> Umum</a></li>
+                            <!--li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> SMS Auto</a></li-->
                         </ul>
                     </li>
                     <li class="header">PRESENSI</li>
@@ -703,7 +711,11 @@
       format: 'yyyy-mm-dd',        
       autoclose: true
     });
-    $('#datepicker2').datepicker({
+    $('#awal').datepicker({
+      format: 'yyyy-mm-dd',        
+      autoclose: true
+    });
+    $('#akhir').datepicker({
       format: 'yyyy-mm-dd',
       autoclose: true
     });
@@ -711,6 +723,23 @@
     $(".timepicker").timepicker({
       showInputs: false
     });   
+    $('#daterange-btn').daterangepicker(
+        {
+          ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          },
+          startDate: moment().subtract(29, 'days'),
+          endDate: moment()
+        },
+        function (start, end) {
+          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        }
+    );
     </script>
 </body>
 

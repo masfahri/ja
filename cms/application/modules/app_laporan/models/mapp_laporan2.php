@@ -70,13 +70,21 @@ class Mapp_laporan extends CI_Model{
             return null;
     }
 
-    public function cari($kelas,$tanggal)
-    {
-        error_reporting(0);
-        $cek = mysql_query("select * from ja_data_absen where month(jam_masuk)=".$tanggal."");
-        $count = mysql_num_rows($cek);
-        //var_dump($count);die();
-        if ($count == 0) {
+    public function cari($kelas,$tanggal) {
+        // $this->db->select
+        //         ('
+        //             ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.id_kelas, ja_siswa.absen, 
+        //             ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas, ja_data_absen.tanggal,
+        //             COUNT(ja_data_absen.pin) AS jh
+        //         ')     
+        //          ->from('ja_siswa')
+        //          ->join('ja_data_absen', 'ja_siswa.pin=ja_data_absen.pin','LEFT')
+        //          ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
+        //          ->where('month(ja_data_absen.tanggal)=',$tanggal)
+        //          ->where('ja_kelas.id_kelas =',$kelas )
+        //          ->or_where('ja_data_absen.tanggal', null)
+        //          ->group_by('nama_panggilan')
+        //          ->order_by('ja_siswa.pin', 'ASC');
             $this->db->select('*')
                      ->from('ja_siswa')
                      ->where('id_kelas',$kelas);
@@ -84,60 +92,11 @@ class Mapp_laporan extends CI_Model{
                 if($query->num_rows() > 0){
                         return $query->result_array();
                 }else return null;
-        }
-        $tgl    = date('Y-m-d');
-        return $this->db->query("
-             SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_siswa.absen, ja_siswa.nis,
-                ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas,
-                COUNT(ja_data_absen.pin) AS jh
-                    FROM ja_siswa
-                    
-                LEFT JOIN ja_data_absen
-                    ON ja_siswa.pin=ja_data_absen.pin
-                    
-                JOIN ja_kelas
-                    ON ja_siswa.id_kelas=ja_kelas.id_kelas
-                    
-                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)
-                GROUP BY nama_panggilan  
-                ORDER BY ja_siswa.pin ASC
-             ")->result_array();
     }
 
-    public function detailAbsen($kelas,$tanggal)
-    {
-        error_reporting(0);
-        $cek = mysql_query("select * from ja_data_absen where month(jam_masuk)=".$tanggal."");
-        $count = mysql_num_rows($cek);
-        //var_dump($count);die();
-        if ($count == 0) {
-            $this->db->select('*')
-                     ->from('ja_siswa')
-                     ->where('id_kelas',$kelas);
-            $query = $this->db->get();
-                if($query->num_rows() > 0){
-                        return $query->result_array();
-                }else return null;
-        }
+    public function name($value='') {
         $tgl    = date('Y-m-d');
-        return $this->db->query("
-             SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_siswa.absen, ja_siswa.nis,
-                ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas,
-                COUNT(ja_data_absen.pin) AS jh
-                    FROM ja_siswa
-                    
-                LEFT JOIN ja_data_absen
-                    ON ja_siswa.pin=ja_data_absen.pin
-                    
-                JOIN ja_kelas
-                    ON ja_siswa.id_kelas=ja_kelas.id_kelas
-                    
-                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)
-                GROUP BY nama_panggilan  
-                ORDER BY ja_siswa.pin ASC
-             ")->result_array();
     }
-    
     /** SQL DUMP 
     
         SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.id_kelas, ja_siswa.absen, 
@@ -155,31 +114,15 @@ class Mapp_laporan extends CI_Model{
         GROUP BY nama_panggilan  
         ORDER BY ja_siswa.pin ASC
 
-        !-------------------------------------------------------------------------------!
-
-        SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.id_kelas, ja_siswa.absen, 
-        ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas,
-        COUNT(ja_data_absen.pin) AS jh
-            FROM ja_siswa
-            
-        LEFT JOIN ja_data_absen
-            ON ja_siswa.pin=ja_data_absen.pin
-            
-        JOIN ja_kelas
-            ON ja_siswa.id_kelas=ja_kelas.id_kelas
-            
-        WHERE ja_kelas.id_kelas=1 AND (month(ja_data_absen.jam_masuk)=01 OR month(ja_data_absen.jam_masuk) is null)
-        GROUP BY nama_panggilan  
-        ORDER BY ja_siswa.pin ASC
 
         !-----Try----!
         (
             (ja_kelas.id_kelas='3')
             AND
                 (
-                    (month(ja_data_absen.jam_masuk)='01')
+                    (month(ja_data_absen.jam_masuk)='11')
                     OR
-                    (month(ja_data_absen.jam_masuk) is null)
+                    (month(ja_data_absen.jam_masuk)='')
                 )
         )
 

@@ -51,7 +51,7 @@
                                     <td class="uk-text-center"><span class="uk-text-small uk-text-muted uk-text-nowrap">Tidak ada data</span></td>
                                     <td>
                                     </td>
-                                    <td><span class="uk-text-danger"></span></td>
+                                   <!--  <td><span class="uk-text-danger"></span></td> -->
                                     <!--td></td-->                                        
                                 </tr>
                       <?php  }

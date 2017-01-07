@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Nov 27, 2016 at 04:40 AM
+-- Generation Time: Nov 28, 2016 at 08:44 PM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -702,8 +702,9 @@ CREATE TABLE `ja_data_absen` (
 --
 
 INSERT INTO `ja_data_absen` (`id`, `pin`, `id_kelas`, `jam_masuk`, `jam_pulang`, `ver`, `status`, `sms_status`) VALUES
-(1, 2, 1, '2016-11-26 18:45:16', '2016-11-26 18:47:22', 0, 1, '2'),
-(2, 3, 1, '2016-11-26 18:49:23', '2016-11-26 18:49:35', 0, 1, '2');
+(1, 2, 1, '2016-11-29 11:34:03', '0000-00-00 00:00:00', 0, 0, '1'),
+(2, 3, 1, '2016-11-29 11:34:11', '0000-00-00 00:00:00', 0, 0, '1'),
+(3, 8, 3, '2016-11-29 11:34:29', '0000-00-00 00:00:00', 1, 0, '1');
 
 -- --------------------------------------------------------
 
@@ -906,7 +907,8 @@ INSERT INTO `ja_siswa` (`id`, `nis`, `pin`, `nama_siswa`, `nama_panggilan`, `kel
 (3, 1411501440, 4, 'Hesti Lutfyan', 'Hesti', 'P', 'Jakarta', '1996-10-30', 'Islam', 'Jurang Mangu', '', 1, 3, NULL),
 (4, 2147483647, 5, 'Jarjit Sigh', 'Bedil', 'L', 'Malaysia', '2016-12-03', 'Islam', 'Perempatan Bingung', '', 2, 1, NULL),
 (5, 1412501439, 6, 'Pace Batubara', 'Pace', 'L', 'Jombang', '2016-11-26', 'Islam', 'Jombang', '', 2, 2, NULL),
-(6, 1413401438, 7, 'Lorem Ipsum', 'Lorem', 'P', 'Jauh', '2016-11-26', 'Islam', 'Jauh banget', '', 3, 1, NULL);
+(6, 1413401438, 7, 'Lorem Ipsum', 'Lorem', 'P', 'Jauh', '2016-11-26', 'Islam', 'Jauh banget', '', 3, 1, NULL),
+(7, 1411501490, 8, 'Hilmy Syarif', 'Bokir', 'L', 'Jakarta', '2016-11-30', 'Islam', 'Arinda Dua', '', 3, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -2131,7 +2133,7 @@ ALTER TABLE `ja_absensi_siswa`
 -- AUTO_INCREMENT for table `ja_data_absen`
 --
 ALTER TABLE `ja_data_absen`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ja_fp`
 --
@@ -2171,7 +2173,7 @@ ALTER TABLE `ja_kelas`
 -- AUTO_INCREMENT for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `log_album_loved`
 --

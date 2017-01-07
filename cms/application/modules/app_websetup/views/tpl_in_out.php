@@ -116,13 +116,13 @@
                   <div class="col-sm-10">
                     <select class="form-control" name="hari">
                     <option value=''>== Pilih Hari ==</option>
-                    <option value='Senin'>Senin</option>
-                    <option value='Selasa'>Selasa</option>
-                    <option value='Rabu'>Rabu</option>
-                    <option value='Kamis'>Kamis</option>
-                    <option value='Jumat'>Jum'at</option>
-                    <option value='Sabtu'>Sabtu</option>
-                    <option value='Minggu'>Minggu</option>                                                                           
+                    <option value='Mon'>Senin</option>
+                    <option value='Tue'>Selasa</option>
+                    <option value='Wed'>Rabu</option>
+                    <option value='Thu'>Kamis</option>
+                    <option value='Fri'>Jum'at</option>
+                    <option value='Sat'>Sabtu</option>
+                    <option value='Sun'>Minggu</option>                                                                           
                     </select>                   
                   </div>
                 </div>               
@@ -296,59 +296,6 @@
                     </select>                   
                   </div>
                 </div>                               
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <a class="btn btn-default" href="javascript:window.history.go(-1);">Batal</a>
-                <button class="btn btn-info pull-right">Simpan</button>
-              </div>
-              <!-- /.box-footer -->
-            </form>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
-    
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Edit Mesin Fingerprint</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-            <!-- OUTPUT MESSAGE -->
-            <?= $this->messagecontroll->showMessage() ?>
-            <!-- form start -->
-            <form action="<?= base_url( $this->app_name ).'/fp_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">IP Mesin</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="ip" name="ip" value="<?= rebackPost('ip', $datadb['ip']) ?>" placeholder="Input IP Mesin">
-                  </div>
-                </div>              
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Key</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="key" name="key" value="<?= rebackPost('key', $datadb['key']) ?>" placeholder="Input Key">
-                  </div>
-                </div>  
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Keterangan</label>
-
-                  <div class="col-sm-10">
-                   <textarea class="form-control" id="keterangan" name="keterangan"><?= rebackPost('keterangan', $datadb['keterangan']) ?></textarea>
-                  </div>
-                </div>                                                                                                                      
               </div>
               <!-- /.box-body -->
               <div class="box-footer">

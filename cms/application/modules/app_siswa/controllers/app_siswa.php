@@ -3,7 +3,7 @@ class App_siswa extends MX_Controller {
     
     # property
     public $root;
-
+    public $app_name            = ''; 
     public $initial_template    = ''; 
     protected  $base_template   = array(
     'container' => '../../layout/container',
@@ -28,6 +28,13 @@ class App_siswa extends MX_Controller {
     
         isset($_SERVER['HTTP_REFERER']) ? $this->root = $_SERVER['HTTP_REFERER'] : '';
         $this->reg_validation = strtolower( __CLASS__ );  
+        $this->registerValidation();
+    }
+
+    public function registerValidation(){
+        
+         define("REG_VALIDATION", strtolower( __CLASS__ ));
+         define("REG_VALIDATION_IZIN", 'izin');
     }
 
     private function getContent($args = array()){
@@ -60,7 +67,6 @@ class App_siswa extends MX_Controller {
         $params['datadbizin']         =  $this->coredb->siswaIzin();
         $params['absen']              =  $this->coredb->getabsen();
         //$params['datadbgetsiswa']     =  $this->coredb->GetSiswa();
-
         $this->load->model('app_siswa/mapp_siswa');
         $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
         $tgl      = date('Y-m-d');
@@ -83,9 +89,65 @@ class App_siswa extends MX_Controller {
         $params['hadirSemuaKelas']    =  $this->coredb->hadirSemuaKelas($this->uri->segment(3));
         $params['datadbhadirizinini'] =  $this->coredb->GetIzinToday($this->uri->segment(3));
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas($kelas);
+
+        $this->load->model('app_websetup/Mapp_websetup');        
+        $jam_pulang = $this->Mapp_websetup->grapInOut();
+            //var_dump($jam_pulang[0]['jam_masuk']);die();
         $params['datadb'] =  $this->coredb->getKelas();
+        $validate = 'true';           
+        if( $_POST ){
+            
+            $izin = $this->input->post('nis');
+            $pin = $this->input->post('pin');
+            $kelas2 = $this->input->post('id_kelas');
+            $jam = date('Y-m-d');
+            $input2 = $this->input->post('kehadiran_'.$izin);
+
+            if($input2 == '1' ) { // alpha  
+                redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );          
+            }elseif($input2 == '4') { //hadir
+                redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );
+            }else{
+                $posting = array(
+                    'pin'           => $pin,
+                    'id_kelas'      => $kelas2,
+                    'jam_masuk'     => $jam,
+                    'jam_pulang'    => $jam,
+                    'tanggal'       => $jam,
+                    'ver'           => '0',
+                    'kehadiran'     => '2',
+                    'sms_status'    => '0',
+
+                );
+            }
+            # -----------------------------------------------------------------------------------
+            # check siswa sudah absen atau belum
+            # 
+            $db = $this->coredb->getSiswa($kelas2, $pin);
+            if( $db != NULL ){
+                
+               $this->load->library('uidcontroll');
+               $db_config['where'] = array('pin', $pin);
+               $db_config['table'] = 'ja_data_absen';
+               $db_config['data']  =  array('kehadiran' => $posting['kehadiran']);
+               if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                    $this->session->set_flashdata('msg_success', 'Success Update Data');
+                    redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );
+                    
+               }
+            }else{
+                $this->load->library('uidcontroll');
+                $this->uidcontroll->insertData('ja_data_absen', bindProcessing($posting));
+            }
+        }
+
+
+             # -------------------------------------------------------------------------------------
+             
+
+
         $this->getContent($params);
 
     }
 }
-?>

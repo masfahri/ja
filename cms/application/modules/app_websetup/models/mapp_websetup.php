@@ -41,8 +41,10 @@ class Mapp_websetup extends CI_Model{
         else FALSE;
     }
 
-      public function getFp(){
-          
+      public function getFp($id_kelas=''){
+          if($id_kelas != ''){
+            $$this->db->where('keterangan', $id_kelas);
+          }
           $this->db->select('*');
           $this->db->from('ja_fp');
 
@@ -75,13 +77,15 @@ class Mapp_websetup extends CI_Model{
           }else return null;
       }      
       
-    public function grapInOut($initial_id){
+    public function grapInOut($initial_id=''){
         
         $this->db->select('*');
         $this->db->from('ja_in_out');
-        $this->db->where('id', $initial_id);
+        $tanggal = date('D');
+        //var_dump($tanggal);
+        $this->db->where('hari', $tanggal);
         $query = $this->db->get();
-        if($query->num_rows() > 0)return $query->row_array();
+        if($query->num_rows() > 0)return $query->result_array();
         else return null;
     }
 

@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-        Dashboard
+        SISWA
         <small></small>
       </h1>
         <ol class="breadcrumb">
@@ -102,64 +102,107 @@
                             </div>
                             <!-- /.col -->
                         </div>
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>No Absen</th>
-                                        <th>Nis</th>
-                                        <th>Nama Siswa</th>
-                                        <th>Hadir</th>
-                                        <th>Alfa</th>
-                                        <th>Izin</th>
-                                        <th>Sakit</th>
-                                        <th>Telat</th>
-                                        <th>Waktu Telat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    $i   = 0;
-                                    $menit = 0;
-                                    $tgl = date('Y-m-d');
-                                    if ( count($siswaKelas) > 0 ) {     
-                                        foreach ($siswaKelas as $row) {
-                                            echo '<tr>';
-                                            echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
-                                            echo "<td>".$row['nis']."</td>";
-                                            echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td><input type='checkbox' ".($row['jm'] == $tgl ? 'checked' : '' )."  name='kehadiran' value='' /></td>";
+                        <form method="post" action="">
+                            <div class="table-responsive">
+                                <table class="table no-margin">
+                                    <thead>
+                                        <tr>
+                                            <th>No Absen</th>
+                                            <th>Nis</th>
+                                            <th>Nama Siswa</th>
+                                            <th>Hadir</th>
+                                            <th>Alfa</th>
+                                            <th>Izin</th>
+                                            <th>Sakit</th>
+                                            <th>Telat</th>
+                                            <th>Waktu Telat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php 
+                                        $i   = 0;
+                                        $menit = 0;
+                                        $tgl = date('Y-m-d');
+                                        
+                                        if ( count($siswaKelas) > 0 ) {     
+                                            foreach ($siswaKelas as $row) {
+                                                $telat = date('H:i:s', strtotime($row['jam']));
+                                                $this->load->model('app_websetup/Mapp_websetup');        
+                                                $jam_pulang = $this->Mapp_websetup->grapInOut();
 
-                                            echo "<td><input type='checkbox' ".($row['pin'] > 0 ? 'checked' : '' )."  name='kehadiran' value='' /></td>";
+                                                echo "<script type='text/javascript'>";
+                                                // CEK BOK
+                                                echo "function myFunction_".$row['nis']."() {
+                                                    var x = document.getElementById('myCheck_".$row['nis']."').checked;
+                                                    document.getElementById('jam_".$row['nis']."').disabled= false;
+                                                    document.getElementById('menit_".$row['nis']."').disabled= false;
+                                                    document.getElementById('radio_".$row['nis']."').checked= false;
+                                                    document.getElementById('radioAlpha_".$row['nis']."').checked= false;
+                                                    document.getElementById('radioHadir_".$row['nis']."').checked= true;
+                                                }
+                                                function myRadio_".$row['nis']."() {
+                                                    var x = document.getElementById('radio_".$row['nis']."').checked;
+                                                    document.getElementById('jam_".$row['nis']."').disabled= true;
+                                                    document.getElementById('menit_".$row['nis']."').disabled= true;
+                                                    document.getElementById('myCheck_".$row['nis']."').checked= false;
+                                                }";     
+                                                echo "</script>";
+                                            /*Table*/
+                                                echo '<tr>';
+                                                echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
+                                                echo "<td>".$row['nis']."
+                                                        <input type='hidden' name='nis' value=".$row['nis']." />
+                                                          <input type='hidden' name='pin' value=".$row['pin2']." >
+                                                          <input type='hidden' name='id_kelas' value=".$row['id_kelas']." >
+                                                      </td>";
+                                                      
+                                                echo "<td>".$row['nama_siswa']."</td>";
 
-                                            echo "<td>".$row['jm']."</td>";
-                                            echo "<td></td>";
-                                            echo "<td><input onclick='check()' id='telat' type='checkbox' name='blmHadir_".$row['absen']."' value='Belum Hadir'/></td>";
-                                            // echo "<td><input onclick='check()'><td>";
-                                            echo "<td>";
-                                            echo "Jam :";
-                                            echo "<select id='jam' disabled>";
-                                                for ($x = 0; $x <= 10; $x++) {
-                                                  echo "<option value='$x'>$x</option>";
-                                                }
-                                            echo "</select>";
-                                            echo "&nbsp;Menit&nbsp;:&nbsp;<select id='menit' disabled>";
-                                                for ($x = 0; $x <= 59; $x++) {
-                                                  echo "<option value='$x'>$x</option>";
-                                                }
-                                            echo "</select>";
-                                            echo "</td>";
-                                            // echo "<td><span class='label label-danger'>Delivered</span></td>";
-                                            // echo "</td>"; 
-                                            // echo "</tr>";
+                                                echo "<td>
+                                                        <input type='radio' id='radioHadir_".$row['nis']."' onclick='myRadio_".$row['nis']."()' ".($row['jm'] == $tgl ? 'checked' : '' )."  name='kehadiran_".$row['nis']."' value='4'>
+                                                      </td>";//hadir
+
+                                                echo "<td>
+                                                        <input type='radio' id='radioAlpha_".$row['nis']."' onclick='myRadio_".$row['nis']."()' ".($row['jm'] != $tgl ? 'checked' : '' )."  name='kehadiran_".$row['nis']."' value='1' >
+                                                      </td>";//alpha | default
+
+                                                echo "<td>
+                                                        <input type='radio' id='radio_".$row['nis']."' onclick='myRadio_".$row['nis']."()' ".($row['kehadiran'] == 2 ? 'checked' : '' )." name='kehadiran_".$row['nis']."' value='2'>
+                                                      </td>";//Izin
+
+                                                echo "<td> $telat > ".$jam_pulang[0]['jam_masuk']." </td>";
+
+                                                echo "<td>
+                                                        <input type='checkbox' id='myCheck_".$row['nis']."' onclick='myFunction_".$row['nis']."()' ".($telat > $jam_pulang[0]['jam_masuk'] ? 'checked' : '' )." >
+                                                      </td>";
+                                                // echo "<td><input onclick='check()'><td>";
+                                                echo "<td>";
+                                                echo "Jam :&nbsp;";
+                                                echo "<select id='jam_".$row['nis']."' disabled>";
+                                                    for ($x = 0; $x <= 10; $x++) {
+                                                      echo "<option value='$x'>$x</option>";
+                                                    }
+                                                echo "</select>";
+                                                echo "&nbsp;Menit&nbsp;:&nbsp;<select id='menit_".$row['nis']."' disabled>";
+                                                    for ($x = 0; $x <= 59; $x++) {
+                                                      echo "<option value='$x'>$x</option>";
+                                                    }
+                                                echo "</select>";
+                                                echo "</td>";
+                                                // echo "<td><span class='label label-danger'>Delivered</span></td>";
+                                                // echo "</td>"; 
+                                                // echo "</tr>";
+                                            }
                                         }
-                                    }
-                                    $i++
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
-                            <input align="right" type="button" class="btn btn-success" value="Simpan Absen" >
+                                        $i++
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Simpan</button>
+                        </form>
+                            
                         <!-- /.row -->
                     </div>
                     <!-- ./box-body -->
@@ -174,19 +217,3 @@
 </div>
 <!-- /.content-wrapper -->
     <?php endif; ?>
-<script type="text/javascript">
-// CEK BOK
-    function check() {
-        document.getElementById("jam").disabled= false;
-        document.getElementById("menit").disabled= false;
-        document.getElementById("cek").checked=true;        
-
-    }
-// RADIO DALEM
-    function cekk() {
-        document.getElementById("menit").disabled= true;
-        document.getElementById("jam").disabled= true;
-        document.getElementById("telat").checked= false;
-                document.getElementById("cek").checked=false;
-    }
-</script>

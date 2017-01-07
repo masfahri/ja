@@ -103,7 +103,7 @@ class App_websetup extends MX_Controller {
 
     public function in_out_edit($id_fp){
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
-        $params['datadb'] = $this->coredb->grapFp($id_fp);
+        $params['datadb'] = $this->coredb->grapInOut($id_fp);
         $validate = 'true';           
         if( $_POST ){
             

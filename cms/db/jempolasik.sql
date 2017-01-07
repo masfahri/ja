@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Nov 28, 2016 at 08:44 PM
+-- Generation Time: Jan 07, 2017 at 04:04 AM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -692,8 +692,11 @@ CREATE TABLE `ja_data_absen` (
   `id_kelas` int(222) DEFAULT NULL,
   `jam_masuk` datetime NOT NULL,
   `jam_pulang` datetime NOT NULL,
+  `tanggal` date NOT NULL,
   `ver` int(10) NOT NULL,
+  `telat` enum('0','1') NOT NULL DEFAULT '0',
   `status` int(10) NOT NULL,
+  `kehadiran` int(6) NOT NULL,
   `sms_status` enum('0','1','2') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -701,10 +704,10 @@ CREATE TABLE `ja_data_absen` (
 -- Dumping data for table `ja_data_absen`
 --
 
-INSERT INTO `ja_data_absen` (`id`, `pin`, `id_kelas`, `jam_masuk`, `jam_pulang`, `ver`, `status`, `sms_status`) VALUES
-(1, 2, 1, '2016-11-29 11:34:03', '0000-00-00 00:00:00', 0, 0, '1'),
-(2, 3, 1, '2016-11-29 11:34:11', '0000-00-00 00:00:00', 0, 0, '1'),
-(3, 8, 3, '2016-11-29 11:34:29', '0000-00-00 00:00:00', 1, 0, '1');
+INSERT INTO `ja_data_absen` (`id`, `pin`, `id_kelas`, `jam_masuk`, `jam_pulang`, `tanggal`, `ver`, `telat`, `status`, `kehadiran`, `sms_status`) VALUES
+(1, 2, 1, '2017-01-07 15:15:59', '0000-00-00 00:00:00', '0000-00-00', 0, '0', 1, 0, '1'),
+(2, 3, 1, '2017-01-07 15:20:52', '0000-00-00 00:00:00', '0000-00-00', 0, '1', 1, 0, '1'),
+(10, 4, 1, '2017-01-07 00:00:00', '2017-01-07 00:00:00', '2017-01-07', 0, '0', 0, 2, '0');
 
 -- --------------------------------------------------------
 
@@ -799,7 +802,9 @@ CREATE TABLE `ja_in_out` (
 --
 
 INSERT INTO `ja_in_out` (`id`, `hari`, `type`, `id_kelas`, `jam_masuk`, `jam_keluar`, `keterangan`, `user_id`, `status`) VALUES
-(1, 'Senin', '0', 40, '10:45:00', '10:45:00', '0', 0, 'active');
+(1, 'Tue', '0', 1, '22:17:00', '00:46:00', '0', 0, 'active'),
+(2, 'Fri', '0', 3, '23:50:00', '23:59:00', '', 0, 'active'),
+(3, 'Sat', '0', 1, '15:20:00', '16:00:00', 'test', 0, 'active');
 
 -- --------------------------------------------------------
 
@@ -855,6 +860,27 @@ INSERT INTO `ja_karyawan` (`id_karyawan`, `nup`, `id_finger`, `nama`, `kelamin`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ja_kategori_izin`
+--
+
+CREATE TABLE `ja_kategori_izin` (
+  `id` int(11) NOT NULL,
+  `keterangan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_kategori_izin`
+--
+
+INSERT INTO `ja_kategori_izin` (`id`, `keterangan`) VALUES
+(1, 'Alpha'),
+(2, 'Izin'),
+(3, 'Sakit'),
+(4, 'Hadir');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ja_kelas`
 --
 
@@ -873,6 +899,41 @@ INSERT INTO `ja_kelas` (`id_kelas`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUE
 (1, 'X-1', 16, '26'),
 (2, 'X-2', 15, ''),
 (3, 'X-3', 15, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_ortu`
+--
+
+CREATE TABLE `ja_ortu` (
+  `id` int(11) NOT NULL,
+  `nis_siswa` varchar(255) NOT NULL,
+  `nama_ortu` varchar(255) NOT NULL,
+  `no_hp` varchar(255) NOT NULL,
+  `keterangan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ja_settings`
+--
+
+CREATE TABLE `ja_settings` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `keterangan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ja_settings`
+--
+
+INSERT INTO `ja_settings` (`id`, `name`, `value`, `keterangan`) VALUES
+(1, 'email', 'hilmysyarif@gmail.com', ''),
+(2, 'password', 'benjo99', '');
 
 -- --------------------------------------------------------
 
@@ -1803,7 +1864,8 @@ ALTER TABLE `ja_data_absen`
   ADD PRIMARY KEY (`id`),
   ADD KEY `pin` (`pin`) USING BTREE,
   ADD KEY `pin_2` (`pin`),
-  ADD KEY `id_kelas` (`id_kelas`);
+  ADD KEY `id_kelas` (`id_kelas`),
+  ADD KEY `kehadiran` (`kehadiran`);
 
 --
 -- Indexes for table `ja_fp`
@@ -1846,10 +1908,28 @@ ALTER TABLE `ja_karyawan`
   ADD UNIQUE KEY `nup` (`nup`);
 
 --
+-- Indexes for table `ja_kategori_izin`
+--
+ALTER TABLE `ja_kategori_izin`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ja_kelas`
 --
 ALTER TABLE `ja_kelas`
   ADD PRIMARY KEY (`id_kelas`);
+
+--
+-- Indexes for table `ja_ortu`
+--
+ALTER TABLE `ja_ortu`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ja_settings`
+--
+ALTER TABLE `ja_settings`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ja_siswa`
@@ -2133,7 +2213,7 @@ ALTER TABLE `ja_absensi_siswa`
 -- AUTO_INCREMENT for table `ja_data_absen`
 --
 ALTER TABLE `ja_data_absen`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `ja_fp`
 --
@@ -2153,7 +2233,7 @@ ALTER TABLE `ja_hari_libur`
 -- AUTO_INCREMENT for table `ja_in_out`
 --
 ALTER TABLE `ja_in_out`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ja_jurusan`
 --
@@ -2164,6 +2244,11 @@ ALTER TABLE `ja_jurusan`
 --
 ALTER TABLE `ja_karyawan`
   MODIFY `id_karyawan` int(222) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `ja_kategori_izin`
+--
+ALTER TABLE `ja_kategori_izin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `ja_kelas`
 --

@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/timepicker/bootstrap-timepicker.min.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+
+    <link rel="stylesheet" href="<?= config_item('assets') ?>plugins/select2/select2.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= config_item('assets') ?>dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -29,11 +31,9 @@
     <!-- jQuery 2.2.3 -->
     <script src="<?= config_item('assets') ?>plugins/jQuery/jquery-2.2.3.min.js"></script>
     <!-- Include Required Prerequisites -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+    <link rel="stylesheet" href="http://weareoutman.github.io/clockpicker/dist/bootstrap-clockpicker.min.css">
 
-    
     <!-- Include Date Range Picker -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
@@ -361,8 +361,8 @@
                     </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/guru') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> Phone</a></li>
+                            <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/phonebook_group') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
+                            <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/phonebook') ?>"><i class="fa fa-circle-o"></i> Phone</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -373,7 +373,7 @@
                     </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/guru') ?>"><i class="fa fa-circle-o"></i> Ke Ortu Siswa</a></li>
+                            <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/sms_ortu') ?>"><i class="fa fa-circle-o"></i> Ke Ortu Siswa</a></li>
                             <!--li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> by Phonebook</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/siswa') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/karyawan') ?>"><i class="fa fa-circle-o"></i> Excel</a></li>
@@ -677,6 +677,8 @@
             <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
+
+
     <!-- Bootstrap 3.3.6 -->
     <script src="<?= config_item('assets') ?>bootstrap/js/bootstrap.min.js"></script>
     <!-- FastClick -->
@@ -685,6 +687,9 @@
     <script src="<?= config_item('assets') ?>dist/js/app.min.js"></script>
     <!-- Sparkline -->
     <script src="<?= config_item('assets') ?>plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <script src="<?= config_item('assets') ?>plugins/select2/select2.full.min.js"></script>
+
     <!-- DataTables -->
     <script src="<?= config_item('assets') ?>plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="<?= config_item('assets') ?>plugins/datatables/dataTables.bootstrap.min.js"></script>
@@ -695,17 +700,23 @@
     <script src="<?= config_item('assets') ?>plugins/datepicker/bootstrap-datepicker.js"></script>
     <!-- Time Picker -->
     <script src="<?= config_item('assets') ?>plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="http://weareoutman.github.io/clockpicker/dist/bootstrap-clockpicker.min.js"></script>    
     <!-- SlimScroll 1.3.0 -->
     <script src="<?= config_item('assets') ?>plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- ChartJS 1.0.1 -->
     <script src="<?= config_item('assets') ?>plugins/chartjs/Chart.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="<?= config_item('assets') ?>dist/js/pages/dashboard2.js"></script>
+    <script src="<?= config_item('assets') ?>dist/js/app.min.js"></script>
+    <!--script src="<?= config_item('assets') ?>dist/js/pages/dashboard2.js"></script-->
     <!-- AdminLTE for demo purposes -->
     <script src="<?= config_item('assets') ?>dist/js/demo.js"></script>
-    <!-- tinymce -->
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>
+    $('.clockpicker').clockpicker({
+        donetext: "Done",
+        default: "now",
+        autoclose: true
+    });
+
         //Date picker
     $('#datepicker').datepicker({
       format: 'yyyy-mm-dd',        
@@ -741,6 +752,9 @@
         }
     );
     </script>
+    <!-- tinymce -->
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
 </body>
 
 </html>

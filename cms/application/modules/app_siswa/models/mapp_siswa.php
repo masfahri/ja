@@ -73,7 +73,7 @@ class Mapp_siswa extends CI_Model{
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
                      ->from('ja_siswa')
                      ->group_by('ja_siswa.nis')
-                     ->order_by('ja_siswa.id_kelas', 'ASC');
+                     ->order_by('ja_siswa.nis', 'ASC');
             $query = $this->db->get();
                 if($query->num_rows() > 0){
                         return $query->result_array();
@@ -251,12 +251,11 @@ class Mapp_siswa extends CI_Model{
         $datapulang3 = $jam_pulang[0]['jam_keluar'];
         $jam_keluar = $jam_pulang[0]['jam_keluar'];
         $jam_masuk = $jam_pulang[0]['jam_masuk'];
-
         $tgl      = date('H:i:s');
         $waktu_masuk = date('H:i:s', strtotime($jam_masuk.'+1 minutes'));
         $waktu_pulang = date('H:i:s', strtotime($jam_keluar));
         $waktu    = date('H:i:s', strtotime($datapulang3));
-        
+        $tanggal = date('Y-m-d');       
 
 
         // END FUNGSI
@@ -312,15 +311,15 @@ class Mapp_siswa extends CI_Model{
                                 switch ($Status2[$ad]) {
                                     case '0':
                                         if($tgl >= $waktu) {
-                                            $Status2[$ad] = '1';
+                                            $status_pulang = '1';
                                         }
                                         else {
-                                            $Status2[$ad] = '0'; 
+                                            $status_pulang = '0'; 
                                         }                                                                           
                                     $cek   = mysql_query("select * from ja_data_absen where jam_masuk >= cast((now()) as date) and jam_masuk < cast((now() + interval 1 day) as date) and pin=".$PIN2[$ad]."");
                                     $count = mysql_num_rows($cek);
                               
-                                    if ($count != 0) {                            
+                                    if ($count != 0) {                                                       
                                     }else{                                       
                                         if($tgl <= $waktu_masuk) { 
                                             $status_pulang = '0';            
@@ -358,7 +357,6 @@ class Mapp_siswa extends CI_Model{
                                                  );
                                         $this->db->where('ja_data_absen.pin', $PIN2[$ad]);
                                         $this->db->update('ja_data_absen', $ins2);
-                                    
                                         // //extract data from the post
                                         // //set POST variables
                                         // $url    = 'http://smsgateway.me/api/v3/messages/send';
@@ -393,20 +391,19 @@ class Mapp_siswa extends CI_Model{
 
                                         if ($result) {
                                             $upd = array('sms_status' => '1', );
-                                            $this->db->where('ja_data_absen.pin', $PIN2);
+                                            $this->db->where(array('ja_data_absen.pin'=> $PIN2, 'ja_data_absen.jam_masuk'=> $tanggal));
                                             $this->db->update('ja_data_absen', $upd);
+                                            $status_pulang = '1'; 
                                         }
                                     }
                                        break;
 
                                     case '1':
-
-
                                     //var_dump($waktu); echo '>='; var_dump($tgl);
                                     if ($tgl >= $waktu ) {
                                         if($status_pulang == '1') {
                                         // $cek   = mysql_query("SELECT * FROM ja_data_absen WHERE pin=".$PIN2." AND jam_pulang='0000-00-00 00:00:00'");
-                                        $cek   = mysql_query("select * from ja_data_absen where sms_status='1' and pin=".$PIN2[$ad].""); 
+                                        $cek   = mysql_query("select * from ja_data_absen where sms_status='1' and pin=".$PIN2[$ad]." AND jam_masuk='$tanggal'"); 
                                         $count = mysql_num_rows($cek);
                                         //var_dump($count);
                                         if ($count != 0) {
@@ -427,17 +424,17 @@ class Mapp_siswa extends CI_Model{
                                                     'sms_status' => '2',
                                                      );
                                             }
-                                            $this->db->where(array('ja_data_absen.pin'=>$PIN2[$ad], 'ja_data_absen.sms_status'=>'1'));
+                                            $this->db->where(array('ja_data_absen.pin'=>$PIN2[$ad], 'ja_data_absen.sms_status'=>'1', 'ja_data_absen.jam_masuk'=> $tanggal));
                                             $this->db->update('ja_data_absen', $ins);
                                             $upd = array('sms_status' => '2', );
-                                                        $this->db->where(array('ja_data_absen.pin'=>$PIN2[$ad], 'ja_data_absen.sms_status'=>'1'));
+                                                        $this->db->where(array('ja_data_absen.pin'=>$PIN2[$ad], 'ja_data_absen.sms_status'=>'1', 'ja_data_absen.jam_masuk'=> $tanggal));
                                                         $this->db->update('ja_data_absen', $upd);                                    
                                         }else{
 
                                         }
                                       }  
                                     }else{
-                                        
+                                        $status_pulang == '0';
                                     }
                                         if ($data[$dapet]['sms_status'] == 1) {
                                             # code...

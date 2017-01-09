@@ -49,6 +49,7 @@ class App_websetup extends MX_Controller {
         
          define("REG_VALIDATION", strtolower( __CLASS__ ));
          define("REG_VALIDATION_IN_OUT", 'in_out');
+         define("REG_VALIDATION_FP", 'fp');         
     }
         
     private function getContent($args = array()){
@@ -103,23 +104,23 @@ class App_websetup extends MX_Controller {
 
     public function in_out_edit($id_fp){
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
-        $params['datadb'] = $this->coredb->grapInOut($id_fp);
+        $params['datadb'] = $this->coredb->grapInOut2($id_fp);
         $validate = 'true';           
         if( $_POST ){
             
-            if( $this->form_validation->run( REG_VALIDATION_FP ) !== FALSE ){
+            if( $this->form_validation->run( REG_VALIDATION_IN_OUT ) !== FALSE ){
                
                 if( $validate == 'true' ){
                   if( $validate !== 'false' ){                
                      # update data
                      $this->load->library('uidcontroll');
                      $db_config['where'] = array('id', $this->initial_id);
-                     $db_config['table'] = 'ja_fp';
+                     $db_config['table'] = 'ja_in_out';
                      $db_config['data']  =  bindProcessing($_POST);
                      if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
 
                           $this->session->set_flashdata('msg_success', 'Success Update Data');
-                          redirect( base_url($this->app_name).'/fp' );
+                          redirect( base_url($this->app_name).'/in_out' );
                           
                      }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
                     }
@@ -132,18 +133,18 @@ class App_websetup extends MX_Controller {
         $this->getContent($params);  
     }    
 
-    public function in_out_remove(){
+    public function in_out_remove($initial_id){
 
 
         $this->load->library('uidcontroll');  
 
         $dataRemove = array('id', $this->initial_id); 
-        if( $this->uidcontroll->removeData('ja_fp', $dataRemove) == TRUE ){
+        if( $this->uidcontroll->removeData('ja_in_out', $dataRemove) == TRUE ){
 
             $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
             $this->session->set_flashdata('msg_success', 'Success Remove Data');
        }
-        redirect(base_url($this->app_name).'/fp');
+        redirect(base_url($this->app_name).'/in_out');
 
     } 
     /* End In/Out Function */    

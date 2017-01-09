@@ -25,7 +25,7 @@
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
-              <a href="<?= base_url($this->app_name) ?>/siswa_add" class="btn btn-primary"><i class="fa fa-plus"></i> SMS BARU</a>
+              <a href="<?= base_url($this->app_name) ?>/sms_ortu" class="btn btn-primary"><i class="fa fa-plus"></i> SMS BARU</a>
               <br /><br />
 
               <table id="example1" class="table table-bordered table-striped">

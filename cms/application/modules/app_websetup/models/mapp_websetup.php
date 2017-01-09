@@ -76,14 +76,34 @@ class Mapp_websetup extends CI_Model{
                   return $query->result_array();
           }else return null;
       }      
-      
-    public function grapInOut($initial_id=''){
-        
+
+    public function grapInOut2($initial_id=''){
+        if($initial_id != '') {
+          $this->db->where('id', $initial_id);              
+        }
         $this->db->select('*');
         $this->db->from('ja_in_out');
         $tanggal = date('D');
+        $jam = date('H');
+        //var_dump($tanggal);
+        $this->db->or_where('jam_masuk', date('H'));        
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->result_array();
+        else return null;
+    }
+      
+    public function grapInOut($initial_id=''){
+        if($initial_id != '') {
+          $this->db->where('id_kelas', $initial_id);              
+        }
+        $this->db->select('*');
+        $this->db->from('ja_in_out');
+        $tanggal = date('D');
+        $jam = date('H');
         //var_dump($tanggal);
         $this->db->where('hari', $tanggal);
+    
+        $this->db->or_where('jam_masuk', date('H'));        
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->result_array();
         else return null;

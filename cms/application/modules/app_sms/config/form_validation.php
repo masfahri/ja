@@ -7,6 +7,41 @@
       This config will use for every form submit
 ***********************************************************/
 $config = array(
+          'sms' => array(
+           array(
+                    'field' => 'nama_ortu',
+                    'label' => 'Nama Ortu',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'no_hp',
+                    'label' => 'No HP Ortu',
+                    'rules' => 'required|max_length[50]|xss_clean'
+
+                ),
+           array(
+                    'field' => 'message',
+                    'label' => 'Message',
+                    'rules' => 'required|max_length[160]|xss_clean'
+
+                ),
+
+            ),
+          'phonebook' => array(
+           array(
+                    'field' => 'nama_ortu',
+                    'label' => 'Nama Ortu',
+                    'rules' => 'required|max_length[50]|xss_clean'
+                 ),
+           array(
+                    'field' => 'no_hp',
+                    'label' => 'No HP Ortu',
+                    'rules' => 'required|max_length[50]|xss_clean'
+
+                ),
+
+            ),
+
           'app_master' => array(
            array(
                     'field' => 'nip',

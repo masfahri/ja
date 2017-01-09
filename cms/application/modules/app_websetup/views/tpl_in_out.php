@@ -109,7 +109,17 @@
             <!-- form start -->
             <form action="<?= base_url('app_websetup/in_out_add') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
+                <div class="form-group">
+                  <label for="type" class="col-sm-2 control-label">Tipe</label>
 
+                  <div class="col-sm-10">
+                    <select class="form-control" name="type" onchange="showDiv(this)">
+                    <option value=''>== Pilih Tipe ==</option>
+                    <option value='1'>Sekolah</option>
+                    <option value='0'>Kelas</option>                                                                       
+                    </select>                   
+                  </div>
+                </div>  
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Hari</label>
 
@@ -126,10 +136,10 @@
                     </select>                   
                   </div>
                 </div>               
-                <div class="form-group">
+                <div class="form-group" id="id_kelas">
                   <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
                   <div class="col-sm-10">
-                    <select class="form-control" name="id_kelas">
+                    <select class="form-control"  name="id_kelas">
                       <option value=''>=== PILIH KELAS ===</option>
                       <?php
                         foreach ($kelas as $key => $value) {
@@ -144,11 +154,12 @@
 
                   <div class="col-sm-10">
                   <div class="input-group">
-                    <input type="text" class="form-control timepicker" name="jam_masuk">
-
-                    <div class="input-group-addon">
-                      <i class="fa fa-clock-o"></i>
-                    </div>
+                      <div class="input-group clockpicker">
+                          <input type="text" name="jam_masuk" class="form-control">
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-time"></span>
+                          </span>
+                      </div>
                   </div>
 
                   </div>
@@ -158,11 +169,12 @@
 
                   <div class="col-sm-10">
                   <div class="input-group">
-                    <input type="text" class="form-control timepicker" name="jam_keluar">
-
-                    <div class="input-group-addon">
-                      <i class="fa fa-clock-o"></i>
-                    </div>
+                      <div class="input-group clockpicker">
+                          <input type="text" name="jam_keluar" class="form-control">
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-time"></span>
+                          </span>
+                      </div>
                   </div>
 
                   </div>
@@ -203,6 +215,24 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
+    <script type="text/javascript">
+
+
+    $(document).ready(function(){
+    document.getElementById('id_kelas').style.display = "none";
+          function showDiv(select){
+             if(select.value != 0) {
+                document.getElementById('id_kelas').style.display = "none";
+             }
+            else {
+                document.getElementById('id_kelas').style.display = "block";
+             }
+
+          }  
+
+    });
+    </script>
+    
     <?php elseif( $this->initial_template == 'in_out_edit'): ?>
     <!-- Main content -->
     <!-- Main content -->
@@ -218,33 +248,48 @@
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
             <!-- form start -->
-            <form action="<?= base_url( $this->app_name ).'/fp_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <form action="<?= base_url( $this->app_name ).'/in_out_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
+                <div class="form-group">
+                  <label for="type" class="col-sm-2 control-label">Tipe</label>
 
+                  <div class="col-sm-10">
+                    <select class="form-control" id="type" name="type" onchange="showDiv(this)">
+                    <option <?php if($datadb[0]['type'] == "") echo "selected"; ?> value=''>== Pilih Tipe ==</option>
+                    <option <?php if($datadb[0]['type'] == "1") echo "selected"; ?> value='1'>Sekolah</option>
+                    <option <?php if($datadb[0]['type'] == "0") echo "selected"; ?> value='0'>Kelas</option>                                                                       
+                    </select>                   
+                  </div>
+                </div>  
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Hari</label>
 
                   <div class="col-sm-10">
                     <select class="form-control" name="hari">
-                    <option <?php if($datadb['hari'] == "") echo "selected"; ?> value=''>== Pilih Hari ==</option>
-                    <option <?php if($datadb['hari'] == "Senin") echo "selected"; ?> value='Senin'>Senin</option>
-                    <option <?php if($datadb['hari'] == "Selasa") echo "selected"; ?> value='Selasa'>Selasa</option>
-                    <option <?php if($datadb['hari'] == "Rabu") echo "selected"; ?> value='Rabu'>Rabu</option>
-                    <option <?php if($datadb['hari'] == "Kamis") echo "selected"; ?> value='Kamis'>Kamis</option>
-                    <option <?php if($datadb['hari'] == "Jumat") echo "selected"; ?> value='Jumat'>Jum'at</option>
-                    <option <?php if($datadb['hari'] == "Sabtu") echo "selected"; ?> value='Sabtu'>Sabtu</option>
-                    <option <?php if($datadb['kelamin'] == "Minggu") echo "selected"; ?> value='Minggu'>Minggu</option>                                                                           
+                    <option <?php if($datadb[0]['hari'] == "") echo "selected"; ?> value=''>== Pilih Hari ==</option>
+                    <option <?php if($datadb[0]['hari'] == "Mon") echo "selected"; ?> value='Mon'>Senin</option>
+                    <option <?php if($datadb[0]['hari'] == "Tue") echo "selected"; ?> value='Tue'>Selasa</option>
+                    <option <?php if($datadb[0]['hari'] == "Wed") echo "selected"; ?> value='Wed'>Rabu</option>
+                    <option <?php if($datadb[0]['hari'] == "Thu") echo "selected"; ?> value='Thu'>Kamis</option>
+                    <option <?php if($datadb[0]['hari'] == "Fri") echo "selected"; ?> value='Fri'>Jum'at</option>
+                    <option <?php if($datadb[0]['hari'] == "Sat") echo "selected"; ?> value='Sat'>Sabtu</option>
+                    <option <?php if($datadb[0]['hari'] == "Sun") echo "selected"; ?> value='Sun'>Minggu</option>                                                                           
                     </select>                   
                   </div>
                 </div>               
-                <div class="form-group">
+                <div class="form-group" id="id_kelas">
                   <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
                   <div class="col-sm-10">
                     <select class="form-control" name="id_kelas">
                       <option value=''>=== PILIH KELAS ===</option>
                       <?php
-                        foreach ($kelas as $key => $value) {
+                        foreach ($datadbkelas as $key => $value) {
+                            if($datadb[0]['id_kelas'] == $value['id_kelas']) {
+                              echo '<option value='.$value['id_kelas'].' selected>'.$value['Nama_Kelas'].'</option>';
+                            }
+                            else{
                             echo '<option value='.$value['id_kelas'].'>'.$value['Nama_Kelas'].'</option>';
+                          }
                         }
                         ?>
                     </select>
@@ -255,11 +300,12 @@
 
                   <div class="col-sm-10">
                   <div class="input-group">
-                    <input type="text" class="form-control timepicker" name="jam_masuk">
-
-                    <div class="input-group-addon">
-                      <i class="fa fa-clock-o"></i>
-                    </div>
+                      <div class="input-group clockpicker">
+                          <input type="text" name="jam_masuk" class="form-control" value="<?php echo $datadb[0]['jam_masuk'] ?>">
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-time"></span>
+                          </span>
+                      </div>
                   </div>
 
                   </div>
@@ -269,11 +315,12 @@
 
                   <div class="col-sm-10">
                   <div class="input-group">
-                    <input type="text" class="form-control timepicker" name="jam_keluar">
-
-                    <div class="input-group-addon">
-                      <i class="fa fa-clock-o"></i>
-                    </div>
+                      <div class="input-group clockpicker">
+                          <input type="text" name="jam_keluar" class="form-control" value="<?php echo $datadb[0]['jam_keluar'] ?>">
+                          <span class="input-group-addon">
+                              <span class="glyphicon glyphicon-time"></span>
+                          </span>
+                      </div>
                   </div>
 
                   </div>
@@ -291,8 +338,8 @@
                   <div class="col-sm-10">
                     <select class="form-control" name="status">
                     <option value=''>== Pilih Status ==</option>
-                    <option value='active'>Active</option>
-                    <option value='disabled'>Disabled</option>
+                    <option  <?php if($datadb[0]['status'] == 'active') { echo 'selected';}else{ echo '';} ?> value='active'>Active</option>
+                    <option <?php if($datadb[0]['status'] == 'disabled') { echo 'selected';}else{ echo '';} ?> value='disabled'>Disabled</option>
                     </select>                   
                   </div>
                 </div>                               
@@ -313,7 +360,25 @@
       </div>
       <!-- /.row -->
     </section>
-    <!-- /.content -->    
+    <!-- /.content -->
+    <script type="text/javascript">
+
+
+    $(document).ready(function(){
+    document.getElementById('id_kelas').style.display = "none";
+          function showDiv(select){
+             if(select.value != 0) {
+                document.getElementById('id_kelas').style.display = "none";
+             }
+            else {
+                document.getElementById('id_kelas').style.display = "block";
+             }
+
+          }  
+
+    });
+    </script>
+
     <?php endif; ?>
   </div>
   <!-- /.content-wrapper -->

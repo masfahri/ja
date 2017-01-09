@@ -8,10 +8,12 @@ class App_sms extends MX_Controller {
     'template_inbox'  => 'tpl_inbox',
     'template_outbox'  => 'tpl_outbox',
     'template_sms_setting'  => 'tpl_sms_setting',
+    'template_sms_add'  => 'tpl_sms_add',    
     'template_jurusan'  => 'tpl_jurusan',
     'template_kelas' => 'tpl_kelas',
     'template_hr_libur' => 'tpl_hr_libur',
-    'template_kategori_izin' => 'tpl_izin',          
+    'template_kategori_izin' => 'tpl_izin',
+    'template_phonebook' => 'tpl_phonebook',          
     );
 
     # initial file image
@@ -55,7 +57,8 @@ class App_sms extends MX_Controller {
          define("REG_VALIDATION_KELAS", 'kelas');
          define("REG_VALIDATION_SISWA", 'siswa'); 
          define("REG_VALIDATION_KARYAWAN", 'karyawan');
-         define("REG_VALIDATION_LIBUR", 'libur');                                    
+         define("REG_VALIDATION_PHONEBOOK", 'phonebook');
+         define("REG_VALIDATION_SMS", 'sms');                                              
     }    
 
     private function getContent($args = array()){
@@ -67,8 +70,11 @@ class App_sms extends MX_Controller {
             elseif($this->uri->segment(2)=="outbox"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_outbox'], $args, TRUE);
             } 
-            elseif($this->uri->segment(2)=="karyawan" || $this->uri->segment(2)=="karyawan_add" || $this->uri->segment(2)=="karyawan_edit"){
-                $body_data['contents'] = $this->load->view($this->base_template['template_karyawan'], $args, TRUE);
+            elseif($this->uri->segment(2)=="sms_ortu"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_sms_add'], $args, TRUE);
+            }
+            elseif($this->uri->segment(2)=="phonebook" || $this->uri->segment(2)=="phonebook_add" || $this->uri->segment(2)=="phonebook_edit" || $this->uri->segment(2)=="phonebook_group"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_phonebook'], $args, TRUE);
             }
             elseif($this->uri->segment(2)=="jurusan" || $this->uri->segment(2)=="jurusan_add" || $this->uri->segment(2)=="jurusan_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_jurusan'], $args, TRUE);
@@ -114,7 +120,14 @@ class App_sms extends MX_Controller {
        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
        $params['datadb'] =  $this->coredb->getKatIzin(); 
        $this->getContent($params);
+    }   
+
+    public function phonebook(){
+       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+       $params['datadb'] =  $this->coredb->getPhonebook(); 
+       $this->getContent($params);
     }    
+
 
     /* End Kategori izin function */
 
@@ -124,6 +137,34 @@ class App_sms extends MX_Controller {
        $params['datadb'] =  $this->coredb->getHariLibur(); 
        $this->getContent($params);
     }    
+
+    /* get Ortu dari siswa */
+    public function getOrtu() {
+      $nis = $this->input->post('nis');
+
+      $ortu =  $this->coredb->grapOrtu($nis);
+
+
+      if($ortu != ''){
+        echo '
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Nama Ortu</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="nama_ortu" id="nama_ortu" readonly value="'.$ortu['nama_ortu'].'"></input>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">No HP Ortu</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="no_hp" id="no_hp" readonly value="'.$ortu['no_hp'].'"></input>
+              </div>
+            </div>
+        ';
+      }
+    }
+
 
     public function setting(){
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
@@ -162,6 +203,279 @@ class App_sms extends MX_Controller {
             }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
         }
         $this->getContent($params);  
+    } 
+
+    public function sms_ortu(){
+        $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['email'] = $this->coredb->grapSettings('email');
+        $params['password'] = $this->coredb->grapSettings('password');        
+        $id_kelas = $this->input->post('id_kelas');
+        $tipe = $this->input->post('tipe');
+        $validate = 'true';       
+        if( $_POST ){
+
+             if( $this->form_validation->run(REG_VALIDATION_SMS) !== FALSE ){
+
+                if( $validate == 'true' ){
+
+            if( $validate !== 'false' ){
+
+              error_reporting(1);
+
+                $this->load->model('mapp_sms');
+                $email = $this->mapp_sms->grapSettings('email');
+                $password = $this->mapp_sms->grapSettings('password');
+                $device = $this->mapp_sms->grapSettings('device');
+                //extract data from the post
+                //set POST variables
+                $url    = 'http://smsgateway.me/api/v3/messages/send';
+                $fields = array(
+                    'email'     => $email[0]->value,
+                    'password'  => $password[0]->value,
+                    'device'    => $device[0]->value,
+                    'number'    => $_POST['no_hp'],
+                    'message'   => $_POST['message'],
+                    'send_at'   => date()
+                );
+
+                $fields_string = '';
+                //url-ify the data for the POST
+                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                rtrim($fields_string, '&');
+
+                //open connection
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                //execute post
+                $result = curl_exec($ch); 
+                $json = json_decode($result);                    
+
+                //close connection
+                curl_close($ch);
+
+                //var_dump($_POST);
+                $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');
+
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    }
+
+    public function phonebook_group(){
+        $params['datadb'] =  $this->coredb->getPhonebook(); 
+        $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['email'] = $this->coredb->grapSettings('email');
+        $params['password'] = $this->coredb->grapSettings('password');        
+        $id_kelas = $this->input->post('id_kelas');
+        $tipe = $this->input->post('tipe');
+        $validate = 'true';       
+        if( $_POST ){
+
+             if( $this->form_validation->run(REG_VALIDATION_PHONEBOOK) !== FALSE ){
+
+                if( $validate == 'true' ){
+
+            if( $validate !== 'false' ){
+
+              error_reporting(1);
+
+                $this->load->model('mapp_sms');
+                $email = $this->mapp_sms->grapSettings('email');
+                $password = $this->mapp_sms->grapSettings('password');
+                $device = $this->mapp_sms->grapSettings('device');
+                //extract data from the post
+                //set POST variables
+                $url    = 'http://smsgateway.me/api/v3/contacts/create';
+                $fields = array(
+                    'email'     => $email[0]->value,
+                    'password'  => $password[0]->value,
+                    'number'    => $_POST['no_hp'],
+                    'name'   => $_POST['nama_ortu']
+                );
+
+                $fields_string = '';
+                //url-ify the data for the POST
+                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                rtrim($fields_string, '&');
+
+                //open connection
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                //execute post
+                $result = curl_exec($ch); 
+                $json = json_decode($result);                    
+
+                //close connection
+                curl_close($ch);
+              foreach ($json->result as $item) {  
+
+                if($item->created_at != '0') {                              
+                    $_POST['nama_ortu'] = $item->name;
+                    $_POST['no_hp'] = $item->number;
+                    $_POST['nis_siswa'] = $_POST['nis_siswa'];
+                    $_POST['keterangan'] = $_POST['keterangan'];
+                } 
+              }
+
+                $this->load->library('uidcontroll');
+                if( $this->uidcontroll->insertData('ja_ortu', bindProcessing($_POST) ) !== FALSE){
+
+                //var_dump($_POST);
+                $this->session->set_flashdata('msg_success', 'Sukses menambahkan kontak');
+
+              }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
+
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    }
+
+    public function phonebook_add(){
+        $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['email'] = $this->coredb->grapSettings('email');
+        $params['password'] = $this->coredb->grapSettings('password');        
+        $id_kelas = $this->input->post('id_kelas');
+        $tipe = $this->input->post('tipe');
+        $validate = 'true';       
+        if( $_POST ){
+
+             if( $this->form_validation->run(REG_VALIDATION_PHONEBOOK) !== FALSE ){
+
+                if( $validate == 'true' ){
+
+            if( $validate !== 'false' ){
+
+              error_reporting(1);
+
+                $this->load->model('mapp_sms');
+                $email = $this->mapp_sms->grapSettings('email');
+                $password = $this->mapp_sms->grapSettings('password');
+                $device = $this->mapp_sms->grapSettings('device');
+                //extract data from the post
+                //set POST variables
+                $url    = 'http://smsgateway.me/api/v3/contacts/create';
+                $fields = array(
+                    'email'     => $email[0]->value,
+                    'password'  => $password[0]->value,
+                    'number'    => $_POST['no_hp'],
+                    'name'   => $_POST['nama_ortu']
+                );
+
+                $fields_string = '';
+                //url-ify the data for the POST
+                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                rtrim($fields_string, '&');
+
+                //open connection
+                $ch = curl_init();
+
+                //set the url, number of POST vars, POST data
+                curl_setopt($ch,CURLOPT_URL, $url);
+                curl_setopt($ch,CURLOPT_POST, count($fields));
+                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                //execute post
+                $result = curl_exec($ch); 
+                $json = json_decode($result);                    
+
+                //close connection
+                curl_close($ch);
+               
+                if($json->success == FALSE) {
+                   $this->session->set_flashdata('msg_error', $json->errors->number[0].' Please contact the developers.');
+                   redirect( base_url($this->app_name).'/phonebook' );
+                }else{
+                  foreach ($json->result as $item) {  
+                                
+                        $_POST['nama_ortu'] = $item->name;
+                        $_POST['no_hp'] = $item->number;
+                        $_POST['nis_siswa'] = $_POST['nis_siswa'];
+                        $_POST['keterangan'] = $_POST['keterangan'];
+                  }
+                }
+                $this->load->library('uidcontroll');
+                if( $this->uidcontroll->insertData('ja_ortu', bindProcessing($_POST) ) !== FALSE){
+
+                //var_dump($_POST);
+                $this->session->set_flashdata('msg_success', 'Sukses menambahkan kontak');
+
+              }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
+
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    }
+
+    public function phonebook_edit($id_finger){
+        $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();      
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['datadb'] = $this->coredb->grapPhonebook($id_finger);
+        $validate = 'true';           
+        if( $_POST ){
+            
+            if( $this->form_validation->run( REG_VALIDATION_PHONEBOOK ) !== FALSE ){
+               
+                if( $validate == 'true' ){
+             # -------------------------------------------------------------------------------------
+             
+            if( $validate !== 'false' ){                
+               # update data
+               $this->load->library('uidcontroll');
+               $db_config['where'] = array('id', $this->initial_id);
+               $db_config['table'] = 'ja_ortu';
+               $db_config['data']  =  bindProcessing($_POST);
+               if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                    $this->session->set_flashdata('msg_success', 'Success Update Data');
+                    redirect( base_url($this->app_name).'/phonebook' );
+                    
+               }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to Update !');}    
+              }
+            }                
+
+                
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); }   
+        }
+
+        $this->getContent($params);  
+    }    
+
+    public function phonebook_remove($id_finger){
+
+        $this->load->library('uidcontroll');  
+        $dataRemove = array('id', $this->initial_id); 
+        if( $this->uidcontroll->removeData('ja_ortu', $dataRemove) == TRUE ){
+
+            $this->session->set_flashdata('total_data', $this->uidcontroll->totalRecord);
+            $this->session->set_flashdata('msg_success', 'Success Remove Data');
+       }
+        redirect(base_url($this->app_name).'/phonebook');
+
     } 
 
     public function hari_libur_edit($id_finger){

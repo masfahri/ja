@@ -35,7 +35,6 @@
                   <th>PHONE NUMBER</th>
                   <th>SENDING AT</th>
                   <th>STATUS AT</th>
-                  <th>AKSI</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,8 +82,7 @@
                                     </td>                                  
                                     <td>
                                         <?php echo $item->status ?>
-                                    </td>                                 
-                                    <td><a href="<?php echo base_url($this->app_name).'/siswa_edit/'.$item->id; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/siswa_remove/'.$item->id; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                    </td>                                       
                                 </tr>
                
                       <?php  } } }else{ ?>
@@ -93,8 +91,7 @@
                                     <td>
                                     </td>
                                     <td><span class="uk-text-danger"></span></td>
-                                    <td></td>
-                                    <td></td>                                        
+                                    <td></td>                                      
                                 </tr>
                                 <?php }
                       ?>
@@ -106,7 +103,6 @@
                   <th>PHONE NUMBER</th>
                   <th>SEND AT</th>
                   <th>STATUS</th>
-                  <th>AKSI</th>
                 </tr>
                 </tfoot>
               </table>

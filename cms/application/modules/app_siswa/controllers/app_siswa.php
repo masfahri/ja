@@ -70,7 +70,7 @@ class App_siswa extends MX_Controller {
         $this->load->model('app_siswa/mapp_siswa');
         $params['dataabsen']          =  $this->mapp_siswa->get_data_absen();
         $tgl      = date('Y-m-d');
-        var_dump($tgl);
+        //var_dump($tgl);
 
         //var_dump($params['datadbhadirizinini']);
         // var_dump($params['datadbsiswa']);

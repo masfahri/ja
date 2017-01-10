@@ -50,7 +50,7 @@
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
                         <span class="info-box-text">Siswa Belum Hadir</span></strong>
-                        <span class="info-box-number"><?php $blmhadir = $datadbjumlahsiswa['$js'] - $datadbsiswa['hadir'] - $datadbhadirizinini['$js'];
+                        <span class="info-box-number"><?php $blmhadir = $datadbjumlahsiswa['$js'] - $datadbsiswa['hadir'] - $datadbizin['$izin'];
                                 echo $blmhadir;
                             ?></span>
                     </div>
@@ -177,7 +177,7 @@
                                                     } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
                                                 </td>
                                                 <td>
-                                                    <?php echo $jam_masuk[0]['jam_masuk']." - ".date('H:i:s', strtotime($row['jam_masuk']))." || 
+                                                    <?php echo $jam_masuk[0]['jam_masuk']." - ".$row['jam_masuk']." || 
                                                         ".(date('H', strtotime($jam_masuk[0]['jam_masuk']))-date('H', strtotime($row['jam_masuk'])))." ||
                                                         ".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))." "; ?>
                                                 </td>      

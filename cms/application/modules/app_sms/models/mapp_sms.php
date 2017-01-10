@@ -113,6 +113,18 @@ class Mapp_sms extends CI_Model{
         else return null;
     }
 
+    public function grapSiswaKelas($initial_id){
+        
+        $this->db->select('*')
+                 ->from('ja_siswa')
+                 ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas')
+                 ->join('ja_ortu', 'ja_siswa.nis=ja_ortu.nis_siswa');
+        $this->db->where('ja_kelas.id_kelas', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->result();
+        else return null;
+    }
+
     public function grapOrtu($initial_id){
         
         $this->db->select('*')
@@ -124,11 +136,11 @@ class Mapp_sms extends CI_Model{
     }    
 
     public function grapOrtu2($initial_id){
-        $this->db->select('*')
+        $this->db->select('ja_ortu.*, ja_siswa.id as id2, ja_kelas.*')
                  ->from('ja_ortu')
                  ->join('ja_siswa', 'ja_ortu.nis_siswa=ja_siswa.nis')
                  ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
-        $this->db->where('nama_ortu', $initial_id);
+        $this->db->where('ja_ortu.id', $initial_id);
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->result_array();
         else return null;

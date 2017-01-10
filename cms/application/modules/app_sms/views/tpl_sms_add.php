@@ -29,31 +29,78 @@
             <form action="<?= base_url( $this->app_name ).'/sms_ortu' ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
+                  <label for="inputEmail3" class="col-sm-2 control-label">Tipe SMS</label>
 
                   <div class="col-sm-10">
-                    <select id="nis" class="form-control select2" style="width: 100%;">
-                        <option>Pilih siswa</option>
-                      <?php if ( count($siswaKelas) > 0 ) {     
-                          foreach ($siswaKelas as $row) { ?>
-                          <option value="<?php echo $row['nis'] ?>"><?php echo $row['nama_siswa'] ?></option>
-                      <?php }
-                         } ?>    
+                    <select class="form-control select2" style="width: 100%;" onchange="admSelectCheck2(this);">
+                        <option>Pilih Tipe</option>
+                        <option value="1">Group sms</option>
+                        <option value="2" id="type">Per Ortu</option>
                     </select>
                   </div>
                 </div> 
-                
 
-                <div name='ortu' id='ortu'></div>
+  <input type="hidden" class="form-control" name="tipe" id="tipe" readonly></input>
+
+                <div id="layer_personal" style="display:none">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
+
+                    <div class="col-sm-10">
+                      <select id="nis" class="form-control select2" style="width: 100%;">
+                          <option>Pilih siswa</option>
+                        <?php if ( count($siswaKelas) > 0 ) {     
+                            foreach ($siswaKelas as $row) { ?>
+                            <option value="<?php echo $row['nis'] ?>"><?php echo $row['nama_siswa'] ?></option>
+                        <?php }
+                           } ?>    
+                      </select>
+                    </div>
+                  </div> 
+                  
+
+                  <div name='ortu' id='ortu'></div>
 
 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="message" name="message"></textarea>
+                    </div>
+                  </div>                                                                                                            
+                </div>
+
+                <div id="layer_group" style="display:none">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nama Group</label>
 
                   <div class="col-sm-10">
-                    <textarea class="form-control" id="message" name="message"></textarea>
+                    <select id="group_id" name="group_id" class="form-control select2" style="width: 100%;">
+                        <option>Pilih Group</option>
+                      <?php if ( count($datadbkelas) > 0 ) {     
+                          foreach ($datadbkelas as $row) { ?>
+                          <option value="<?php echo $row['id_kelas'] ?>"><?php echo $row['Nama_Kelas'] ?></option>
+                      <?php }
+                         } ?>  
+                    </select>  
+                 
                   </div>
-                </div>                                                                                                            
+                  </div> 
+                  
+
+                  <div name='ortu2' id='ortu2'></div>
+
+
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="message" name="message"></textarea>
+                    </div>
+                  </div>                                                                                                            
+                </div>
+
               </div>
        
               <!-- /.box-body -->
@@ -335,7 +382,6 @@
   $(function () {
      //Initialize Select2 Elements
     $(".select2").select2();
-
       $( "#nis" ).change(function() {
       
       var id = $('#nis').val();
@@ -350,6 +396,20 @@
             });
     });
 
+      $( "#group_id" ).change(function() {
+      
+      var id = $('#group_id').val();
+     
+         $.ajax({
+                type:'POST',
+                url:'<?php echo base_url("app_sms/getSiswa"); ?>',
+                data:{'nis':id},
+                success:function(data){
+                    $('#ortu2').html(data);
+                }
+            });
+    });      
+
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,
@@ -360,6 +420,28 @@
       "autoWidth": false
     });
   });
+  function admSelectCheck2(nameSelect)
+  {
+      console.log(nameSelect);
+      if(nameSelect){
+          admOptionValue = document.getElementById("type").value;
+          if(admOptionValue == nameSelect.value){
+              document.getElementById("layer_personal").style.display = "block";
+              document.getElementById("layer_group").style.display = "none";
+              document.getElementById("tipe").value = "2";                                
+          }
+          else{
+              document.getElementById("layer_personal").style.display = "none";
+              document.getElementById("layer_group").style.display = "block";
+              document.getElementById("tipe").value = "1"; 
+          }
+      }
+      else{
+          document.getElementById("layer_personal").style.display = "none";
+          document.getElementById("layer_group").style.display = "none";       
+          document.getElementById("tipe").value = "";                
+      }      
+  }
   function admSelectCheck(nameSelect)
   {
       console.log(nameSelect);

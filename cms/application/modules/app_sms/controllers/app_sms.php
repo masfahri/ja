@@ -168,8 +168,9 @@ class App_sms extends MX_Controller {
     /* get Ortu dari siswa */
     public function getNoOrtu() {
       $nis = $this->input->post('nama_ortu');
+      
       if($nis != '') {
-      $ortu =  $this->coredb->grapOrtu2($nis);
+      $ortu =  $this->coredb->grapOrtu2($nis);     
           echo '<div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">No HP Ortu</label>';
                     if(count($ortu) > 0){
@@ -184,6 +185,37 @@ class App_sms extends MX_Controller {
           echo '</div>';
           }
         }
+    }
+
+
+    /* get Ortu dari siswa */
+    public function getSiswa() {
+      $nis = $this->input->post('nis');
+      
+      if($nis != '') {
+      $ortu =  $this->coredb->grapSiswaKelas($nis);  
+      if($ortu != ''){
+          echo '<div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">No HP Ortu</label>';
+                    if(count($ortu) > 0){
+                      foreach ($ortu as $key => $value) {
+
+                        $nis2 = $value->nis;
+                        $ortu2 =  $this->coredb->grapOrtu($nis2); 
+                        $nama_siswa = $value->nama_siswa; 
+                        $nama_ortu = $ortu2['nama_ortu'];
+                        $no_hp = $ortu2['no_hp'];
+                        echo '
+         <input type="hidden" class="form-control" name="kelas" id="kelas" readonly value="'.$value->id_kelas.'"></input>
+                  <input type="hidden" class="form-control" name="nama_ortu" id="nama_ortu" readonly value="'.$nama_ortu.'"></input>
+                        <div class="col-sm-2" style="padding-right:1px;">
+                                <input type="text" class="form-control" name="no_hp" id="no_hp" readonly value="'.$no_hp.'"></input>
+                              </div>';
+                      }
+          echo '</div>';
+          }
+        }
+      }
     }
 
     /* ajax update */
@@ -261,48 +293,91 @@ class App_sms extends MX_Controller {
                 if( $validate == 'true' ){
 
             if( $validate !== 'false' ){
+              if($_POST['tipe'] == 2) {
+                  error_reporting(1);
 
-              error_reporting(1);
+                    $this->load->model('mapp_sms');
+                    $email = $this->mapp_sms->grapSettings('email');
+                    $password = $this->mapp_sms->grapSettings('password');
+                    $device = $this->mapp_sms->grapSettings('device');
+                    //extract data from the post
+                    //set POST variables
+                    $url    = 'http://smsgateway.me/api/v3/messages/send';
+                    $fields = array(
+                        'email'     => $email[0]->value,
+                        'password'  => $password[0]->value,
+                        'device'    => $device[0]->value,
+                        'number'    => $_POST['no_hp'],
+                        'message'   => $_POST['message'],
+                        'send_at'   => date()
+                    );
 
-                $this->load->model('mapp_sms');
-                $email = $this->mapp_sms->grapSettings('email');
-                $password = $this->mapp_sms->grapSettings('password');
-                $device = $this->mapp_sms->grapSettings('device');
-                //extract data from the post
-                //set POST variables
-                $url    = 'http://smsgateway.me/api/v3/messages/send';
-                $fields = array(
-                    'email'     => $email[0]->value,
-                    'password'  => $password[0]->value,
-                    'device'    => $device[0]->value,
-                    'number'    => $_POST['no_hp'],
-                    'message'   => $_POST['message'],
-                    'send_at'   => date()
-                );
+                    $fields_string = '';
+                    //url-ify the data for the POST
+                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                    rtrim($fields_string, '&');
 
-                $fields_string = '';
-                //url-ify the data for the POST
-                foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-                rtrim($fields_string, '&');
+                    //open connection
+                    $ch = curl_init();
 
-                //open connection
-                $ch = curl_init();
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch,CURLOPT_URL, $url);
+                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    //execute post
+                    $result = curl_exec($ch); 
+                    $json = json_decode($result);                    
 
-                //set the url, number of POST vars, POST data
-                curl_setopt($ch,CURLOPT_URL, $url);
-                curl_setopt($ch,CURLOPT_POST, count($fields));
-                curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                //execute post
-                $result = curl_exec($ch); 
-                $json = json_decode($result);                    
+                    //close connection
+                    curl_close($ch);
 
-                //close connection
-                curl_close($ch);
+                    //var_dump($_POST);
+                    $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');
+                }else{
+                  // disini send by group
+                 error_reporting(1);
 
-                //var_dump($_POST);
-                $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');
+                    $this->load->model('mapp_sms');
+                    $email = $this->mapp_sms->grapSettings('email');
+                    $password = $this->mapp_sms->grapSettings('password');
+                    $device = $this->mapp_sms->grapSettings('device');
+                    //extract data from the post
+                    //set POST variables
+                    $url    = 'http://smsgateway.me/api/v3/messages/send';
+                    $fields = array(
+                        'email'     => $email[0]->value,
+                        'password'  => $password[0]->value,
+                        'device'    => $device[0]->value,
+                        'number'    => $_POST['no_hp'],
+                        'message'   => $_POST['message'],
+                        'send_at'   => date()
+                    );
 
+                    $fields_string = '';
+                    //url-ify the data for the POST
+                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                    rtrim($fields_string, '&');
+
+                    //open connection
+                    $ch = curl_init();
+
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch,CURLOPT_URL, $url);
+                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    //execute post
+                    $result = curl_exec($ch); 
+                    $json = json_decode($result);                    
+                    var_dump($json);  
+                    //close connection
+                    curl_close($ch);
+
+                    //var_dump($_POST);
+                    $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');                
+               
+                }
               }
             }
 
@@ -397,7 +472,8 @@ class App_sms extends MX_Controller {
         $params['kelas'] =  $this->coredb->getKelas();
         $params['email'] = $this->coredb->grapSettings('email');
         $params['password'] = $this->coredb->grapSettings('password');        
-        $id_kelas = $this->input->post('kelas');
+        $id_kelas = $this->input->post('group_id');
+
         $nama_ortu = $this->input->post('nama_ortu');
 
         $validate = 'true';       
@@ -408,12 +484,13 @@ class App_sms extends MX_Controller {
                 if( $validate == 'true' ){
 
             if( $validate !== 'false' ){
+               $id_kelas = $this->input->post('group_id');
             $nis = $this->input->post('nama_ortu2');
                   # update data
                    $this->load->library('uidcontroll');
-                     $db_config['where'] = array('nama_ortu', $nama_ortu);
+                     $db_config['where'] = array('id', $nama_ortu);
                      $db_config['table'] = 'ja_ortu';
-                     $db_config['data']  = array('group_id' => $_POST['kelas']);
+                     $db_config['data']  = array('group_id' => $id_kelas);
     
                      if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
 

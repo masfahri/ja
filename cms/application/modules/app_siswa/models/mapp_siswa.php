@@ -66,12 +66,12 @@ class Mapp_siswa extends CI_Model{
             $tgl = date('Y-m-d');
             $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.pin as pin2, ja_siswa.id_kelas')
 
+                     ->select('max(date(jam_masuk)) as jm')
                      ->select('date(jam_pulang) as jp')
-                     ->select('date(jam_masuk) as jm')
                      ->select('ja_data_absen.jam_masuk as jam')
+                     ->from('ja_siswa')
                      ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
-                     ->from('ja_siswa')
                      ->group_by('ja_siswa.nis')
                      ->order_by('ja_siswa.nis', 'ASC');
             $query = $this->db->get();
@@ -165,18 +165,19 @@ class Mapp_siswa extends CI_Model{
     public function siswaIzin($initial_id='')
     {
         if ($initial_id != '') {
-            $this->db->where('kd_kelas', $initial_id);
+            $this->db->where('id_kelas', $initial_id);
         }
-            $tgl      = date('Y-m-d');
-            $izin = 'izin';
-            $this->db->select('count(distinct nis) as $izin')
-                     ->from('ja_absensi_siswa')
-                     ->where(array('keterangan =' => 'Izin', 'tanggal =' => $tgl));
-            $query = $this->db->get();
+        $tgl      = date('Y-m-d');
+        $this->db->select('count(pin) as $izin')
+                 ->from('ja_data_absen')
+                 ->where(array('kehadiran =' => 2, 'date(jam_masuk)' => $tgl));
 
-                if($query->num_rows() > 0){
-                        return $query->row_array();
-                }else return null;
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row_array();
+        }else
+         return null;
+
 
     }
 
@@ -231,7 +232,7 @@ class Mapp_siswa extends CI_Model{
         $tgl      = date('Y-m-d');
         $this->db->select('count(pin) as hadir')
                  ->from('ja_data_absen')
-                 ->where('date(jam_masuk) =', $tgl);
+                 ->where(array('kehadiran =' => 0, 'date(jam_masuk)' => $tgl));
         $query = $this->db->get();
         if($query->num_rows() > 0){
                 return $query->row_array();

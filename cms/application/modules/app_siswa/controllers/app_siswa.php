@@ -89,7 +89,6 @@ class App_siswa extends MX_Controller {
         $params['hadirSemuaKelas']    =  $this->coredb->hadirSemuaKelas($this->uri->segment(3));
         $params['datadbhadirizinini'] =  $this->coredb->GetIzinToday($this->uri->segment(3));
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas($kelas);
-
         $this->load->model('app_websetup/Mapp_websetup');        
         $jam_pulang = $this->Mapp_websetup->grapInOut();
             //var_dump($jam_pulang[0]['jam_masuk']);die();
@@ -102,11 +101,12 @@ class App_siswa extends MX_Controller {
             $kelas2 = $this->input->post('id_kelas');
             $jam = date('Y-m-d');
             $input2 = $this->input->post('kehadiran_'.$izin);
+
             if($input2 == '1' ) { // alpha  
                 redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );          
             }elseif($input2 == '4') { //hadir
                 redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );
-            }else{
+            }elseif($input2 == '2') { //sakit
                 $posting = array(
                     'pin'           => $pin,
                     'id_kelas'      => $kelas2,
@@ -118,10 +118,12 @@ class App_siswa extends MX_Controller {
                     'sms_status'    => '0',
 
                 );
+                redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );
+            }else{
             }
             # -----------------------------------------------------------------------------------
             # check siswa sudah absen atau belum
-
+            # 
             $db = $this->coredb->getSiswa($kelas2, $pin);
             if( $db != NULL ){
                 

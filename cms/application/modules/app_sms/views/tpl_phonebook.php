@@ -328,7 +328,7 @@
 
 
                   <div class="col-sm-10">
-                    <select id="group_id" class="form-control select2" style="width: 100%;">
+                    <select id="group_id" name="group_id" class="form-control select2" style="width: 100%;">
                         <option>Pilih Group</option>
                       <?php if ( count($datadbkelas) > 0 ) {     
                           foreach ($datadbkelas as $row) { ?>
@@ -348,7 +348,7 @@
                         <option>Pilih Group</option>                    
                       <?php if ( count($ortuKelas) > 0 ) {     
                           foreach ($ortuKelas as $row) { ?>
-                          <option value="<?php echo $row['nama_ortu'] ?>"><?php echo $row['nama_ortu'] ?></option>
+                          <option value="<?php echo $row['id2'] ?>"><?php echo $row['nama_ortu'] ?></option>
                       <?php }
                          } ?>    
                     </select>

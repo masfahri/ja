@@ -19,12 +19,6 @@ $config = array(
                     'rules' => 'required|max_length[50]|xss_clean'
 
                 ),
-           array(
-                    'field' => 'message',
-                    'label' => 'Message',
-                    'rules' => 'required|max_length[160]|xss_clean'
-
-                ),
 
             ),
           'phonebook' => array(

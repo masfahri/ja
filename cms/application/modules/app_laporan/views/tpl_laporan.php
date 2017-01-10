@@ -151,70 +151,63 @@
     </section>
     <!-- /.content -->
 </div>
-<?php                             if ( count($cari) > 0 ) {   
-                                foreach ($cari as $row) {
-                                  ?>
+<?php                             
+    if ( count($cari) > 0 ) {   
+      foreach ($cari as $row) {
+?>
 <div class="modal fade" id="myModal<?php echo $row['nis'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                          <div class="modal-dialog">
-                                            <div class="modal-content">
-                                              <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel"><?php echo $row["nama_siswa"] ?></h4>
-                                                <?php echo $row["nis"] ?>
-                                              </div>
-                                              <div class="modal-body">
-                                              <form action="#" name="fres" id="fres">
-                                                <div class="uk-width-medium-1-2">
-                                                  <table id="example1" class="table table-bordered table-striped">
-                                                    <thead>
-                                                    <tr>
-                                                      <th>ID</th>
-                                                      <th>Hari</th>
-                                                      <th>Kelas</th>
-                                                      <th>Jam Masuk</th>
-                                                      <th>Jam Pulang</th>
-                                                      <th>Status</th>
-                                                      <th>Aksi</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>            
-                                                                    <tr>
-                                                                        <td><span></span></td>
-                                                                        <td>
-                                                                            <a href="<?php echo base_url($this->app_name).'/in_out_edit/'.$row['id']; ?>"></a>
-                                                                        </td>
-                                                                        <td><span></span></td>
-                                                                        <td><span></span></td>
-                                                                        <td><span></span></td>
-                                                                        <td><span></span></td>                                                                  
-                                                                        <td><a href="<?php echo base_url($this->app_name).'/in_out_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/in_out_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
-                                                                    </tr>
-                                                    </tbody>
-                                                    <tfoot>
-                                                    <tr>
-                                                      <th>ID</th>
-                                                      <th>Hari</th>
-                                                      <th>Kelas</th>
-                                                      <th>Jam Masuk</th>
-                                                      <th>Jam Pulang</th>
-                                                      <th>Status</th>
-                                                      <th>Aksi</th>
-                                                    </tr>
-                                                    </tfoot>
-                                                  </table>
-
-
-                                                    <?php echo $row['jam_masuk'] ?>
-                                                </div>
-                                              </form>
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                       <?php  }}?>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel"><?php echo $row["nama_siswa"] ?></h4>
+        <?php echo $row["nis"] ?>
+      </div>
+      <div class="modal-body">
+      <form action="#" name="fres" id="fres">
+        <div class="uk-width-medium-1-2">
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Hari</th>
+              <th>Jam Masuk</th>
+              <th>Jam Pulang</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+            </thead>
+            <tbody>            
+                            <tr>
+                                <td><span></span></td>
+                                <td></td>
+                                <td><span><?php echo $row['jam_masuk']; ?></span></td>
+                                <td><span></span></td>
+                                <td><span></span></td>
+                                <td></td>       
+                            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>ID</th>
+              <th>Hari</th>
+              <th>Jam Masuk</th>
+              <th>Jam Pulang</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+            </tfoot>
+          </table>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<?php  }}?>
 
 <!-- /.content-wrapper -->
     <?php endif; ?>

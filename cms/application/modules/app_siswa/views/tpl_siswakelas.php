@@ -170,12 +170,14 @@
                                                         echo "checked";
                                                     } ?>  name='kehadiran_<?php echo $row['nis']?>' value='1' >
                                                 </td>
+                                                <!--IZIN-->
                                                 <td>
                                                     <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
                                                     <?php if ($row['kehadiran'] == 2) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
                                                 </td>
+                                                <!--IZIN-->
                                                 <td>
                                                     <?php echo $jam_masuk[0]['jam_masuk']." - ".date('H:i:s', strtotime($row['jam_masuk']))." || 
                                                         ".(date('H', strtotime($jam_masuk[0]['jam_masuk']))-date('H', strtotime($row['jam_masuk'])))." ||
@@ -203,10 +205,10 @@
                                                         <?php 
                                                             $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
                                                             if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                                  echo "<option value='$x' >$x</option>";
+                                                                echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
                                                             } else {
                                                                 for ($x = 0; $x < 59; $x++) {
-                                                                  echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
+                                                                  echo "<option value='$x' >$x</option>";
                                                                 }
                                                             }
                                                         ?>

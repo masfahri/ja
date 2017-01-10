@@ -121,18 +121,8 @@ class Mapp_laporan extends CI_Model{
         }
         $tgl    = date('Y-m-d');
         return $this->db->query("
-             SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_siswa.absen, ja_siswa.nis,
-                ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas,
-                COUNT(ja_data_absen.pin) AS jh
+             SELECT  *
                     FROM ja_siswa
-                    
-                LEFT JOIN ja_data_absen
-                    ON ja_siswa.pin=ja_data_absen.pin
-                    
-                JOIN ja_kelas
-                    ON ja_siswa.id_kelas=ja_kelas.id_kelas
-                    
-                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)
                 GROUP BY nama_panggilan  
                 ORDER BY ja_siswa.pin ASC
              ")->result_array();

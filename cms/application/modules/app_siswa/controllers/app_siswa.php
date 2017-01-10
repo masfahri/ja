@@ -102,7 +102,6 @@ class App_siswa extends MX_Controller {
             $kelas2 = $this->input->post('id_kelas');
             $jam = date('Y-m-d');
             $input2 = $this->input->post('kehadiran_'.$izin);
-
             if($input2 == '1' ) { // alpha  
                 redirect( base_url($this->app_name).'app_siswa/kelas/'.$kelas );          
             }elseif($input2 == '4') { //hadir
@@ -122,7 +121,7 @@ class App_siswa extends MX_Controller {
             }
             # -----------------------------------------------------------------------------------
             # check siswa sudah absen atau belum
-            # 
+
             $db = $this->coredb->getSiswa($kelas2, $pin);
             if( $db != NULL ){
                 

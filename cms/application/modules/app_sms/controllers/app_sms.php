@@ -73,7 +73,7 @@ class App_sms extends MX_Controller {
             elseif($this->uri->segment(2)=="sms_ortu"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_sms_add'], $args, TRUE);
             }
-            elseif($this->uri->segment(2)=="phonebook" || $this->uri->segment(2)=="phonebook_add" || $this->uri->segment(2)=="phonebook_edit" || $this->uri->segment(2)=="phonebook_group"){
+            elseif($this->uri->segment(2)=="phonebook" || $this->uri->segment(2)=="phonebook_add" || $this->uri->segment(2)=="phonebook_edit" || $this->uri->segment(2)=="phonebook_group" || $this->uri->segment(2)=="phonebook_group_add"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_phonebook'], $args, TRUE);
             }
             elseif($this->uri->segment(2)=="jurusan" || $this->uri->segment(2)=="jurusan_add" || $this->uri->segment(2)=="jurusan_edit"){
@@ -162,6 +162,46 @@ class App_sms extends MX_Controller {
               </div>
             </div>
         ';
+      }
+    }
+
+    /* get Ortu dari siswa */
+    public function getNoOrtu() {
+      $nis = $this->input->post('nama_ortu');
+      if($nis != '') {
+      $ortu =  $this->coredb->grapOrtu2($nis);
+          echo '<div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">No HP Ortu</label>';
+                    if(count($ortu) > 0){
+                      foreach ($ortu as $key => $value) {
+                        $no_hp = $value['no_hp'];
+                        echo '
+         <input type="hidden" class="form-control" name="kelas" id="kelas" readonly value="'.$value['id_kelas'].'"></input>
+                        <div class="col-sm-2" style="padding-right:1px;">
+                                <input type="text" class="form-control" name="no_hp" id="no_hp" readonly value="'.$no_hp.'"></input>
+                              </div>';
+                      }
+          echo '</div>';
+          }
+        }
+    }
+
+    /* ajax update */
+    public function updateOrtu() {
+      $nis = $this->input->post('nama_ortu2');
+      $id_kelas = $this->input->post('kelas');
+      if($nis != '') {
+            # update data
+             $this->load->library('uidcontroll');
+             $db_config['where'] = array('nama_ortu' => $nis);
+             $db_config['table'] = 'ja_ortu';
+             $db_config['data']  =  array('group_id' => $id_kelas);
+             if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                  $this->session->set_flashdata('msg_success', 'Success Update Data');
+                  redirect( base_url($this->app_name).'/phonebook_group' );
+
+            }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
       }
     }
 
@@ -272,7 +312,7 @@ class App_sms extends MX_Controller {
     }
 
     public function phonebook_group(){
-        $params['datadb'] =  $this->coredb->getPhonebook(); 
+        $params['datadb'] =  $this->coredb->getPhonebookKelas(); 
         $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] =  $this->coredb->getKelas();
@@ -350,6 +390,45 @@ class App_sms extends MX_Controller {
         $this->getContent($params);  
     }
 
+    public function phonebook_group_add(){
+        $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
+        $params['ortuKelas']         =  $this->coredb->getPhonebook();        
+        $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
+        $params['kelas'] =  $this->coredb->getKelas();
+        $params['email'] = $this->coredb->grapSettings('email');
+        $params['password'] = $this->coredb->grapSettings('password');        
+        $id_kelas = $this->input->post('kelas');
+        $nama_ortu = $this->input->post('nama_ortu');
+
+        $validate = 'true';       
+        if( $_POST ){
+
+             if( $this->form_validation->run(REG_VALIDATION_PHONEBOOK) !== FALSE ){
+
+                if( $validate == 'true' ){
+
+            if( $validate !== 'false' ){
+            $nis = $this->input->post('nama_ortu2');
+                  # update data
+                   $this->load->library('uidcontroll');
+                     $db_config['where'] = array('nama_ortu', $nama_ortu);
+                     $db_config['table'] = 'ja_ortu';
+                     $db_config['data']  = array('group_id' => $_POST['kelas']);
+    
+                     if( $this->uidcontroll->updateData( $db_config ) !== FALSE ){
+
+                          $this->session->set_flashdata('msg_success', 'Success Update Data');
+                          redirect( base_url($this->app_name).'/phonebook_group' );
+
+                  }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
+              }
+            }
+
+            }else{ $this->messagecontroll->delivered('msg_warning', validation_errors()); } 
+        }
+        $this->getContent($params);  
+    }
+
     public function phonebook_add(){
         $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
@@ -407,21 +486,15 @@ class App_sms extends MX_Controller {
                    $this->session->set_flashdata('msg_error', $json->errors->number[0].' Please contact the developers.');
                    redirect( base_url($this->app_name).'/phonebook' );
                 }else{
-                  foreach ($json->result as $item) {  
-                                
-                        $_POST['nama_ortu'] = $item->name;
-                        $_POST['no_hp'] = $item->number;
-                        $_POST['nis_siswa'] = $_POST['nis_siswa'];
-                        $_POST['keterangan'] = $_POST['keterangan'];
-                  }
-                }
-                $this->load->library('uidcontroll');
-                if( $this->uidcontroll->insertData('ja_ortu', bindProcessing($_POST) ) !== FALSE){
+                    $this->load->library('uidcontroll');
+                    if( $this->uidcontroll->insertData('ja_ortu', bindProcessing($_POST) ) !== FALSE){
 
-                //var_dump($_POST);
-                $this->session->set_flashdata('msg_success', 'Sukses menambahkan kontak');
+                    //var_dump($_POST);
+                    $this->session->set_flashdata('msg_success', 'Sukses menambahkan kontak');
 
-              }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
+                  }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
+               }
+
 
               }
             }

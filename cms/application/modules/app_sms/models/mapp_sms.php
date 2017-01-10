@@ -28,6 +28,18 @@ class Mapp_sms extends CI_Model{
         }else return null;
     }
 
+    public function getPhonebookKelas(){
+        
+        $this->db->select('ja_ortu.*, ja_ortu.id as id2, ja_kelas.*');
+        $this->db->from('ja_ortu');
+        $this->db->join('ja_kelas', 'ja_kelas.id_kelas=ja_ortu.group_id', 'inner');
+        $this->db->order_by('ja_kelas.id_kelas');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->result_array();
+        }else return null;
+    }
+
     public function grapPhonebook($initial_id){
         
         $this->db->select('*');
@@ -110,6 +122,18 @@ class Mapp_sms extends CI_Model{
         if($query->num_rows() > 0)return $query->row_array();
         else return null;
     }    
+
+    public function grapOrtu2($initial_id){
+        $this->db->select('*')
+                 ->from('ja_ortu')
+                 ->join('ja_siswa', 'ja_ortu.nis_siswa=ja_siswa.nis')
+                 ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
+        $this->db->where('nama_ortu', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->result_array();
+        else return null;
+    }    
+
 
     public function getKelamin($initial_id = ''){
         $this->db->select('kelamin')

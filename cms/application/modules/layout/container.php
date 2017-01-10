@@ -366,6 +366,11 @@
                         </ul>
                     </li>
                     <li class="treeview">
+                        <a href="<?= base_url('app_sms/sms_ortu') ?>">
+                            <i class="fa fa-gears"></i> <span>Kirim SMS</span>
+                        </a>
+                    </li>
+                    <!--li class="treeview">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span>Kirim SMS</span>
                             <span class="pull-right-container">
@@ -374,12 +379,12 @@
                         </a>
                         <ul class="treeview-menu">
                             <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/sms_ortu') ?>"><i class="fa fa-circle-o"></i> Ke Ortu Siswa</a></li>
-                            <!--li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> by Phonebook</a></li>
+                            li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> by Phonebook</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/siswa') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/karyawan') ?>"><i class="fa fa-circle-o"></i> Excel</a></li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/hari_libur') ?>"><i class="fa fa-circle-o"></i> Kostum</a></li -->
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/hari_libur') ?>"><i class="fa fa-circle-o"></i> Kostum</a></li 
                         </ul>
-                    </li>
+                    </li -->
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-gears"></i> <span>Setting</span>

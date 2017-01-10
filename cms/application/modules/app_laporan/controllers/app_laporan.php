@@ -89,7 +89,7 @@ class App_laporan extends MX_Controller {
             $tanggal                    =  $this->input->get('tanggal');
         $params['cari']             =  $this->coredb->cari($kelas,$tanggal);
         $params['absen']             =  $this->coredb->detailAbsen($kelas,$tanggal);
-        var_dump($params['absen']);die;
+        // var_dump($params['absen']);die;
         $this->getContent($params);
     }
 

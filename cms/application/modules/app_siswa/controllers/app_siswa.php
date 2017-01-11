@@ -91,7 +91,7 @@ class App_siswa extends MX_Controller {
         $params['siswaKelas']         =  $this->coredb->allSiswaInKelas($kelas);
         $this->load->model('app_websetup/Mapp_websetup');        
         $jam_pulang = $this->Mapp_websetup->grapInOut();
-            //var_dump($jam_pulang[0]['jam_masuk']);die();
+            // var_dump($params['datadbsiswa']);die();
         $params['datadb'] =  $this->coredb->getKelas();
         $validate = 'true';           
         if( $_POST ){

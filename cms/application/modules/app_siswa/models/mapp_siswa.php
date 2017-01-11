@@ -119,14 +119,16 @@ class Mapp_siswa extends CI_Model{
         }
         $tgl      = date('Y-m-d');
         $js = 'JumlahSiswaHadirHariIni';
-        $this->db->select('count(nis) as $js')
-                 ->from('ja_absensi_siswa')
-                 ->where(array('keterangan =' => 'Izin' , 'tanggal =' => $tgl));
+        $this->db->select('count(pin) as $js')
+                 ->from('ja_data_absen')
+                 ->where(array('kehadiran =' => 2 , 'date(jam_masuk) =' => $tgl));
         $query = $this->db->get();
 
         if($query->num_rows() > 0){
             return $query->row_array();
         }else return null;
+
+
     }
 
     public function countHadir($initial_id='')
@@ -177,8 +179,6 @@ class Mapp_siswa extends CI_Model{
                 return $query->row_array();
         }else
          return null;
-
-
     }
 
     public function grapImage($initial_id){
@@ -216,7 +216,7 @@ class Mapp_siswa extends CI_Model{
         $tgl      = date('Y-m-d');
         $this->db->select('count(pin) as hadir')
                  ->from('ja_data_absen')
-                 ->where('date(jam_masuk) =', $tgl);
+                 ->where(array('kehadiran =' => 4, 'date(jam_masuk)' => $tgl));
         $query = $this->db->get();
         if($query->num_rows() > 0){
                 return $query->row_array();
@@ -232,7 +232,7 @@ class Mapp_siswa extends CI_Model{
         $tgl      = date('Y-m-d');
         $this->db->select('count(pin) as hadir')
                  ->from('ja_data_absen')
-                 ->where(array('kehadiran =' => 0, 'date(jam_masuk)' => $tgl));
+                 ->where(array('kehadiran =' => 4, 'date(jam_masuk)' => $tgl));
         $query = $this->db->get();
         if($query->num_rows() > 0){
                 return $query->row_array();

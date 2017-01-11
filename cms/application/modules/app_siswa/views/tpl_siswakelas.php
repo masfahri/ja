@@ -183,33 +183,32 @@
                                                 </td>      
                                                 <td>
                                                     <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
-                                                    <?php if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                    <?php 
+                                                    if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
                                                         echo "checked";
                                                     } ?>>
                                                 </td>
                                                 <td>
                                                     Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
                                                     <?php 
-                                                    if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                          echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
-                                                    } else {
-                                                        for ($i=0; $i < 24 ; $i++) { 
-                                                          echo "<option value='$i' >$i</option>";
-                                                        }
+                                                        if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                              echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
+                                                        } else {
+                                                            for ($i=0; $i < 24 ; $i++) { 
+                                                              echo "<option value='$i' >$i</option>";
+                                                            }
                                                     }?>
                                                     </select>
                                                     Menit :
                                                     <select id='menit_<?php echo $row['nis'] ?>' disabled>
                                                         <?php 
-                                                            $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
                                                             if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                                  echo "<option value='$x' >$x</option>";
+                                                                  echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
                                                             } else {
-                                                                for ($x = 0; $x < 59; $x++) {
-                                                                  echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
+                                                                for ($i=0; $i < 60 ; $i++) { 
+                                                                  echo "<option value='$i' >$i</option>";
                                                                 }
-                                                            }
-                                                        ?>
+                                                        }?>
                                                     </select>
                                                 </td>
                                             <?php 

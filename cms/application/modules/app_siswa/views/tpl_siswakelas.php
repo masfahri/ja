@@ -64,7 +64,7 @@
                     <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
-                        <span class="info-box-text">Siswa Izin Hari ini</span></strong>
+                        <span class="info-box-text">Siswa Izin dan sakit Hari ini</span></strong>
                         <span class="info-box-number"><?php echo $datadbizin['$izin'];?></span>
                     </div>
                     <!-- /.info-box-content -->
@@ -127,7 +127,6 @@
                                         if ( count($siswaKelas) > 0 ) {     
                                             foreach ($siswaKelas as $row) {
                                                 $jamMasuk2 = date('H:i:s', strtotime($row['jam']));
-
                                                 $this->load->model('app_websetup/Mapp_websetup');        
                                                 $jam_masuk = $this->Mapp_websetup->grapInOut();
                                             /*Table*/
@@ -150,7 +149,7 @@
                                                         </script>";
                                             ?>
                                                  <tr>
-                                                <td><a href='pages/examples/invoice.html'><?php echo $row['absen']?></a></td>
+                                                <td><a href='pages/examples/invoice.html'><?php echo $row['absen2']?></a></td>
                                                 <td>
                                                     <?php echo $row['nis']; ?>
                                                         <input type='hidden' id='nis' name='nis' value='<?php echo $row["nis"]; ?>' />
@@ -172,42 +171,47 @@
                                                 </td>
                                                 <td>
                                                     <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
-                                                    <?php if ($row['kehadiran'] == 2) {
+                                                    <?php if ($row['kehadiran'] == 2 && date('Y-m-d', strtotime($row['jam_masuk'])) == $tgl) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
                                                 </td>
                                                 <td>
-                                                    <?php echo $jam_masuk[0]['jam_masuk']." - ".$row['jam_masuk']." || 
-                                                        ".(date('H', strtotime($jam_masuk[0]['jam_masuk']))-date('H', strtotime($row['jam_masuk'])))." ||
-                                                        ".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))." "; ?>
+                                                    <input type="radio" id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
+                                                    <?php if ($row['kehadiran'] == 3 && date('Y-m-d', strtotime($row['jam_masuk'] == $tgl))) {
+                                                        echo "checked";
+                                                    } ?> name='kehadiran_<?php echo $row['nis'];?>' value='3'
+                                                    />
                                                 </td>      
                                                 <td>
                                                     <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
                                                     <?php 
-                                                    if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                    if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                    }elseif($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
                                                         echo "checked";
-                                                    } ?>>
+                                                    }
+
+                                                     ?>>
                                                 </td>
                                                 <td>
                                                     Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
                                                     <?php 
-                                                        if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                              echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
-                                                        } else {
+                                                        if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
                                                             for ($i=0; $i < 24 ; $i++) { 
                                                               echo "<option value='$i' >$i</option>";
                                                             }
+                                                        } else {
+                                                            echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
                                                     }?>
                                                     </select>
                                                     Menit :
                                                     <select id='menit_<?php echo $row['nis'] ?>' disabled>
                                                         <?php 
-                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                                  echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
-                                                            } else {
-                                                                for ($i=0; $i < 60 ; $i++) { 
-                                                                  echo "<option value='$i' >$i</option>";
-                                                                }
+                                                            if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                            for ($i=0; $i < 60 ; $i++) { 
+                                                              echo "<option value='$i' >$i</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
                                                         }?>
                                                     </select>
                                                 </td>

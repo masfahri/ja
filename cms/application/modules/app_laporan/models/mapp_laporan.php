@@ -104,6 +104,15 @@ class Mapp_laporan extends CI_Model{
              ")->result_array();
     }
 
+    public function getAbsensiswa($kelas,$tanggal, $pin){
+
+    return $this->db->query("
+            SELECT ja_siswa.*, ja_data_absen.* FROM ja_data_absen
+            INNER JOIN ja_siswa ON ja_data_absen.pin=ja_siswa.pin
+             WHERE ja_data_absen.id_kelas = $kelas AND (month(jam_masuk) = $tanggal) AND ja_data_absen.pin = $pin")->result_array();
+
+    }
+
     public function detailAbsen($kelas,$tanggal)
     {
         error_reporting(0);

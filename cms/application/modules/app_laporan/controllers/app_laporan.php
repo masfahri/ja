@@ -87,9 +87,13 @@ class App_laporan extends MX_Controller {
         $params['absenKelas']       =  $this->coredb->lapAllClass(); 
             $kelas                      =  $this->input->get('kelas');
             $tanggal                    =  $this->input->get('tanggal');
+            $all = array(
+                $kelas => $this->input->get('kelas'), 
+             );
         $params['cari']             =  $this->coredb->cari($kelas,$tanggal);
-        $params['absen']             =  $this->coredb->detailAbsen($kelas,$tanggal);
-        // var_dump($params['absen']);die;
+        $params['absen']            =  $this->coredb->detailAbsen($kelas,$tanggal);
+
+        // $params['detil']            =  $this->coredb->detil($pin);
         $this->getContent($params);
     }
 
@@ -103,6 +107,15 @@ class App_laporan extends MX_Controller {
         $this->getContent($params);
     }
 
-    
+    public function getSiswa()
+    {
+        $kelas          = $this->input->post('kelas');
+        $tanggal        = $this->input->post('tanggal');
+        $pin            = $this->input->post('pin');
+
+        $hasil = $this->coredb->getAbsensiswa($kelas, $tanggal, $pin);
+        var_dump($hasil);
+
+    }
 }
 ?>

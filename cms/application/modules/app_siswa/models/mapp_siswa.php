@@ -64,7 +64,7 @@ class Mapp_siswa extends CI_Model{
             $this->db->where('ja_siswa.id_kelas', $initial_id);
         }
             $tgl = date('Y-m-d');
-            $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.pin as pin2, ja_siswa.id_kelas')
+            $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.absen as absen2, ja_siswa.pin as pin2, ja_siswa.id_kelas')
 
                      ->select('max(date(jam_masuk)) as jm')
                      ->select('date(jam_pulang) as jp')
@@ -73,7 +73,7 @@ class Mapp_siswa extends CI_Model{
                      ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
                      ->group_by('ja_siswa.nis')
-                     ->order_by('ja_siswa.nis', 'ASC');
+                     ->order_by('ja_siswa.pin', 'ASC');
             $query = $this->db->get();
                 if($query->num_rows() > 0){
                         return $query->result_array();
@@ -172,7 +172,9 @@ class Mapp_siswa extends CI_Model{
         $tgl      = date('Y-m-d');
         $this->db->select('count(pin) as $izin')
                  ->from('ja_data_absen')
-                 ->where(array('kehadiran =' => 2, 'date(jam_masuk)' => $tgl));
+                 ->where(array('kehadiran =' => 2, 'date(jam_masuk)' => $tgl))
+                 ->or_where(array('kehadiran =' => 3));
+
 
         $query = $this->db->get();
         if($query->num_rows() > 0){
@@ -278,6 +280,7 @@ class Mapp_siswa extends CI_Model{
                         while($Response=fgets($Connect, 1024)){
                             $buffer=$buffer.$Response;
                         }
+
                         $buffer = $this->Parse_Data($buffer,"<GetAttLogResponse>","</GetAttLogResponse>");
                         $buffer = explode("\r\n",$buffer);
                         for($a=0;$a<count($buffer);$a++){
@@ -295,7 +298,7 @@ class Mapp_siswa extends CI_Model{
                                 $Verified2[$a] = $Verified;
                                 $dapet = $a;   
                                 $dapet2 = $a; 
-                                //var_dump($Status2);
+
                                 
                             }
                          }    
@@ -330,6 +333,7 @@ class Mapp_siswa extends CI_Model{
                                                     'jam_masuk'  => $DateTime2[$ad],
                                                     'ver'        => $Verified2[$ad],
                                                     'status'     => $Status2[$ad],
+                                                    'kehadiran'  => '4',
                                                     'sms_status' => '1',
                                                     'telat'      => '0',
                                                      );
@@ -341,18 +345,19 @@ class Mapp_siswa extends CI_Model{
                                                     'jam_masuk'  => $DateTime2[$ad],
                                                     'ver'        => $Verified2[$ad],
                                                     'status'     => $Status2[$ad],
+                                                    'kehadiran'  => '4',
                                                     'sms_status' => '1',
                                                     'telat'      => '1',
                                                      );
                                         }
 
                                         $this->db->insert('ja_data_absen', $ins);
-                                     $kelas = $this->db->select('*')
-                                             ->join('ja_siswa', 'ja_data_absen.pin=ja_siswa.pin','left')
-                                             ->where('ja_data_absen.pin', $PIN2[$ad])
-                                             ->from('ja_data_absen')
-                                             ->get()
-                                             ->result_array();
+                                        $kelas = $this->db->select('*')
+                                                         ->join('ja_siswa', 'ja_data_absen.pin=ja_siswa.pin','left')
+                                                         ->where('ja_data_absen.pin', $PIN2[$ad])
+                                                         ->from('ja_data_absen')
+                                                         ->get()
+                                                         ->result_array();
                                         $ins2 = array(                       
                                                 'id_kelas'   => $kelas[0]['id_kelas'],
                                                  );

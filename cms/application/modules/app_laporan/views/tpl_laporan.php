@@ -45,12 +45,12 @@
                         <form method="get" action="<?= base_url('app_laporan/search') ?>">
                           <div class="col-md-6">
                             <div class="input-group">
-                              <select name="kelas" id="" class="form-control" required>
+                              <select name="kelas" id="kelas" class="form-control" required>
                               <option value="">== PILIH KELAS ==</option>
                                 <?php
                                 if (count($absenKelas) > 0) {
                                   foreach ($absenKelas as $row) {
-                                    echo "<option value=".$row['id_kelas'].">".$row['Nama_Kelas']."</option>";  
+                                    echo "<option value=".$row['id_kelas']." ".($row['id_kelas'] == $this->input->get('kelas')?'selected':'').">".$row['Nama_Kelas']."</option>";                                        
                                   }
                                 }
                                 ?>
@@ -62,8 +62,9 @@
                           </div>
                           <div class="col-md-4">
                             <div class="input-group">
-                              <select name="tanggal" id="" class="form-control" required>
-                              <option value="">== PILIH BULAN ==</option>
+                              <select name="tanggal" id="tanggal" class="form-control" required>
+                              <option value=""
+                              >== PILIH BULAN ==</option>
                                 <?php
                                   $bln = array(1=>"Januari","Februari",
                                                   "Maret","April","Mei",
@@ -71,8 +72,7 @@
                                                   "September","Oktober","November","Desember"
                                               );
                                   for($bulan=1; $bulan<=12; $bulan++){
-                                    if($bulan<=9) { echo "<option value='0$bulan'>$bln[$bulan]</option>"; }
-                                      else { echo "<option value='$bulan'>$bln[$bulan]</option>"; }
+                                    echo "<option value='0$bulan' ".(($this->input->get('tanggal')=='0'.$bulan)?'selected':'').">$bln[$bulan]</option>"; 
                                     }
                                 ?>
                               </select>
@@ -105,14 +105,15 @@
                           </thead>
                           <tbody>
                           <?php 
-                            $i      = 1;
                             if ( count($cari) > 0 ) {   
-                                foreach ($cari as $row) {
+                                  for ($i=0; $i < count($cari); $i++) { 
+                                    # code...
+                                  
                                     echo '<tr>';
-                                    echo "<td>".$row['absen']."</a></td>";
-                                    echo "<td>".$row['nis']."</td>";
-                                    echo "<td>".$row['nama_panggilan']."</td>";
-                                    echo "<td><a onclick='javascript:result('".$row['nis']."')' data-toggle='modal' data-target='#myModal".$row['nis']."'>".$row['jh']."</a></td>";
+                                    echo "<td>".$cari[$i]['absen']."</a></td>";
+                                    echo "<td>".$cari[$i]['nis']."</td>";
+                                    echo "<td>".$cari[$i]['nama_panggilan']."</td>";
+                                    echo "<td><a href='#' class='detail' data-toggle='modal' data-target='#myModal' id='detail_".$i."'>".$cari[$i]['jh']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
                                     echo "<td></td>";
                                     echo "<td></td>";
                                     echo "<td></td>";
@@ -151,11 +152,7 @@
     </section>
     <!-- /.content -->
 </div>
-<?php                             
-    if ( count($cari) > 0 ) {   
-      foreach ($cari as $row) {
-?>
-<div class="modal fade" id="myModal<?php echo $row['nis'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -207,7 +204,6 @@
     </div>
   </div>
 </div>
-<?php  }}?>
 
 <!-- /.content-wrapper -->
     <?php endif; ?>
@@ -218,6 +214,22 @@ function result(nis) {
 }
 
   $(function () {
+
+    // AJAX POST GET DETAIL SISWA
+      $( ".detail" ).click(function(nis) {
+        var pin = $('.pin').val();
+        var kelas = $('#kelas').val();
+        var month = $('#tanggal').val();
+           $.ajax({
+                  type:'POST',
+                  url:'<?php echo base_url("app_laporan/getSiswa"); ?>',
+                  data:{'kelas':kelas,'tanggal':month, 'pin':pin},
+                  success:function(data){
+                      $('#ortu2').html(data);
+                  }
+              });
+      });   
+
     /* ChartJS
      * -------
      * Here we will create a few charts using ChartJS

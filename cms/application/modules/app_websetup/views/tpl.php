@@ -1,205 +1,242 @@
-<!-- Page Content -->
-<div class="md-card" data-uk-grid-margin>
-    <div class="md-card-content">
-        <h3 class="heading_a">Settings</h3>
-        <hr/>
-        <ul class="uk-tab" data-uk-tab="{connect:'#tabs_anim1', animation:'scale'}">
-            <li class="uk-active"><a href="#">Website Settings</a></li>
-            <li><a href="#">Website Contact</a></li>
-            <li><a href="#">Website Social Media</a></li>
-        </ul>
-        <ul id="tabs_anim1" class="uk-switcher uk-margin">
-            <li>
-                <!-- OUTPUT MESSAGE -->
-                <?= $this->messagecontroll->showMessage() ?>
-                    <!-- OUTPUT MESSAGE -->
-                    <?php if( $this->initial_template == '' ): ?>
-                        <form action="<?= base_url('app_websetup') ?>" method="post" enctype="multipart/form-data">
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <select id="select_demo_1" data-md-selectize name="status" onchange="websiteReboot(this)">
-                                        <option value="">Website Status</option>
-                                        <?php
-                                        $dataStatus =  array('enable', 'disable');
-                                        foreach($dataStatus as $row){
-                                            if( $row == rebackPost('status', $datadb['status']) )$sel = 'selected';
-                                            else $sel = '';
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Setup</a></li>
+        <li class="active">Check for update</li>
+      </ol>
+    </section>
+    <?php if($this->initial_template == '' || $this->initial_template == 'check_for_update'): ?>
 
-                                            echo '<option value="'.$row.'">'.$row.'</option>';
-                                        }
-                                    ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <select id="select_demo_2" data-md-selectize name="active_lang">
-                                        <option value="">Website language</option>
-                                        <?php
-                                        foreach($datadb_lang as $row){
-                                            
-                                            if( $row['countries_id'] == $datadb['active_lang'] )$sel = 'selected';
-                                            else $sel = '';
-                                            
-                                            echo '<option value="'.$row['countries_id'].'" '.$sel.'>'.$row['countries_name_flag'].'</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1 uk-row-first">
-                                    <div class="user_heading_avatar">
-                                        <div class="thumbnail">
-                                            <?php
-                                            if( file_exists( getThumbnailsImage($datadb['file'], $datadb['extention']) ) ){
-                                                echo '<img src="'.base_url().getThumbnailsImage($datadb['file'], $datadb['extention']).'"/>';
-                                            }else{
-                                                echo '<img src="'.base_url().'"assets/img/avatars/avatar_11.png"/>';
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <span>&nbsp;</span>
-                                    <div class="uk-grid">
-                                        <div class="uk-width-1-1">
-                                            <div class="uk-form-file md-btn md-btn-primary">
-                                                Select Website logo
-                                                <input id="form-file" type="file" name="fileupl" />
-                                            </div>
-                                            <p>File image must be in extention <b>(JPG, JPEG, PNG)</b> </p>
-                                            <p>File image must be in size <b>( 110 x  94 )</b> </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1 uk-row-first">
-                                    <div class="user_heading_avatar">
-                                        <div class="thumbnail">
-                                            <?php
-                                            if( file_exists( $datadb['favicon'] ) ){
-                                                echo '<img src="'.base_url().$datadb['favicon'].'"/>';
-                                            }else{
-                                                echo '<div class="no-image"><span class="glyphicon glyphicon-picture"></span></div>';
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <span>&nbsp;</span>
-                                    <div class="uk-grid">
-                                        <div class="uk-width-1-1">
-                                            <div class="uk-form-file md-btn md-btn-primary">
-                                                Select Website Favicon
-                                                <input id="form-file" type="file" name="fileico" />
-                                            </div>
-                                            <p>File image must be in extention <b>(png)</b> </p>
-                                            <p>File image must be in size <b>( 32 x  32 )</b> </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <h3 class="heading_a uk-margin-medium-bottom">Google Analytics</h3>
-                                    <div class="uk-form-row">
-                                        <textarea cols="30" rows="4" class="md-input" name="google_analytics">
-                                            <?= $datadb['google_analytics'] ?>
-                                        </textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="uk-width-large-1-4 uk-width-medium-2-2 uk-grid-margin uk-row-first">
-                                <div class="uk-input-group">
-                                    <button class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light">Save</button>
-                                    <a href="javascript:window.history.go(-1);" class="md-btn md-btn-danger md-btn-wave-light waves-effect waves-button waves-light">Cancel</a>
-                                </div>
-                            </div>
-                        </form>
-                        <?php endif; ?>
-            </li>
-            <li>
-                <!-- OUTPUT MESSAGE -->
-                <?= $this->messagecontroll->showMessage() ?>
-                    <!-- OUTPUT MESSAGE -->
-                    <?php if( $this->initial_template == '' ): ?>
-                        <form action="<?= base_url('app_websetup').'/contact' ?>" method="post" enctype="multipart/form-data">
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <label>Use delimiter <b>( # )</b> if you have more than 1 email address,</label>
-                                    <label><b>Example: email1@yahoo.com#email2@gmail.com</b></label>
-                                    <span>&nbsp;</span>
-                                    <input class="md-input" type="text" style="width:90%" name="contact_email" value="<?= $datadb2['contact_email'] ?>" />
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <label>Contact Phone</label>
-                                    <span>&nbsp;</span>
-                                    <input class="md-input" type="text" style="width:90%" name="contact_phone" value="<?= $datadb2['contact_phone'] ?>" />
-                                </div>
-                            </div>
-                            <div class="uk-grid">
-                                <div class="uk-width-medium-1-1">
-                                    <label>Office Address</label>
-                                    <span>&nbsp;</span>
-                                    <textarea id="wysiwyg_tinymce" cols="30" rows="5" name="contact_office">
-                                        <?= $datadb2['contact_office'] ?>
-                                    </textarea>
-                                </div>
-                            </div>
-                            <div class="uk-width-large-1-4 uk-width-medium-2-2 uk-grid-margin uk-row-first">
-                                <div class="uk-input-group">
-                                    <button class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light">Save</button>
-                                    <a href="javascript:window.history.go(-1);" class="md-btn md-btn-danger md-btn-wave-light waves-effect waves-button waves-light">Cancel</a>
-                                </div>
-                            </div>
-                        </form>
-                        <?php endif; ?>
-            </li>
-            <li>
-                <?= $this->messagecontroll->showMessage() ?>
-                    <!-- OUTPUT MESSAGE -->
-                <?php if( $this->initial_template == '' ): ?>
-                    <br/>
-                    <form action="<?= base_url('app_websetup/social') ?>" method="post" enctype="multipart/form-data">    
-                        <div class="uk-width-medium-1-1">
-                            <div class="uk-form-row">
-                                <div class="uk-grid">
-                                    <div class="uk-width-medium-1-3">
-                                        <label class="uk-icon-hover uk-icon-facebook">&nbsp;Facebook</label>
-                                        <input value="<?= rebackPost('facebook', $datadb3['facebook'])  ?>" type="text" class="md-input" name="facebook" />
-                                    </div>
-                                    <div class="uk-width-medium-1-3">
-                                        <label class="uk-icon-hover uk-icon-twitter">&nbsp;Twitter</label>
-                                        <input value="<?= rebackPost('twitter', $datadb3['twitter'])  ?>" type="text" class="md-input" name="twitter" />
-                                    </div>
-                                    <div class="uk-width-medium-1-3">
-                                        <label class="uk-icon-hover uk-icon-google-plus">&nbsp;Google</label>
-                                        <input value="<?= rebackPost('google', $datadb3['google'])  ?>" type="text" class="md-input" name="google" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="uk-form-row">
-                                <label class="uk-icon-hover uk-icon-instagram">&nbsp;Instagram</label>
-                                <input value="<?= rebackPost('instagram', $datadb3['instagram'])  ?>" type="text" class="md-input" name="instagram" />
-                            </div>
-                            <div class="uk-form-row">
-                                <label class="uk-icon-hover uk-icon-youtube">&nbsp;Youtube</label>
-                                <input value="<?= rebackPost('youtube', $datadb3['youtube'])  ?>" type="text" class="md-input" name="youtube" />
-                            </div>
-                            <div class="uk-width-large-1-4 uk-width-medium-2-2 uk-grid-margin uk-row-first">
-                                    <div class="uk-input-group">
-                                        <button class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light">Save</button>
-                                        <a href="javascript:window.history.go(-1);" class="md-btn md-btn-danger md-btn-wave-light waves-effect waves-button waves-light">Cancel</a>
-                                    </div>
-                                </div>
-                        </div>
-                    </form>
-                <?php endif; ?>
-            </li>
-        </ul>
-    </div>
-</div>
 
-    <!-- End Container -->
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Check for update</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <!-- OUTPUT MESSAGE -->
+            <?= $this->messagecontroll->showMessage() ?>
+            <form action="<?= base_url('app_websetup/check_for_update') ?>" method="post" class="form-horizontal">
+                <input type="hidden" name="update" value="1"/ >
+                <button class="btn btn-info">Update</button>
+            </form>
+
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>IP Address</th>
+                  <th>Key</th>
+                  <th>Keterangan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <?php 
+                    if( count($datadb) > 0 ){
+                        foreach($datadb as $row){   ?>            
+                                <tr>
+                                    <td><span><?php echo $row['id'] ?></span></td>
+                                    <td>
+                                        <a href="<?php echo base_url($this->app_name).'/fp_edit/'.$row['id']; ?>"><?php echo $row['ip']?></a>
+                                    </td>
+                                    <td><span><?php echo $row['key'] ?></span></td>
+                                    <td><span><?php echo $row['keterangan'] ?></span></td>
+                                    <td><?php 
+                                          if($row['ip'] != '' && $row['key'] != '') {
+                                                $IP=$row['ip'];
+                                                $Key=$row['key'];
+                      
+                                            $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+
+                                            if($Connect){
+                                              $soap_request="<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
+                                              $newLine="\r\n";
+                                              fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                                                fputs($Connect, "Content-Type: text/xml".$newLine);
+                                                fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                                                fputs($Connect, $soap_request.$newLine);
+                                              $buffer="";
+                                              while($Response=fgets($Connect, 1024)){
+                                                $buffer=$buffer.$Response;
+                                                
+                                              }
+                                              echo "<small class='label bg-green'>Koneksi Ke Mesin Absen (".$row['keterangan'].") Sukses</small>";
+                                            }else {
+                                               echo "<small class='label bg-red'>Koneksi Ke Mesin Absen (".$row['keterangan'].") Gagal</small>";
+                                            
+                                            }
+                                            }
+                                            else{
+                                                  echo "<small class='label bg-red'>Data Fingerprint belum lengkap</small>";
+                                             }
+
+                                    ?></td>                                                                  
+                                    <td><a href="<?php echo base_url($this->app_name).'/fp_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/fp_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
+                                </tr>
+                      <?php  }}else{ ?>
+                                <tr>
+                                    <td class="uk-text-center"><span class="uk-text-small uk-text-muted uk-text-nowrap">Tidak ada data</span></td>
+                                    <td>
+                                    </td>
+                                    <td><span class="uk-text-danger"></span></td>
+                                    <td></td>
+                                    <td></td>                                        
+                                </tr>
+                      <?php  }
+                      ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>IP Address</th>
+                  <th>Key</th>
+                  <th>Keterangan</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+    <?php elseif( $this->initial_template == 'fp_add'): ?>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Tambah Mesin Fingerprint</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <!-- OUTPUT MESSAGE -->
+            <?= $this->messagecontroll->showMessage() ?>
+            <!-- form start -->
+            <form action="<?= base_url('app_websetup/fp_add') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">IP Mesin</label>
+
+                  <div class="col-sm-10">
+                   <input type="text" class="form-control" id="ip" name="ip" placeholder="Input IP Mesin">
+                  </div>
+                </div>              
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Key</label>
+
+                  <div class="col-sm-10">
+                   <input type="text" class="form-control" id="key" name="key" placeholder="Input Key">
+                  </div>
+                </div>  
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Keterangan</label>
+
+                  <div class="col-sm-10">
+                   <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
+                  </div>
+                </div>                                                                                                                      
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <a class="btn btn-default" href="javascript:window.history.go(-1);">Batal</a>
+                <button class="btn btn-info pull-right">Simpan</button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+    <?php elseif( $this->initial_template == 'fp_edit'): ?>
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Edit Mesin Fingerprint</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <!-- OUTPUT MESSAGE -->
+            <?= $this->messagecontroll->showMessage() ?>
+            <!-- form start -->
+            <form action="<?= base_url( $this->app_name ).'/fp_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">IP Mesin</label>
+
+                  <div class="col-sm-10">
+                   <input type="text" class="form-control" id="ip" name="ip" value="<?= rebackPost('ip', $datadb['ip']) ?>" placeholder="Input IP Mesin">
+                  </div>
+                </div>              
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Key</label>
+
+                  <div class="col-sm-10">
+                   <input type="text" class="form-control" id="key" name="key" value="<?= rebackPost('key', $datadb['key']) ?>" placeholder="Input Key">
+                  </div>
+                </div>  
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Keterangan</label>
+
+                  <div class="col-sm-10">
+                   <textarea class="form-control" id="keterangan" name="keterangan"><?= rebackPost('keterangan', $datadb['keterangan']) ?></textarea>
+                  </div>
+                </div>                                                                                                                      
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <a class="btn btn-default" href="javascript:window.history.go(-1);">Batal</a>
+                <button class="btn btn-info pull-right">Simpan</button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->    
+    <?php endif; ?>
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- page script -->
+<script>
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+</script>

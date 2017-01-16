@@ -493,16 +493,21 @@
                         </a>
                     </li>
                     <li class="header">SETUP</li>
-                    <li class="treeview">
+                    <li class="treeview <?php if($this->uri->segment(2)=="fp"){echo "active ";}?>">
                         <a href="<?= base_url('app_websetup/fp') ?>">
                             <i class="fa fa-gears"></i> <span>Pengaturan Fingerprint</span>
                         </a>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview <?php if($this->uri->segment(2)=="in_out"){echo "active ";}?>">
                         <a href="<?= base_url('app_websetup/in_out') ?>">
                             <i class="fa fa-gears"></i> <span>Pengaturan In / Out</span>
                         </a>
-                    </li>                                          
+                    </li>  
+                    <li class="treeview <?php if($this->uri->segment(2)=="check_for_update"){echo "active ";}?>">
+                        <a href="<?= base_url('app_websetup/check_for_update') ?>">
+                            <i class="fa fa-gears"></i> <span>Check for update</span>
+                        </a>
+                    </li>                                                                  
                 </ul>
             </section>
             <!-- /.sidebar -->

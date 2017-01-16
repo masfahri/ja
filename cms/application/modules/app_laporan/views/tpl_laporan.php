@@ -113,7 +113,7 @@
                                     echo "<td>".$cari[$i]['absen']."</a></td>";
                                     echo "<td>".$cari[$i]['nis']."</td>";
                                     echo "<td>".$cari[$i]['nama_panggilan']."</td>";
-                                    echo "<td><a href='#' class='detail' data-toggle='modal' data-target='#myModal' id='detail_".$i."'>".$cari[$i]['jh']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
+                                    echo "<td><a href='#' class='detail' onclick='getSiswa(".$cari[$i]['pin'].")' id='detail_".$i."'>".$cari[$i]['jh']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
                                     echo "<td></td>";
                                     echo "<td></td>";
                                     echo "<td></td>";
@@ -155,49 +155,7 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel"><?php echo $row["nama_siswa"] ?></h4>
-        <?php echo $row["nis"] ?>
-      </div>
-      <div class="modal-body">
-      <form action="#" name="fres" id="fres">
-        <div class="uk-width-medium-1-2">
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Hari</th>
-              <th>Jam Masuk</th>
-              <th>Jam Pulang</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-            </thead>
-            <tbody>            
-                            <tr>
-                                <td><span></span></td>
-                                <td></td>
-                                <td><span><?php echo $row['jam_masuk']; ?></span></td>
-                                <td><span></span></td>
-                                <td><span></span></td>
-                                <td></td>       
-                            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-              <th>ID</th>
-              <th>Hari</th>
-              <th>Jam Masuk</th>
-              <th>Jam Pulang</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-            </tfoot>
-          </table>
-        </div>
-      </form>
-      </div>
+      <div id="nis2" ></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
@@ -213,22 +171,29 @@ function result(nis) {
   document.fres.nis.value = nis;
 }
 
-  $(function () {
 
     // AJAX POST GET DETAIL SISWA
-      $( ".detail" ).click(function(nis) {
-        var pin = $('.pin').val();
-        var kelas = $('#kelas').val();
-        var month = $('#tanggal').val();
-           $.ajax({
-                  type:'POST',
-                  url:'<?php echo base_url("app_laporan/getSiswa"); ?>',
-                  data:{'kelas':kelas,'tanggal':month, 'pin':pin},
-                  success:function(data){
-                      $('#ortu2').html(data);
-                  }
-              });
-      });   
+    // 
+    function getSiswa(nis){
+      var pin = nis;
+      var kelas = $('#kelas').val();
+      var month = $('#tanggal').val();
+         $.ajax({
+                type:'POST',
+                url:'<?php echo base_url("app_laporan/getSiswa"); ?>',
+                data:{'kelas':kelas,'tanggal':month, 'pin':pin},
+                success:function(data){
+                    $('#myModal').modal('show');
+                    //$('#ortu2').html(data);
+                    $('#nis2').html(data);
+                }
+            });
+
+
+    }
+
+  $(function () {
+
 
     /* ChartJS
      * -------

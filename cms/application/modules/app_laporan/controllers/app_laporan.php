@@ -114,8 +114,62 @@ class App_laporan extends MX_Controller {
         $pin            = $this->input->post('pin');
 
         $hasil = $this->coredb->getAbsensiswa($kelas, $tanggal, $pin);
-        var_dump($hasil);
 
+        echo '
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div id="nis2" ></div>
+                  <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel">'.$hasil[0]->nama_siswa.'</h4>
+                  '.$hasil[0]->nis.'
+                </div>
+                <div class="modal-body">
+                <form action="#" name="fres" id="fres">
+                  <div class="uk-width-medium-1-2">
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Hari</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Pulang</th>
+                        <th>Status</th>
+                      </tr>
+                      </thead>
+                      <tbody>';
+
+        if(count($hasil) > 0){
+            $i = 1;
+            foreach ($hasil as $key => $value) {
+
+                  echo '            
+                                      <tr>
+                                          <td><span>'.$i++.'</span></td>
+                                          <td>'.date('Y-m-d', strtotime($value->jam_masuk)).'</td>
+                                          <td><span>'.date('H:i:s', strtotime($value->jam_masuk)).'</span></td>
+                                          <td><span></span></td>
+                                          <td><span>'.$value->keterangan.'</span></td>
+                                      </tr>
+
+                  ';
+
+
+            }
+        echo '                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Hari</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Pulang</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                      </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </form>
+                </div>';
+        }
     }
 }
 ?>

@@ -70,6 +70,19 @@ class App_websetup extends MX_Controller {
         }      
     }
 
+    /* Start Update server Function */    
+    public function check_for_update() {
+      if($_POST){
+        echo "checking...";
+          $this->load->library('github_updater');
+        echo $this->github_updater->update() ? 'SUCCESS' : 'FAILED';
+
+        die;
+
+      }
+      $this->getContent();
+    }
+
     /* Start In/Out Function */    
     public function in_out() {
       $params['datadbkelas'] =  $this->Mapp_siswa->getKelas(); 

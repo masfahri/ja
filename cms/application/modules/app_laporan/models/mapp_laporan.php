@@ -98,7 +98,7 @@ class Mapp_laporan extends CI_Model{
                 JOIN ja_kelas
                     ON ja_siswa.id_kelas=ja_kelas.id_kelas
                     
-                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)
+                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)AND kehadiran IN('4','3','2') 
                 GROUP BY nama_panggilan  
                 ORDER BY ja_siswa.pin ASC
              ")->result_array();
@@ -106,10 +106,16 @@ class Mapp_laporan extends CI_Model{
 
     public function getAbsensiswa($kelas,$tanggal, $pin){
 
-    return $this->db->query("
-            SELECT ja_siswa.*, ja_data_absen.* FROM ja_data_absen
+    $query = $this->db->query("
+            SELECT ja_kategori_izin.keterangan, ja_siswa.*, ja_data_absen.* FROM ja_data_absen
             INNER JOIN ja_siswa ON ja_data_absen.pin=ja_siswa.pin
-             WHERE ja_data_absen.id_kelas = $kelas AND (month(jam_masuk) = $tanggal) AND ja_data_absen.pin = $pin")->result_array();
+            INNER JOIN ja_kategori_izin ON ja_data_absen.kehadiran=ja_kategori_izin.id
+
+             WHERE ja_data_absen.id_kelas = '$kelas' AND (month(ja_data_absen.jam_masuk) = '$tanggal') AND ja_data_absen.pin = '$pin'");
+
+        if($query->num_rows() > 0){
+            return $query->result();
+        }else return null;
 
     }
 

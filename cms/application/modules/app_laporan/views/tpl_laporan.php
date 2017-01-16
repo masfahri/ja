@@ -45,12 +45,12 @@
                         <form method="get" action="<?= base_url('app_laporan/search') ?>">
                           <div class="col-md-6">
                             <div class="input-group">
-                              <select name="kelas" id="kelas" class="form-control" required>
+                              <select name="kelas" id="kelas" class="form-control" id="kelas" onchange="gantikelas(this.value)" required>
                               <option value="">== PILIH KELAS ==</option>
                                 <?php
                                 if (count($absenKelas) > 0) {
                                   foreach ($absenKelas as $row) {
-                                    echo "<option value=".$row['id_kelas']." ".($row['id_kelas'] == $this->input->get('kelas')?'selected':'').">".$row['Nama_Kelas']."</option>";
+                                    echo "<option name=".$row['Nama_Kelas']." value=".$row['id_kelas']." ".($row['id_kelas'] == $this->input->get('kelas')?'selected':'').">".$row['Nama_Kelas']."</option>";
                                   }
                                 }
                                 ?>
@@ -62,9 +62,8 @@
                           </div>
                           <div class="col-md-4">
                             <div class="input-group">
-                              <select name="tanggal" id="tanggal" class="form-control" required>
-                              <option value=""
-                              >== PILIH BULAN ==</option>
+                              <select name="tanggal" id="tanggal" class="form-control" onchange="gantiBulan(this.value)" required>
+                              <option value="">== PILIH BULAN ==</option>
                                 <?php
                                   $bln = array(1=>"Januari","Februari",
                                                   "Maret","April","Mei",
@@ -88,7 +87,8 @@
                           </div>
                         </form>
                         </div><br>
-                        <h3>Laporan Kehadiran Kelas: <?php echo $this->input->get('kelas'); ?></h3>
+                        <h3 id="hasil"></h3>
+                        <h3 id="hasilBulan"></h3>
                         <h4>Tahun: <?php echo date('Y'); ?></h4>
                         <table class="table table-striped">
                           <thead>
@@ -159,6 +159,32 @@
 <!-- /.content-wrapper -->
     <?php endif; ?>
 <script>
+
+function gantikelas(id) {
+      var kelas = id;
+         $.ajax({
+                type:'POST', //HARUS
+                url:'<?php echo base_url("app_laporan/getKelas"); ?>',
+                data:{'kelas':kelas},
+                success:function(data){
+                    $('#hasil').html(data);
+                }
+            });
+}
+
+function gantiBulan(bulan) {
+  var bln = bulan;
+    $.ajax({
+      type:'POST',
+      url:'<?php echo base_url("app_laporan/getBulan"); ?>',
+      data:{'dapetBulan':bln },
+      success:function (result) {
+        alert(result);
+        $('#hasilBulan').html(result);
+      }
+    });
+}
+
 function result(nis) {
   var nis   = nis;
   document.fres.nis.value = nis;

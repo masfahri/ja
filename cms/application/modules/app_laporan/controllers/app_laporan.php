@@ -86,7 +86,6 @@ class App_laporan extends MX_Controller {
         $params['absen']            =  $this->coredb->getabsen();
         $params['absenKelas']       =  $this->coredb->lapAllClass(); 
             $kelas                      =  $this->input->get('kelas');
-            $nmkelas                      =  $this->input->get('namakelas');
             $tanggal                    =  $this->input->get('tanggal');
         $params['cari']             =  $this->coredb->cari($kelas,$tanggal);
         $params['absen']            =  $this->coredb->detailAbsen($kelas,$tanggal);
@@ -103,6 +102,28 @@ class App_laporan extends MX_Controller {
             $tanggal                    =  $this->input->get('tanggal');
         $params['cari']             =  $this->coredb->cari($kelas,$tanggal);
         $this->getContent($params);
+    }
+
+    public function getKelas(){
+        $kelas  = $this->input->post('kelas');
+
+        $hasil = $this->coredb->lapAllClass($kelas);
+
+        echo 'Laporan Kehadiran Kelas: '. $hasil[0]['Nama_Kelas'];
+    }
+
+    public function getBulan()
+    {
+        $bulan = $this->input->post('dapetBulan');
+        $months = array(01 => 'Jan.', 02 => 'Feb.', 03 => 'Mar.', 04 => 'Apr.', 05 => 'May', 06 => 'Jun.', 07 => 'Jul.', 08 => 'Aug.', 09 => 'Sep.', 010 => 'Oct.', 011 => 'Nov.', 012 => 'Dec.');
+
+                        var_dump($months);die;
+            if($months == $bulan){
+
+                echo "HASIL RESULT BULAN" .print_r($months);
+
+            }
+        
     }
 
     public function getSiswa()

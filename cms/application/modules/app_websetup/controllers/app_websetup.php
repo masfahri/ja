@@ -75,9 +75,7 @@ class App_websetup extends MX_Controller {
       if($_POST){
         echo "checking...";
           $this->load->library('github_updater');
-        echo $this->github_updater->update() ? 'SUCCESS' : 'FAILED';
-
-        die;
+          echo $this->github_updater->update() ? 'SUCCESS' : 'FAILED';
 
       }
       $this->getContent();

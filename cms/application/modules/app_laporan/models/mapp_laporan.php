@@ -5,8 +5,11 @@
  */ 
 class Mapp_laporan extends CI_Model{
     
-    public function lapAllClass()
+    public function lapAllClass($id='')
     {
+        if($id != ''){
+            $this->db->where('id_kelas', $id);
+        }
         $this->db->select('*')
                  ->from('ja_kelas')
                  ->order_by('id_kelas', 'ASC');
@@ -16,6 +19,7 @@ class Mapp_laporan extends CI_Model{
         }else
             return null;
     }
+
      public function getabsen($jam='')
     {      
         $tgl      = date('Y-m-d');

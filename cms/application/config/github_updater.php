@@ -33,9 +33,7 @@ $config['current_commit'] = '';
  * 'application/views/admin/test.php'
  * and any other path with the term 'admin' in it.
  */
-$config['ignored_files'] = array('application/config/config.php',
-                                 'application/config/github_updater.php',
-                                 'application/libraries/Github_updater.php');
+$config['ignored_files'] = array('application/config');
 
 /**
  * Flag to indicate if the downloaded and extracted update files

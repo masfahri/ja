@@ -3,17 +3,17 @@
 /**
  * The user name of the git hub user who owns the repo
  */
-$config['github_user'] = '';
+$config['github_user'] = 'masfakhri';
 
 /**
  * The repo on GitHub we will be updating from
  */
-$config['github_repo'] = '';
+$config['github_repo'] = 'ja';
 
 /**
  * The branch to update from
  */
-$config['github_branch'] = '';
+$config['github_branch'] = 'master';
 
 /**
  * The current commit the files are on.
@@ -21,7 +21,7 @@ $config['github_branch'] = '';
  * NOTE: You should only need to set this initially it will be
  * automatically set by the library after subsequent updates.
  */
-$config['current_commit'] = '';
+$config['current_commit'] = '31957303bd503d8b597dc39b6d62bbdcb9385dfd';
 
 /**
  * A list of files or folders to never perform an update on.

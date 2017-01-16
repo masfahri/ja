@@ -85,7 +85,7 @@ class Mapp_laporan extends CI_Model{
                         return $query->result_array();
                 }else return null;
         }
-        $tgl    = date('Y-m-d');
+        $tgl    = date('Y');
         return $this->db->query("
              SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.nama_siswa, ja_siswa.id_kelas, ja_siswa.absen, ja_siswa.nis,
                 ja_data_absen.jam_masuk, ja_data_absen.jam_pulang, ja_data_absen.pin, ja_data_absen.id_kelas, ja_kelas.id_kelas,
@@ -98,7 +98,7 @@ class Mapp_laporan extends CI_Model{
                 JOIN ja_kelas
                     ON ja_siswa.id_kelas=ja_kelas.id_kelas
                     
-                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null)AND kehadiran IN('4','3','2') 
+                WHERE ja_kelas.id_kelas=$kelas AND (month(ja_data_absen.jam_masuk)=$tanggal OR month(ja_data_absen.jam_masuk) is null )AND year(ja_data_absen.jam_masuk) = $tgl
                 GROUP BY nama_panggilan  
                 ORDER BY ja_siswa.pin ASC
              ")->result_array();

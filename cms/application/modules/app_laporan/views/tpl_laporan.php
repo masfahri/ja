@@ -50,7 +50,7 @@
                                 <?php
                                 if (count($absenKelas) > 0) {
                                   foreach ($absenKelas as $row) {
-                                    echo "<option value=".$row['id_kelas']." ".($row['id_kelas'] == $this->input->get('kelas')?'selected':'').">".$row['Nama_Kelas']."</option>";                                        
+                                    echo "<option value=".$row['id_kelas']." ".($row['id_kelas'] == $this->input->get('kelas')?'selected':'').">".$row['Nama_Kelas']."</option>";
                                   }
                                 }
                                 ?>
@@ -83,24 +83,20 @@
                           </div>
                           <div class="col-md-2">
                             <span class="input-group-btn">
-                                <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Cari</button>
-                              </span>
+                              <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Cari</button>
+                            </span>
                           </div>
                         </form>
                         </div><br>
-                        <h3>Laporan Kehadiran Kelas: </h3>
-                        <h4>Tanggal: </h4>
+                        <h3>Laporan Kehadiran Kelas: <?php echo $this->input->get('kelas'); ?></h3>
+                        <h4>Tahun: <?php echo date('Y'); ?></h4>
                         <table class="table table-striped">
                           <thead>
                               <tr>
                                   <th>No. Absen</th>
                                   <th>NIS</th>
                                   <th>Nama Siswa</th>
-                                  <th>Hadir</th>
-                                  <th>Telat</th>
-                                  <th>Alfa</th>
-                                  <th>Sakit</th>
-                                  <th>Izin</th>
+                                  <th>Total</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -112,11 +108,9 @@
                                     echo '<tr>';
                                     echo "<td>".$cari[$i]['absen']."</a></td>";
                                     echo "<td>".$cari[$i]['nis']."</td>";
-                                    echo "<td>".$cari[$i]['nama_panggilan']."</td>";
-                                    echo "<td><a href='#' class='detail' onclick='getSiswa(".$cari[$i]['pin'].")' id='detail_".$i."'>".$cari[$i]['jh']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
-                                    echo "<td></td>";
-                                    echo "<td></td>";
-                                    echo "<td></td>";
+                                    echo "<td><a href='#' class='detail' onclick='getSiswa(".$cari[$i]['pin'].")' id='detail_".$i."'>".$cari[$i]['nama_panggilan']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
+
+                                    echo "<td>".$cari[$i]['jh']."</td>";
                                     echo "<td></td>";
                                     echo "</tr>";
                                     echo '';
@@ -124,7 +118,6 @@
                             }
                             else{
                                   echo '<tr>';
-                                  echo "<td></td>";
                                   echo "<td></td>";
                                   echo "<td></td>";
                                   echo "<td>Pilih Tanggal</td>";

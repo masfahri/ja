@@ -86,10 +86,8 @@ class App_laporan extends MX_Controller {
         $params['absen']            =  $this->coredb->getabsen();
         $params['absenKelas']       =  $this->coredb->lapAllClass(); 
             $kelas                      =  $this->input->get('kelas');
+            $nmkelas                      =  $this->input->get('namakelas');
             $tanggal                    =  $this->input->get('tanggal');
-            $all = array(
-                $kelas => $this->input->get('kelas'), 
-             );
         $params['cari']             =  $this->coredb->cari($kelas,$tanggal);
         $params['absen']            =  $this->coredb->detailAbsen($kelas,$tanggal);
 
@@ -162,7 +160,6 @@ class App_laporan extends MX_Controller {
                         <th>Jam Masuk</th>
                         <th>Jam Pulang</th>
                         <th>Status</th>
-                        <th>Aksi</th>
                       </tr>
                       </tfoot>
                     </table>

@@ -209,10 +209,20 @@ class App_sms extends MX_Controller {
          <input type="hidden" class="form-control" name="kelas" id="kelas" readonly value="'.$value->id_kelas.'"></input>
                   <input type="hidden" class="form-control" name="nama_ortu" id="nama_ortu" readonly value="'.$nama_ortu.'"></input>
                         <div class="col-sm-2" style="padding-right:1px;">
-                                <input type="text" class="form-control" name="no_hp" id="no_hp" readonly value="'.$no_hp.'"></input>
+                                <input type="text" class="form-control" name="no_hp[]" id="no_hp" readonly value="'.$no_hp.'"></input>
                               </div>';
                       }
-          echo '</div>';
+          echo '</div>
+
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
+
+                    <div class="col-sm-10">
+                      <textarea class="form-control" id="message_group" name="message"></textarea>
+                    </div>
+                  </div> 
+
+          ';
           }
         }
       }
@@ -285,6 +295,7 @@ class App_sms extends MX_Controller {
         $params['password'] = $this->coredb->grapSettings('password');        
         $id_kelas = $this->input->post('id_kelas');
         $tipe = $this->input->post('tipe');
+        $message = $this->input->post('message');        
         $validate = 'true';       
         if( $_POST ){
 
@@ -294,7 +305,7 @@ class App_sms extends MX_Controller {
 
             if( $validate !== 'false' ){
               if($_POST['tipe'] == 2) {
-                  error_reporting(1);
+                  error_reporting(0);
 
                     $this->load->model('mapp_sms');
                     $email = $this->mapp_sms->grapSettings('email');
@@ -328,7 +339,6 @@ class App_sms extends MX_Controller {
                     //execute post
                     $result = curl_exec($ch); 
                     $json = json_decode($result);                    
-
                     //close connection
                     curl_close($ch);
 
@@ -336,46 +346,47 @@ class App_sms extends MX_Controller {
                     $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');
                 }else{
                   // disini send by group
-                 error_reporting(1);
+                    $arr = $this->input->post('no_hp');
+                    foreach ($arr as $num) {
+                        error_reporting(0);
+                        $this->load->model('mapp_sms');
+                        $email = $this->mapp_sms->grapSettings('email');
+                        $password = $this->mapp_sms->grapSettings('password');
+                        $device = $this->mapp_sms->grapSettings('device');
+                        //extract data from the post
+                        //set POST variables
+                        $url    = 'http://smsgateway.me/api/v3/messages/send';
+                        $fields = array(
+                            'email'     => $email[0]->value,
+                            'password'  => $password[0]->value,
+                            'device'    => $device[0]->value,
+                            'number'    => $num,
+                            'message'   => $_POST['message'],
+                            'send_at'   => date()
+                        );
+                         $fields_string = '';
+                        //url-ify the data for the POST
+                        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                        rtrim($fields_string, '&');
 
-                    $this->load->model('mapp_sms');
-                    $email = $this->mapp_sms->grapSettings('email');
-                    $password = $this->mapp_sms->grapSettings('password');
-                    $device = $this->mapp_sms->grapSettings('device');
-                    //extract data from the post
-                    //set POST variables
-                    $url    = 'http://smsgateway.me/api/v3/messages/send';
-                    $fields = array(
-                        'email'     => $email[0]->value,
-                        'password'  => $password[0]->value,
-                        'device'    => $device[0]->value,
-                        'number'    => $_POST['no_hp'],
-                        'message'   => $_POST['message'],
-                        'send_at'   => date()
-                    );
+                        //open connection
+                        $ch = curl_init();
 
-                    $fields_string = '';
-                    //url-ify the data for the POST
-                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-                    rtrim($fields_string, '&');
+                        //set the url, number of POST vars, POST data
+                        curl_setopt($ch,CURLOPT_URL, $url);
+                        curl_setopt($ch,CURLOPT_POST, count($fields));
+                        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        //execute post
+                        $result = curl_exec($ch); 
+                        $json = json_decode($result);                    
+                        //close connection
+                        curl_close($ch);
 
-                    //open connection
-                    $ch = curl_init();
+                        //var_dump($_POST);
+                        $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');                
+                    }
 
-                    //set the url, number of POST vars, POST data
-                    curl_setopt($ch,CURLOPT_URL, $url);
-                    curl_setopt($ch,CURLOPT_POST, count($fields));
-                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    //execute post
-                    $result = curl_exec($ch); 
-                    $json = json_decode($result);                    
-                    var_dump($json);  
-                    //close connection
-                    curl_close($ch);
-
-                    //var_dump($_POST);
-                    $this->session->set_flashdata('msg_success', 'Sukses mengirimkan sms');                
                
                 }
               }

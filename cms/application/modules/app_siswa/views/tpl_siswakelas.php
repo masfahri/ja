@@ -115,7 +115,7 @@
                                             <th>Izin</th>
                                             <th>Sakit</th>
                                             <th>Telat</th>
-                                            <th>Waktu Telat</th>
+                                            <th>Jam Telat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -126,11 +126,16 @@
                                         
                                         if ( count($siswaKelas) > 0 ) {     
                                             foreach ($siswaKelas as $row) {
-                                                $jamMasuk2 = date('H:i:s', strtotime($row['jam']));
+                                                $jamMasuk2 = date($row['jam']);
                                                 $this->load->model('app_websetup/Mapp_websetup');        
                                                 $jam_masuk = $this->Mapp_websetup->grapInOut();
                                             /*Table*/
                                                 echo "<script type='text/javascript'>
+                                                            document.addEventListener('DOMContentLoaded', function() {
+
+                                                                var kehadiran = $('input:radio[name=kehadiran_".$row['nis']."]:checked').val();
+
+                                                            });
                                                            function myFunction_".$row['nis']."() {
                                                                 var x = document.getElementById('myCheck_".$row['nis']."').checked;
                                                                 document.getElementById('jam_".$row['nis']."').disabled= false;
@@ -141,9 +146,36 @@
                                                             }
                                                             function myRadio_".$row['nis']."() {
                                                                 var x = document.getElementById('radio_".$row['nis']."').checked;
+                                                                
                                                                 document.getElementById('jam_".$row['nis']."').disabled= true;
                                                                 document.getElementById('menit_".$row['nis']."').disabled= true;
                                                                 document.getElementById('myCheck_".$row['nis']."').checked= false;
+
+                                                                /*
+                                                                 * collection for ajax
+                                                                 */
+                                                                var kehadiran = $('input:radio[name=kehadiran_".$row['nis']."]:checked').val();
+                                                                var pin = $('input[name=pin".$row['pin2']."]').val();
+                                                                var id_kelas = $('input[name=id_kelas".$row['pin2']."]').val();
+
+
+                                                                /*
+                                                                 * AJAX UPDATE KEHADIRAN SISWA
+                                                                 * WARNING MASIH ERROR DI BASE URL
+                                                                 */
+                                                                var url = 'http://192.168.0.105/jempolasik/cms/app_siswa/UpdateKehadiran';
+                                                                $.ajax({
+                                                                        type:'POST',
+                                                                        url: url,
+                                                                        data:{'pin':pin, 'kehadiran':kehadiran, 'id_kelas':id_kelas},
+                                                                        success:function(data){
+                                                                            if(data != ''){
+                                                                                alert(data);
+                                                                            }
+
+                                                                        }
+                                                                });
+
                                                             }  
                                                            
                                                         </script>";
@@ -152,9 +184,9 @@
                                                 <td><a href='pages/examples/invoice.html'><?php echo $row['absen2']?></a></td>
                                                 <td>
                                                     <?php echo $row['nis']; ?>
-                                                        <input type='hidden' id='nis' name='nis' value='<?php echo $row["nis"]; ?>' />
-                                                        <input type='hidden'  name='pin' value='<?php echo $row["pin2"]; ?>' >
-                                                        <input type='hidden' name='id_kelas' value='<?php echo $row["id_kelas"]; ?>' >
+                                                        <input type='hidden' id='nis' name='nis[]' value='<?php echo $row["nis"]; ?>' />
+                                                        <input type='hidden' id="pin"  name='pin<?php echo $row["pin2"]; ?>' value='<?php echo $row["pin2"]; ?>' >
+                                                        <input type='hidden' id="id_kelas" name='id_kelas<?php echo $row["pin2"]; ?>' value='<?php echo $row["id_kelas"]; ?>' >                                                        
                                                 </td>
                                                 <td><?php echo $row['nama_siswa']; ?></td>
                                                 <td>
@@ -185,14 +217,42 @@
                                                 <td>
                                                     <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
                                                     <?php 
-                                                    if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                    }elseif($jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                    if ($row['telat']==1) {
                                                         echo "checked";
                                                     }
 
                                                      ?>>
                                                 </td>
+
                                                 <td>
+                                                    Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
+                                                    <?php 
+                                                        $jamTelat = (date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])));
+                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4) {
+                                                                echo "<option value='$x'>".str_replace('-', '', $jamTelat)."</option>";
+                                                            } else {
+                                                                for ($x = 0; $x < 24; $x++) {
+                                                                  echo "<option value='$x' >$x</option>";
+                                                                }
+                                                            }
+                                                    ?>
+                                                    </select>
+                                                    Menit :
+                                                    <select id='menit_<?php echo $row['nis'] ?>' disabled>
+                                                        <?php 
+                                                            $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
+                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4) {
+                                                                echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
+                                                            } else {
+                                                                for ($x = 0; $x < 59; $x++) {
+                                                                  echo "<option value='$x' >$x</option>";
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </td>
+
+                                                <!-- <td>
                                                     Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
                                                     <?php 
                                                         if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
@@ -214,7 +274,7 @@
                                                             echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
                                                         }?>
                                                     </select>
-                                                </td>
+                                                </td> -->
                                             <?php 
                                             }
                                         }
@@ -223,8 +283,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            <button class="btn btn-success pull-right" type="submit"><i class="fa fa-save"></i> Simpan</button>
                         </form>
                             
                         <!-- /.row -->
@@ -241,28 +299,3 @@
 </div>
 <!-- /.content-wrapper -->
     <?php endif; ?>
-<script type='text/javascript'>
-
-
-
-$(document).ready(function(){ 
-alert(document.getElementById( "nis" ).value);
- // CEK BOK
-   function myFunction_".$row['nis']."() {
-        var x = document.getElementById('myCheck_".$row['nis']."').checked;
-        document.getElementById('jam_".$row['nis']."').disabled= false;
-        document.getElementById('menit_".$row['nis']."').disabled= false;
-        document.getElementById('radio_".$row['nis']."').checked= false;
-        document.getElementById('radioAlpha_".$row['nis']."').checked= false;
-        document.getElementById('radioHadir_".$row['nis']."').checked= true;
-    }
-    function myRadio_".$row['nis']."() {
-        var x = document.getElementById('radio_".$row['nis']."').checked;
-        document.getElementById('jam_".$row['nis']."').disabled= true;
-        document.getElementById('menit_".$row['nis']."').disabled= true;
-        document.getElementById('myCheck_".$row['nis']."').checked= false;
-    }  
-
-});
-   
-</script>

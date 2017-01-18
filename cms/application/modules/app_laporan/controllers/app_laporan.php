@@ -17,6 +17,7 @@ class App_laporan extends MX_Controller {
        $this->accesscontroll->authenticate();
        $this->load->model('m'.strtolower( __CLASS__ ), 'coredb'); 
        parent::__construct();
+       $this->load->library(array('PHPExcel','PHPExcel/IOFactory'));
        $this->init();  
        // initial helper
        $this->load->helper( array(  
@@ -187,6 +188,91 @@ class App_laporan extends MX_Controller {
                   </div>
                 </form>
                 </div>';
+        }
+    }
+
+    public function excel()
+    {
+        $kelas                      =  $this->input->get('kelas');
+        $tanggal                    =  $this->input->get('tanggal');    
+                    
+        $params =  $this->coredb->excel($kelas,$tanggal);
+        if(count($params)>0){
+            $objPHPExcel = new PHPExcel();
+            // Set properties
+            $objPHPExcel->getProperties()
+                  ->setCreator("JempolAsik") //creator
+                    ->setTitle("Laporan Kehadiran Siswa  perBulan");  //file title
+ 
+            $objset = $objPHPExcel->setActiveSheetIndex(0); //inisiasi set object
+            $objget = $objPHPExcel->getActiveSheet();  //inisiasi get object
+ 
+            $objget->setTitle('Sample Sheet'); //sheet title
+            //Warna header tabel
+            $objget->getStyle("A1:E1")->applyFromArray(
+                array(
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => '92d050')
+                    ),
+                    'font' => array(
+                        'color' => array('rgb' => '000000')
+                    )
+                )
+            );
+ 
+            //table header
+            $cols = array("A","B","C","D");
+             
+            $val = array("No Absen","NIS","Nama","Total");
+             
+            for ($a=0;$a<5; $a++) 
+            {
+                $objset->setCellValue($cols[$a].'1', $val[$a]);
+                 
+                //Setting lebar cell
+                $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(25); // NAMA
+                $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25); // ALAMAT
+                $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25); // Kontak
+                $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(25); // Kontak
+             
+                $style = array(
+                    'alignment' => array(
+                        'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                    )
+                );
+                $objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
+            }
+             
+            $baris  = 2;
+            $no=1;
+            foreach ($params as $frow){
+                 
+               //pemanggilan sesuaikan dengan nama kolom tabel
+                $objset->setCellValue("A".$baris, $frow['pin']); //membaca data nama
+                $objset->setCellValue("B".$baris, $frow['nis']); //membaca data alamat
+                $objset->setCellValue("C".$baris, $frow['Nama_Siswa']); //membaca data alamat
+                $objset->setCellValue("D".$baris, $frow['jh']); //membaca data alamat
+                 
+                //Set number value
+                $objPHPExcel->getActiveSheet()->getStyle('E1:E'.$baris)->getNumberFormat()->setFormatCode('0');
+                 
+                $baris++;
+            }
+             
+            $objPHPExcel->getActiveSheet()->setTitle('Data Export');
+ 
+            $objPHPExcel->setActiveSheetIndex(0);  
+            $filename = urlencode("Data".date("Y-m-d H:i:s").".xls");
+               
+              header('Content-Type: application/vnd.ms-excel'); //mime type
+              header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+              header('Cache-Control: max-age=0'); //no cache
+ 
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+            $objWriter->save('php://output');
+        }else{
+            redirect('Excel');
         }
     }
 }

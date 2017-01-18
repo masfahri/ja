@@ -147,6 +147,28 @@ class Mapp_laporan extends CI_Model{
              ")->result_array();
     }
     
+    function excel($kelas,$tanggal){
+        $tgl=('m');
+        $query = $this->db->query("
+            SELECT 
+                count(ja_data_absen.pin) as Hadir, ja_siswa.absen, ja_siswa.nis, ja_siswa.nama_panggilan
+            FROM 
+                ja_siswa
+            LEFT JOIN 
+                ja_data_absen
+                ON
+                    ja_siswa.pin=ja_data_absen.pin
+                    
+            WHERE ja_data_absen.id_kelas=$kelas AND jam_masuk=$tanggal
+            GROUP BY nama_panggilan");
+         
+        if($query->num_rows() > 0){
+            foreach($query->result() as $data){
+                $hasil[] = $data;
+            }
+            return $hasil;
+        }
+    }
     /** SQL DUMP 
     
         SELECT  ja_siswa.pin, ja_siswa.nama_panggilan, ja_siswa.id_kelas, ja_siswa.absen, 

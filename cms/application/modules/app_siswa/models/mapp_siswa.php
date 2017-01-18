@@ -56,6 +56,20 @@ class Mapp_siswa extends CI_Model{
                 }else return null;
     }
 
+    public function getSiswa2($pin='')
+    {
+            $tgl = date('Y-m-d');
+            $this->db->select('*')
+                     ->from('ja_siswa')
+                     ->join('ja_data_absen','ja_siswa.pin=ja_data_absen.pin')
+                     ->where(array('ja_data_absen.pin =' => $pin, 'ja_data_absen.tanggal =' => $tgl));
+            $query = $this->db->get();
+
+                if($query->num_rows() > 0){
+                        return $query->row();
+                }else return null;
+    }
+
     public function allSiswaInKelas($initial_id='')
     {
 

@@ -130,7 +130,11 @@
                           ?>
                           </tbody>
                         </table>
-
+                        <form action="" method="GET">
+                        <input type="text" name="kelas" value="<?php echo $this->input->get('kelas') ?>">
+                        <input type="text" name="tanggal" value="<?php echo $this->input->get('tanggal') ?>">
+                        <a href="<?= base_url('app_laporan/excel') ?>" type="submit" class="btn btn-default" data-dismiss="modal" >PRINT</a>
+                        </form>
                         </div>
                         <!-- /.row -->
                     </div>

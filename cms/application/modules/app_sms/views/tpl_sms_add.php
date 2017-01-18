@@ -60,15 +60,15 @@
                   
 
                   <div name='ortu' id='ortu'></div>
-
-
+                                                                                 
                   <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
 
                     <div class="col-sm-10">
-                      <textarea class="form-control" id="message" name="message"></textarea>
+                      <textarea class="form-control" id="message_personal" name="message"></textarea>
                     </div>
-                  </div>                                                                                                            
+                  </div>   
+
                 </div>
 
                 <div id="layer_group" style="display:none">
@@ -89,16 +89,7 @@
                   </div> 
                   
 
-                  <div name='ortu2' id='ortu2'></div>
-
-
-                  <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">Message</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="message" name="message"></textarea>
-                    </div>
-                  </div>                                                                                                            
+                  <div name='ortu2' id='ortu2'></div>                                                                                                                            
                 </div>
 
               </div>
@@ -399,16 +390,20 @@
       $( "#group_id" ).change(function() {
       
       var id = $('#group_id').val();
-     
+      if(id == 1){
          $.ajax({
                 type:'POST',
                 url:'<?php echo base_url("app_sms/getSiswa"); ?>',
                 data:{'nis':id},
                 success:function(data){
                     $('#ortu2').html(data);
+
                 }
             });
-    });      
+       }
+    });   
+
+
 
     $("#example1").DataTable();
     $('#example2').DataTable({
@@ -427,12 +422,13 @@
           admOptionValue = document.getElementById("type").value;
           if(admOptionValue == nameSelect.value){
               document.getElementById("layer_personal").style.display = "block";
-              document.getElementById("layer_group").style.display = "none";
+              document.getElementById("layer_group").style.display = "none";            
               document.getElementById("tipe").value = "2";                                
           }
           else{
               document.getElementById("layer_personal").style.display = "none";
               document.getElementById("layer_group").style.display = "block";
+              document.getElementById("message_personal").style.display = "none";              
               document.getElementById("tipe").value = "1"; 
           }
       }

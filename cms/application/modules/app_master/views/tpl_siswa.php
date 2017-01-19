@@ -141,89 +141,78 @@
                 </div>
 
               <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Informasi siswa</h3>
-                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                <div class="panel-heading">
+                  <h3 class="panel-title">Informasi Siswa</h3>
+                  <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                       <label for="inputEmail3" class="control-label">NIS</label>
+                       <input type="text" class="form-control" id="nis" name="nis" placeholder="Input NIS"> 
+                    </div>
+                    <div class="col-md-4">
+                       <label for="inputEmail3" class="control-label">ID Finger</label>
+                       <input type="text" class="form-control" id="pin" name="pin" placeholder="Input ID Finger">
+                    </div>
+                    <div class="col-md-4">
+                       <label for="inputEmail3" class="control-label">No. Absen</label>
+                       <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen">
+                    </div>
                   </div>
-                  <div class="panel-body">
-                    <div class="row"> 
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">NIS</label>
-                           <input type="text" class="form-control" id="nis" name="nis" placeholder="Input NIS"> 
-                        </div>
-                      </div>   
-                      <div class="col-md-6">                                            
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">ID Finger</label>
-                           <input type="text" class="form-control" id="pin" name="pin" placeholder="Input ID Finger">
-                        </div>
-                      </div>
-                      <div class="col-md-6">                      
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">No. Absen</label>
-                           <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen">
-                        </div>
-                      </div>
-                      <div class="col-md-6">                     
-                        <div class="form-group">                    
-                          <label for="inputEmail3" class="control-label">Nama</label>
-                           <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" placeholder="Input Nama Siswa">
-                        </div>
-                      </div>                                        
-                      <div class="col-md-6">                
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Nama Panggilan</label>
-                           <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" placeholder="Input Nama Panggilan">
-                        </div> 
-                      </div>   
-                      <div class="col-md-6">                                         
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Jenis Kelamin</label>
-                            <select class="form-control" name="kelamin">
-                            <option value=''>== Pilih Jenis Kelamin ==</option>
-                            <option value='L'>LAKI - LAKI</option>
-                            <option value='P'>PEREMPUAN</option>
-                            </select>                   
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Tempat Lahir</label>
-                           <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Input Tempat Lahir">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Tanggal Lahir</label>
-                            <div class="input-group date">
-                              <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                              </div>
-                              <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir">
-                            </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Agama</label>
-                           <input type="text" class="form-control" id="agama" name="agama">
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="inputEmail3" class="control-label">Alamat</label>
-                           <textarea class="form-control" id="alamat" name="alamat"></textarea>
-                        </div> 
-                      </div>
-                      <div class="col-md-6">                                               
-                        <div class="form-group">
-                          <label for="exampleInputFile" class="control-label">Unggah foto</label>
-                            <input id="form-file" type="file" id="file" name="file">
-                        </div>
-                      </div>                                         
+                  <div class="row">
+                    <div class="col-md-6">
+                      <label for="inputEmail3" class="control-label">Nama</label>
+                      <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" placeholder="Input Nama Siswa"> 
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputEmail3" class="control-label">Nama Panggilan</label>
+                      <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" placeholder="Input Nama Panggilan">
+                    </div>
                   </div>
-                </div>  
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label for="inputEmail3" class="control-label">Jenis Kelamin</label>
+                        <select class="form-control" name="kelamin">
+                          <option value=''>== Pilih Jenis Kelamin ==</option>
+                          <option value='L'>LAKI - LAKI</option>
+                          <option value='P'>PEREMPUAN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputEmail3" class="control-label">Tempat Lahir</label>
+                      <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Input Tempat Lahir">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="inputEmail3" class="control-label">Tanggal Lahir</label>
+                        <div class="input-group date">
+                          <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                          </div>
+                          <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir">
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <label for="inputEmail3" class="control-label">Agama</label>
+                      <select class="form-control" name="agama">
+                          <option value=''>== Pilih Agama ==</option>
+                          <option value='I'>ISLAM</option>
+                          <option value='K'>KHATOLIK</option>
+                          <option value='P'>PROTESTAN</option>
+                          <option value='H'>HINDU</option>
+                          <option value='B'>BUDHA</option>
+                          <option value='L'>LAIN NYA</option>
+                        </select>
+                    </div>
+                  </div>
+                  <label for="inputEmail3" class="control-label">Alamat</label>
+                  <textarea class="form-control" id="alamat" name="alamat"></textarea>                  
+                  <label for="exampleInputFile" class="control-label">Unggah foto</label>
+                  <input id="form-file" type="file" id="file" name="file">
+                </div>
+              </div> 
 
                                                                         
               </div>

@@ -93,6 +93,19 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
+    <script>
+      $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+      });
+    </script>
     <?php elseif( $this->initial_template == 'in_out_add'): ?>
     <!-- Main content -->
     <section class="content">

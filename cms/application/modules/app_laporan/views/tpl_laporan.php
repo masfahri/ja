@@ -62,7 +62,7 @@
                           </div>
                           <div class="col-md-4">
                             <div class="input-group">
-                              <select name="tanggal" id="tanggal" class="form-control" onchange="gantiBulan(this.value)" required>
+                              <select name="tanggal" id="tanggal" class="form-control" required>
                               <option value="">== PILIH BULAN ==</option>
                                 <?php
                                   $bln = array(1=>"Januari","Februari",
@@ -90,7 +90,7 @@
                         <h3 id="hasil"></h3>
                         <h3 id="hasilBulan"></h3>
                         <h4>Tahun: <?php echo date('Y'); ?></h4>
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="laporan">
                           <thead>
                               <tr>
                                   <th>No. Absen</th>
@@ -110,7 +110,7 @@
                                     echo "<td>".$cari[$i]['nis']."</td>";
                                     echo "<td><a href='#' class='detail' onclick='getSiswa(".$cari[$i]['pin'].")' id='detail_".$i."'>".$cari[$i]['nama_panggilan']."</a><input type='hidden' class='pin' id='pin_".$i."' value='".$cari[$i]['nis']."'></td>";
 
-                                    echo "<td>".$cari[$i]['jh']."</td>";
+                                    echo "<td id='".$cari[$i]['jam_masuk']."'>".$cari[$i]['jh']."</td>";
                                     echo "<td></td>";
                                     echo "</tr>";
                                     echo '';
@@ -130,11 +130,13 @@
                           ?>
                           </tbody>
                         </table>
-                        <form action="" method="GET">
+                        <!-- <form action="" method="GET">
                         <input type="text" name="kelas" value="<?php echo $this->input->get('kelas') ?>">
                         <input type="text" name="tanggal" value="<?php echo $this->input->get('tanggal') ?>">
                         <a href="<?= base_url('app_laporan/excel') ?>" type="submit" class="btn btn-default" data-dismiss="modal" >PRINT</a>
-                        </form>
+                        </form> -->
+                      <li><a href="#" onclick="$('#laporan').tableExport({type:'xls',fileName:'Kelas' + $('#kelas2').val() + '&nbsp;Laporan Kehadiran Bulan : ' + $('#tanggal').val()  , worksheetName: '' });">Export To Excel</a></li>
+
                         </div>
                         <!-- /.row -->
                     </div>
@@ -164,6 +166,18 @@
     <?php endif; ?>
 <script>
 
+document.addEventListener('DOMContentLoaded', function() {
+
+ var id_kelas = $('select[name=kelas').val();
+         $.ajax({
+                type:'POST', //HARUS
+                url:'<?php echo base_url("app_laporan/getKelas"); ?>',
+                data:{'kelas':id_kelas},
+                success:function(data){
+                    $('#hasil').html(data);
+                }
+            });
+
 function gantikelas(id) {
       var kelas = id;
          $.ajax({
@@ -176,18 +190,8 @@ function gantikelas(id) {
             });
 }
 
-function gantiBulan(bulan) {
-  var bln = bulan;
-    $.ajax({
-      type:'POST',
-      url:'<?php echo base_url("app_laporan/getBulan"); ?>',
-      data:{'dapetBulan':bln },
-      success:function (result) {
-        alert(result);
-        $('#hasilBulan').html(result);
-      }
-    });
-}
+
+});
 
 function result(nis) {
   var nis   = nis;
@@ -214,6 +218,11 @@ function result(nis) {
 
 
     }
+
+
+function DoCellData(cell, row, col, data) {}
+function DoBeforeAutotable(table, headers, rows, AutotableSettings) {}
+
 
   $(function () {
 

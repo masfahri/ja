@@ -67,7 +67,7 @@
                     <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
                     <div class="info-box-content">
                         <strong><span class="info-box-text" style="text-align: center;">Total</span>
-                        <span class="info-box-text">Siswa Izin Hari ini</span></strong>
+                        <span class="info-box-text">Siswa Izin dan Sakit Hari ini</span></strong>
                         <span class="info-box-number"><?php echo $datadbhadirizinini['$js'];?></span>
                     </div>
                     <!-- /.info-box-content -->
@@ -135,77 +135,43 @@
                             </div>
                             <!-- /.col -->
                         </div>
-                        <strong><h1>SEMUA SISWA</h1></strong>
+                        <center><strong><h1>SEMUA SISWA</h1></strong></center>
                         <div class="table-responsive">
-                            <table class="table no-margin">
+                            <table id="listSiswa" class="table no-margin">
                                 <thead>
                                     <tr>
-                                        <th>No Absen</th>
+                                        <th>No</th>
                                         <th>Nis</th>
                                         <th>Nama Siswa</th>
+                                        <th style="display: none;">Nama Panggilan</th>
                                         <th>Status</th>
-                                        <th>Pulang</th>
+                                        <th>Jam Masuk</th>
                                         <th>Kelas</th>
                                         <!-- <th>Telat</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    $i   = 0;
+                                    $i   = 1;
                                     $menit = 0;
                                     $tgl = date('Y-m-d');
                                     if ( count($siswaKelas) > 0 ) {     
                                         foreach ($siswaKelas as $row) {
                                             echo '<tr>';
-                                            echo "<td><a href='pages/examples/invoice.html'>".$row['absen']."</a></td>";
+                                            echo "<td><a href='pages/examples/invoice.html'>".$i++."</a></td>";
                                             echo "<td>".$row['nis']."</td>";
                                             echo "<td>".$row['nama_siswa']."</td>";
-                                            echo "<td></td>";
-                                            echo "<td>".$row['jm']."</td>";
-                                            echo "<td>".$row['Nama_Kelas']."</td>";
+                                            echo "<td style='display:none;'>".$row['nama_panggilan']."</td>";
+
+                                            echo "<td>".(($row['id']==2)? "<span class='label label-info'>".$row['keterangan']."</span>":(($row['id']==3)? "<span class='label label-warning'>".$row['keterangan']."</span>":(($row['id']==4)? "<span class='label label-success'>".$row['keterangan']."</span>":"<span class='label label-danger'>Alpha</span>")))."</td>";
+
+                                            echo "<td>".(($row['id']==4)?"".$row['jammasuk']."":"")."</td>";
+                                            echo "<td><a href='".base_url('app_siswa/').'/kelas/'.$row['id_kelas']."'>".$row['Nama_Kelas']."</a></td>";
+                                            //<a href="'.base_url('app_siswa/').'/kelas/'.$row['id_kelas'].'">
                                             // echo "<td><button onclick='check()'>Check Checkbox</button><td>";
                                         }
                                     }
                                     $i++
-                                ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        <strong><h1>SISWA HADIR HARI INI</h1></strong>
-                        <div class="pull-right">
-                            <select name="" id="">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Id Finger</th>
-                                        <th>Nama Siswa</th>
-                                        <!-- <th>SMS</th> -->
-                                        <th>Kelas</th>
-                                        <th>Jam Datang</th>
-                                        <th>Jam Pulang</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    $i     = 1;
-                                    if ( count($absen) > 0 ) {   
-                                        foreach ($absen as $row) {
-                                            echo '<tr>';
-                                            echo "<td>".$i++."</a></td>";
-                                            echo "<td>".$row['pin']."</td>";
-                                            echo "<td>".$row['nama']."</td>";
-                                            // echo "<td><input type='checkbox' ".($row['sms_status'] == '1' ? 'checked' : '' )."  name='' value='' /></td>";
-                                            echo "<td>".$row['Nama_Kelas']."</td>";
-                                            echo "<td>".$row['jm']."</td>";
-                                            echo "<td>".$row['jp']."</td>";
-                                            echo "</tr>";
-                                        }
-                                    }
                                 ?>
                                 </tbody>
                             </table>
@@ -224,3 +190,9 @@
 </div>
 <!-- /.content-wrapper -->
     <?php endif; ?>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#listSiswa').DataTable();
+        } );
+    </script>

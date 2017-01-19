@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 10, 2017 at 01:14 PM
+-- Generation Time: Jan 18, 2017 at 09:28 AM
 -- Server version: 10.1.9-MariaDB-log
 -- PHP Version: 5.6.16
 
@@ -700,6 +700,22 @@ CREATE TABLE `ja_data_absen` (
   `sms_status` enum('0','1','2') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `ja_data_absen`
+--
+
+INSERT INTO `ja_data_absen` (`id`, `pin`, `id_kelas`, `jam_masuk`, `jam_pulang`, `tanggal`, `ver`, `telat`, `status`, `kehadiran`, `sms_status`) VALUES
+(1, 1, 1, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(2, 2, 1, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(3, 3, 1, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(4, 10, 1, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 4, '1'),
+(5, 11, 1, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 4, '1'),
+(6, 1, 1, '2017-01-19 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(7, 2, 1, '2017-01-19 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(8, 3, 1, '2017-01-19 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 3, '1'),
+(9, 10, 1, '2017-01-19 21:00:00', '0000-00-00 00:00:00', '2017-01-19', 0, '0', 0, 4, '1'),
+(10, 4, 2, '2017-01-18 21:00:00', '0000-00-00 00:00:00', '2017-01-18', 0, '0', 0, 4, '1');
+
 -- --------------------------------------------------------
 
 --
@@ -793,10 +809,12 @@ CREATE TABLE `ja_in_out` (
 
 INSERT INTO `ja_in_out` (`id`, `hari`, `type`, `id_kelas`, `jam_masuk`, `jam_keluar`, `keterangan`, `user_id`, `status`) VALUES
 (9, 'Mon', '0', 0, '01:00:00', '03:00:00', '', 0, 'active'),
-(10, 'Tue', '0', 0, '01:00:00', '03:00:00', '', 0, 'active'),
-(11, 'Wed', '0', 0, '01:00:00', '03:00:00', '', 0, 'active'),
+(10, 'Tue', '0', 0, '22:00:00', '03:00:00', '', 0, 'active'),
+(11, 'Wed', '0', 0, '21:00:00', '10:00:00', '', 0, 'active'),
 (12, 'Thu', '0', 0, '01:00:00', '03:00:00', '', 0, 'active'),
-(13, 'Fri', '0', 0, '01:00:00', '02:00:00', '', 0, 'active');
+(13, 'Fri', '0', 0, '15:00:00', '02:00:00', '', 0, 'active'),
+(14, 'Sat', '1', 0, '11:00:00', '11:00:00', '', 0, 'active'),
+(15, 'Sun', '0', 0, '00:00:00', '01:00:00', '', 0, 'active');
 
 -- --------------------------------------------------------
 
@@ -888,7 +906,7 @@ CREATE TABLE `ja_kelas` (
 --
 
 INSERT INTO `ja_kelas` (`id_kelas`, `Nama_Kelas`, `id_jurusan`, `id_guru`) VALUES
-(1, 'X-1', 16, '26'),
+(1, 'X-1', 15, ''),
 (2, 'X-2', 15, ''),
 (3, 'X-3', 15, '');
 
@@ -934,9 +952,9 @@ CREATE TABLE `ja_settings` (
 --
 
 INSERT INTO `ja_settings` (`id`, `name`, `value`, `keterangan`) VALUES
-(1, 'email', 'nandafirmans@gmail.com', ''),
-(2, 'password', '123456', ''),
-(3, 'device', '36635', '');
+(1, 'email', 'hsevfakhri@gmail.com', ''),
+(2, 'password', 'H4rdjump', ''),
+(3, 'device', '33026', '');
 
 -- --------------------------------------------------------
 
@@ -966,13 +984,17 @@ CREATE TABLE `ja_siswa` (
 --
 
 INSERT INTO `ja_siswa` (`id`, `nis`, `pin`, `nama_siswa`, `nama_panggilan`, `kelamin`, `tempat_lahir`, `tgl_lahir`, `agama`, `alamat`, `password`, `id_kelas`, `absen`, `foto`) VALUES
-(1, 1411501438, 2, 'Muhammad Fakhrizal', 'Fakhri', 'L', 'Jakarta', '2016-11-26', 'Islam', 'Pondok Kacang Prima', '', 1, 1, NULL),
-(2, 1411501439, 3, 'Tasyahdal', 'Tasya', 'P', 'Solo', '2016-11-26', 'Islam', 'Jakut', '', 1, 2, NULL),
-(3, 1411501440, 4, 'Hesti Lutfyan', 'Hesti', 'P', 'Jakarta', '1996-10-30', 'Islam', 'Jurang Mangu', '', 1, 3, NULL),
-(4, 2147483647, 5, 'Jarjit Sigh', 'Bedil', 'L', 'Malaysia', '2016-12-03', 'Islam', 'Perempatan Bingung', '', 2, 1, NULL),
-(5, 1412501439, 6, 'Pace Batubara', 'Pace', 'L', 'Jombang', '2016-11-26', 'Islam', 'Jombang', '', 2, 2, NULL),
-(6, 1413401438, 7, 'Lorem Ipsum', 'Lorem', 'P', 'Jauh', '2016-11-26', 'Islam', 'Jauh banget', '', 3, 1, NULL),
-(7, 1411501490, 1, 'Hilmy Syarif', 'Bokir', 'L', 'Jakarta', '2016-11-30', 'Islam', 'Arinda Dua', '', 3, 1, NULL);
+(8, 1411501438, 1, 'Muhammad Fakhrizal', 'Fakhri', 'L', 'Jakarta', '1997-02-06', 'Islam', 'Komplek Pondok Kacang Prima Blok H5 No.3 rt 004/008', '', 1, 1, NULL),
+(9, 1411501439, 2, 'cuhuy', 'wadaw', 'L', 'Jakarta', '2017-01-01', 'Islam', 'Jakarta Utara', '', 1, 2, NULL),
+(10, 1411501440, 3, 'Hesti Lutfy', 'Hesti', 'P', 'Jakarta', '1996-10-31', 'Islam', 'Pondok Aren', '', 1, 3, NULL),
+(11, 1511501438, 4, 'Hilmy Syarif', 'Bokir', 'L', 'Jakarta', '2017-01-14', 'Islam', 'Arinda 2', '', 2, 1, NULL),
+(12, 1511501439, 5, 'Arif Tri Nugroho', 'Arif', 'L', 'Jakarta', '2017-01-21', 'Islam', 'Pondok Kacang Prima', '', 2, 2, NULL),
+(13, 1511501440, 6, 'Lorem Ipsum', 'Lorem', 'L', 'Jakarta', '2017-02-04', 'Islam', 'Dolor Amet', '', 2, 3, NULL),
+(14, 1611501438, 7, 'Upinin', 'Upin', 'L', 'Jauh', '2017-02-25', 'Islam', 'Malaysie', '', 3, 1, NULL),
+(15, 1611501439, 8, 'Ipinan', 'Ipin', 'L', 'jauh bener', '2017-02-26', 'Islam', 'Malysie', '', 3, 2, NULL),
+(16, 1611501440, 9, 'Jarjit Sigh', 'Jarjit', 'L', 'Jauh bener dah', '2017-03-26', 'Islam', 'Malysie', '', 3, 3, NULL),
+(17, 1411501441, 10, 'Dharmawan Budi Aji', 'Budi', 'L', 'Jakarta', '2016-07-31', 'Islam', 'Pondok Kacang Prima', '', 1, 4, NULL),
+(18, 1411501442, 11, 'Farhan Alify', 'Farhan', 'L', 'Jakarta', '2017-05-21', 'Islam', 'Pondok Kacang Prima', '', 1, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -2216,7 +2238,7 @@ ALTER TABLE `ja_absensi_siswa`
 -- AUTO_INCREMENT for table `ja_data_absen`
 --
 ALTER TABLE `ja_data_absen`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `ja_fp`
 --
@@ -2236,7 +2258,7 @@ ALTER TABLE `ja_hari_libur`
 -- AUTO_INCREMENT for table `ja_in_out`
 --
 ALTER TABLE `ja_in_out`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `ja_jurusan`
 --
@@ -2266,7 +2288,7 @@ ALTER TABLE `ja_ortu`
 -- AUTO_INCREMENT for table `ja_siswa`
 --
 ALTER TABLE `ja_siswa`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `log_album_loved`
 --

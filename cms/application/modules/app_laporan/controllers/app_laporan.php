@@ -61,27 +61,6 @@ class App_laporan extends MX_Controller {
 
     }
 
-    // public function searchTgl($tanggal='') {
-    //     $params['absen']            =  $this->coredb->getabsen();
-    //     $params['absenKelas']       =  $this->coredb->lapAllClass(); 
-    //     $cariTgl                    =  $this->input->get('tanggal');
-    //     $params['datadbtanggal']    =  $this->coredb->searchTgl($cariTgl);
-    //      // var_dump($params['datadbtanggal']);die();
-        
-    //     $this->getContent($params);
-    // }
-
-    // public function searchKls($kelas='')
-    // {
-    //     $params['absen']            =  $this->coredb->getabsen();
-    //     $params['absenKelas']       =  $this->coredb->lapAllClass(); 
-    //     $cariKelas                  =  $this->input->get('kelas');
-    //     $params['datadbtanggal']    =  $this->coredb->searchKls($cariKelas);
-    //     // var_dump($params['datadbtanggal']);die();
-
-    //     $this->getContent($params);
-    // }
-
     public function search($search='')
     {
         $params['absen']            =  $this->coredb->getabsen();
@@ -111,20 +90,7 @@ class App_laporan extends MX_Controller {
         $hasil = $this->coredb->lapAllClass($kelas);
 
         echo 'Laporan Kehadiran Kelas: '. $hasil[0]['Nama_Kelas'];
-    }
-
-    public function getBulan()
-    {
-        $bulan = $this->input->post('dapetBulan');
-        $months = array(01 => 'Jan.', 02 => 'Feb.', 03 => 'Mar.', 04 => 'Apr.', 05 => 'May', 06 => 'Jun.', 07 => 'Jul.', 08 => 'Aug.', 09 => 'Sep.', 010 => 'Oct.', 011 => 'Nov.', 012 => 'Dec.');
-
-                        var_dump($months);die;
-            if($months == $bulan){
-
-                echo "HASIL RESULT BULAN" .print_r($months);
-
-            }
-        
+        echo '<input type="hidden" id="kelas2" value="'.$hasil[0]["Nama_Kelas"].'" />';
     }
 
     public function getSiswa()

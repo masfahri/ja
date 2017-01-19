@@ -1,0 +1,42 @@
+<!DATABASE>
+ja_siswa 
+-tambahkan Tahun_ajaran(OK)
+
+app_master/siswa_add
+-Design Form Pendaftaran User Friendly (belum sempurna)
+
+app_siswa
+-Ubah datatable (OK)
+-TOTAL Siswa izin dan sakit belum di count (OK)
+-Alpha belum terinsert 
+-SMS belum pernomor siswa
+-nama siswa, jam_masuk, jam_keluar, status belum ada di dalam SMS 
+-
+
+app_siswa/kelas/$initial_id
+-buat table alpha dibawah table utama(hadir) (OK)
+
+app_laporan
+-Belum ada Menu (OK)
+-menu export ketika belum ada pilihan kelas & bulan di hidden
+-bugs pada ajax kelas sebelum pilih kelas & bulan di hidden
+-Bug jika siswa belum masuk sama sekali dalam sebulan tidak muncul list Laporan
+#export styling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

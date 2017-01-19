@@ -37,12 +37,19 @@
     <!-- Include Date Range Picker -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <!-- DATA TABLES -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
+    <!-- END DATA TABLES -->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+    <script type="text/javascript">
+        var base_url = "<?php echo base_url(); ?>";
+    </script>  
 </head>
 
 <body class="skin-blue sidebar-mini">
@@ -454,7 +461,7 @@
                                         </li>
                                     </ul>
                             </li>
-                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/jurusan') ?>"><i class="fa fa-circle-o"></i> Presensi Kelas</a></li>
+                            <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_laporan') ?>"><i class="fa fa-circle-o"></i> Presensi Kelas</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/kelas') ?>"><i class="fa fa-circle-o"></i> Terlambat Kelas</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/siswa') ?>"><i class="fa fa-circle-o"></i> Presensi hari ini</a></li>
                             <li class="<?php if($this->uri->segment(1)==" app_master "){echo "active ";}?>"><a href="<?= base_url('app_master/karyawan') ?>"><i class="fa fa-circle-o"></i> Tidak absen pulang</a></li>
@@ -720,6 +727,11 @@
     <!--script src="<?= config_item('assets') ?>dist/js/pages/dashboard2.js"></script-->
     <!-- AdminLTE for demo purposes -->
     <script src="<?= config_item('assets') ?>dist/js/demo.js"></script>
+
+    <!-- EXPORT -->
+<script type="text/javascript" src="<?= config_item('assets') ?>jqExport/tableExport.js"></script>
+<script type="text/javascript" src="<?= config_item('assets') ?>jqExport/jquery.base64.js"></script>
+<!-- END EXPORT -->
     <script>
     $('.clockpicker').clockpicker({
         donetext: "Done",

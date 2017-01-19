@@ -347,8 +347,8 @@ class App_sms extends MX_Controller {
                 }else{
                   // disini send by group
                     $arr = $this->input->post('no_hp');
-                    foreach ($arr as $num) {
                         error_reporting(0);
+                    foreach ($arr as $num) {
                         $this->load->model('mapp_sms');
                         $email = $this->mapp_sms->grapSettings('email');
                         $password = $this->mapp_sms->grapSettings('password');
@@ -535,7 +535,9 @@ class App_sms extends MX_Controller {
             if( $validate !== 'false' ){
 
               error_reporting(1);
-
+              /*
+               * MULAI API DISINI
+               
                 $this->load->model('mapp_sms');
                 $email = $this->mapp_sms->grapSettings('email');
                 $password = $this->mapp_sms->grapSettings('password');
@@ -574,6 +576,10 @@ class App_sms extends MX_Controller {
                    $this->session->set_flashdata('msg_error', $json->errors->number[0].' Please contact the developers.');
                    redirect( base_url($this->app_name).'/phonebook' );
                 }else{
+
+               
+                   * BREAK API DISINI
+                   */
                     $this->load->library('uidcontroll');
                     if( $this->uidcontroll->insertData('ja_ortu', bindProcessing($_POST) ) !== FALSE){
 
@@ -581,7 +587,10 @@ class App_sms extends MX_Controller {
                     $this->session->set_flashdata('msg_success', 'Sukses menambahkan kontak');
 
                   }else{$this->messagecontroll->delivered('msg_error', 'Invalid Data to insert !');}
-               }
+                /* TUTUP API DISINI
+                 *
+                 
+               } */
 
 
               }

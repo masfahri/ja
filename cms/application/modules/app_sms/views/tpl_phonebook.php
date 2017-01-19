@@ -62,9 +62,6 @@
                                     </td>
                                     <td><span class="uk-text-danger"></span></td>
                                     <td></td>
-                                    <td>
-
-                                    </td> 
                                     <td></td>                                        
                                 </tr>
                       <?php  }
@@ -90,6 +87,19 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
+    <script>
+      $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+          "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+      });
+    </script>
     <?php elseif( $this->initial_template == 'phonebook_add'): ?>
     <!-- Main content -->
     <section class="content">
@@ -278,10 +288,6 @@
                                     </td>
                                     <td><span class="uk-text-danger"></span></td>
                                     <td></td>
-                                    <td>
-
-                                    </td> 
-                                    <td></td>                                        
                                 </tr>
                       <?php  }
                       ?>

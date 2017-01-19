@@ -131,7 +131,7 @@
                       <option value=''>=== PILIH WALI KELAS ===</option>
                       <?php
                         foreach ($guru as $key => $value) {
-                            echo '<option value='.$value['id_guru'].'>'.$value['nama'].'</option>';
+                            echo '<option value='.$value['No'].'>'.$value['nama'].'</option>';
                         }
                         ?>
                     </select>
@@ -172,6 +172,22 @@
             <!-- form start -->
             <form action="<?= base_url( $this->app_name ).'/kelas_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Jurusan</label>
+
+                  <div class="col-sm-10">
+                    <select class="form-control" name="id_jurusan">
+                      <?php
+                        foreach ($jurusan as $key => $value) {
+                            if( $row['id_jurusan'] == $datadb['id_jurusan'] )$sel = 'selected';
+                            else $sel = '';
+
+                            echo '<option value='.$value['id_jurusan'].' '.$sel.'>'.$value['keterangan'].'</option>';
+                        }
+                        ?>
+                    </select>                   
+                  </div>
+                </div>
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
 

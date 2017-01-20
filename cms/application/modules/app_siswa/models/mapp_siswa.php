@@ -79,6 +79,20 @@ class Mapp_siswa extends CI_Model{
         else return null;
     }
 
+    public function getSiswaByNis($id_kelas=''){
+        if($id_kelas != ''){
+            $this->db->where('nis', $id_kelas);
+        }
+        $this->db->select('*');
+        $this->db->from('ja_siswa');
+
+        $this->db->order_by('id', 'ASC');
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row();
+        }else return null;
+    }
+
                 /**        SEMUA SISWA          **/
     public function getSiswa($initial_id='', $pin='')
     {

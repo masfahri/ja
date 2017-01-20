@@ -105,7 +105,7 @@
                         <center><h3>SISWA HADIR HARI INI</h3></center>
                         <form method="post" action="">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table id="tableHadir" class="table no-margin">
                                     <thead>
                                         <tr>
                                             <th>No Absen</th>
@@ -298,7 +298,7 @@
                         <hr>
                         <form method="post" action="<?= base_url('app_siswa').'/update' ?>">
                             <div class="table-responsive">
-                                <table class="table no-margin">
+                                <table id="tableBlmHadir" class="table no-margin">
                                     <thead>
                                         <tr>
                                             <th>No Absen</th>
@@ -328,7 +328,7 @@
                                                 echo "<script type='text/javascript'>
                                                             document.addEventListener('DOMContentLoaded', function() {
 
-                                                                var kehadiran = $('input:radio[name=kehadiran_".$row['nis']."]:checked').val();
+
 
                                                             });
                                                            function myFunction_".$row['nis']."() {
@@ -379,6 +379,34 @@
                                                                 });
 
                                                             }  
+                                                            function UpdateAlfa() {
+                                                                var pin = $('input[name=pin".$row['pin2']."]').val();
+
+                                                                /*
+                                                                 * AJAX UPDATE KEHADIRAN SISWA
+                                                                 * WARNING MASIH ERROR DI BASE URL
+                                                                 */
+                                                                var url = base_url + 'app_siswa/update';
+                                                                $.ajax({
+                                                                        type:'POST',
+                                                                        url: url,
+                                                                        data:{'pin':pin},
+                                                                        success:function(data){
+                                                                            if(data != ''){
+
+                                                                        var r = confirm('Apakah anda melanjutkan proses ini?');
+                                                                        if (r == true) {
+                                                                            x = alert(data);
+                                                                            location.reload();
+                                                                        } else {
+                                                                            x = alert('Proses di batalkan.');
+                                                                        }
+                                                                            }
+
+                                                                        }
+                                                                });
+
+                                                            }
                                                            
                                                         </script>";
                                             ?>
@@ -388,7 +416,7 @@
                                                     <?php echo $row['nis']; ?>
                                                         <input type='hidden' id='nis' name='nis[]' value='<?php echo $row["nis"]; ?>' />
                                                         <input type='hidden' id="pin"  name='pin<?php echo $row["pin2"]; ?>' value='<?php echo $row["pin2"]; ?>' >
-                                                        <input type='hidden' id="id_kelas" name='id_kelas<?php echo $row["pin2"]; ?>' value='<?php echo $row["id_kelas"]; ?>' >                                                        
+                                                        <input type='hidden' id="id_kelas" name='id_kelas2<?php echo $row["pin2"]; ?>' value='<?php echo $row["id_kelas"]; ?>' >                                                        
                                                 </td>
                                                 <td><?php echo $row['nama_siswa']; ?></td>
                                                 <!-- <td>
@@ -401,7 +429,7 @@
                                                     <input type='radio' id='radioAlpha_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
                                                     <?php if ($row['jm'] != $tgl) {
                                                         echo "checked";
-                                                    } ?>  name='kehadiran_<?php echo $row['nis']?>' value='1' disabled>
+                                                    } ?>  name='kehadiran2_<?php echo $row['nis']?>' value='1'>
                                                 </td>
                                                 <td>
                                                     <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
@@ -485,7 +513,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <button type="submit" class="btn btn-success pull-right" value="SIMPAN ABSEN">SIMPAN</button>
+                            <input type="submit" onclick="updateAlfa()" class="btn btn-success pull-right" value="SIMPAN ABSEN">
                         </form>
                             
                         <!-- /.row -->
@@ -502,3 +530,13 @@
 </div>
 <!-- /.content-wrapper -->
     <?php endif; ?>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#tableHadir').DataTable();
+            } );
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#tableBlmHadir').DataTable();
+            } );
+        </script>

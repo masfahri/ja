@@ -102,6 +102,7 @@ class App_siswa extends MX_Controller {
             $pin = $this->input->post('pin');
             $jam = date('Y-m-d');
             $kelas2 = $this->input->post('id_kelas');
+
             // check absen
             $db = $this->coredb->getSiswa2($pin);
             if( $db != NULL ){
@@ -161,7 +162,35 @@ class App_siswa extends MX_Controller {
 
     public function update()
     {
-        redirect('http://www.google.com','refresh');
+        $nis = $this->input->post('nis');  
+        $jam = date('Y-m-d');
+        // check absen
+        foreach ($nis as $key => $value) {
+            $db = $this->coredb->getSiswa2($value);
+            $id_kelas = $this->coredb->getSiswaByNis($value)->id_kelas;
+            $pin = $this->coredb->getSiswaByNis($value)->pin;
+            if( $db == NULL ){              
+                // kondisi insert alpha
+               
+                $posting = array(
+                    'pin'           => $pin,
+                    'id_kelas'      => $id_kelas,
+                    'jam_masuk'     => $jam,
+                    'jam_pulang'    => $jam,
+                    'tanggal'       => $jam,
+                    'ver'           => '0',
+                    'kehadiran'     => '1',
+                    'sms_status'    => '0',
+
+                );
+                // kondisi add new
+                $this->load->library('uidcontroll');
+                $this->uidcontroll->insertData('ja_data_absen', bindProcessing($posting));
+                $this->session->set_flashdata('msg_success', 'Success Update Data');
+                redirect( base_url($this->app_name).'/app_siswa/kelas/'.$id_kelas );
+            }
+        }
+
     }
 
 }

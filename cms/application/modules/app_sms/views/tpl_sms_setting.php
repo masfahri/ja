@@ -47,9 +47,116 @@
                   <label for="inputEmail3" class="col-sm-2 control-label">DEVICE</label>
 
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="device" name="device" placeholder="MODEM WAVECOM" value="MODEM WAVECOM" readonly>
+                    <input type="text" class="form-control" id="device" name="device" placeholder="MODEM WAVECOM" value="MODEM WAVECOM" readonly>                    
                   </div>
-                </div>                                                                                                            
+                </div>        
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">DEVICE ID</label>
+
+                  <div class="col-sm-10">
+                  <?php
+                    //set POST variables
+                    $url    = 'http://smsgateway.me/api/v3/devices';
+                    $fields = array(
+                        'email'     => $email[0]->value,
+                        'password'  => $password[0]->value
+                    );
+
+                    $fields_string = '';
+                    //url-ify the data for the POST
+                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                    rtrim($fields_string, '&');
+
+                    //open connection
+                    $ch = curl_init();
+
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch,CURLOPT_URL, $url);
+                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    //execute post
+                    $result = curl_exec($ch); 
+                    $json = json_decode($result);               
+                    //close connection
+                    curl_close($ch);
+
+                   ?>
+                    <input type="text" class="form-control" id="device" name="device_id" placeholder="MODEM WAVECOM" value="<?php echo $json->result->data[0]->id ?>" readonly>                    
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">PROVIDER</label>
+
+                  <div class="col-sm-10">
+                  <?php
+                    //set POST variables
+                    $url    = 'http://smsgateway.me/api/v3/devices';
+                    $fields = array(
+                        'email'     => $email[0]->value,
+                        'password'  => $password[0]->value
+                    );
+
+                    $fields_string = '';
+                    //url-ify the data for the POST
+                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                    rtrim($fields_string, '&');
+
+                    //open connection
+                    $ch = curl_init();
+
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch,CURLOPT_URL, $url);
+                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    //execute post
+                    $result = curl_exec($ch); 
+                    $json = json_decode($result);               
+                    //close connection
+                    curl_close($ch);
+
+                   ?>
+                    <input type="text" class="form-control" id="device" name="provider" value="<?php echo $json->result->data[0]->provider ?>" readonly>                    
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">NUMBER</label>
+
+                  <div class="col-sm-10">
+                  <?php
+                    //set POST variables
+                    $url    = 'http://smsgateway.me/api/v3/devices';
+                    $fields = array(
+                        'email'     => $email[0]->value,
+                        'password'  => $password[0]->value
+                    );
+
+                    $fields_string = '';
+                    //url-ify the data for the POST
+                    foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                    rtrim($fields_string, '&');
+
+                    //open connection
+                    $ch = curl_init();
+
+                    //set the url, number of POST vars, POST data
+                    curl_setopt($ch,CURLOPT_URL, $url);
+                    curl_setopt($ch,CURLOPT_POST, count($fields));
+                    curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    //execute post
+                    $result = curl_exec($ch); 
+                    $json = json_decode($result);               
+                    //close connection
+                    curl_close($ch);
+
+                   ?>
+                    <input type="text" class="form-control" id="device" name="last_seen" value="<?php echo date('Y-m-d H:i:s',$json->result->data[0]->last_seen) ?>" readonly>                    
+                  </div>
+                </div>
+
+
               </div>
        
               <!-- /.box-body -->

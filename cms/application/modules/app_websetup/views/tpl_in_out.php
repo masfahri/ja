@@ -38,7 +38,6 @@
                   <th>Kelas</th>
                   <th>Jam Masuk</th>
                   <th>Jam Pulang</th>
-                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -53,8 +52,7 @@
                                     </td>
                                     <td><span><?php echo $row['id_kelas'] ?></span></td>
                                     <td><span><?php echo $row['jam_masuk'] ?></span></td>
-                                    <td><span><?php echo $row['jam_keluar'] ?></span></td>
-                                    <td><span><?php echo $row['status'] ?></span></td>                                                                  
+                                    <td><span><?php echo $row['jam_keluar'] ?></span></td>                                                                  
                                     <td><a href="<?php echo base_url($this->app_name).'/in_out_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/in_out_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
                                 </tr>
                       <?php  }}else{ ?>
@@ -63,7 +61,6 @@
                                     <td>
                                     </td>
                                     <td><span class="uk-text-danger"></span></td>
-                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>                                        
@@ -78,7 +75,6 @@
                   <th>Kelas</th>
                   <th>Jam Masuk</th>
                   <th>Jam Pulang</th>
-                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
                 </tfoot>

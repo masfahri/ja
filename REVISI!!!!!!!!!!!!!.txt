@@ -22,7 +22,7 @@ app_websetup/in_out
 app_websetup/in_out_add
 -Pemilihan Tipe kelas tidak muncul List Kelas
 #Jika Pendalaman Materi UN (Sync ke ja_data_absen.tipeMasuk)
-!hapus status 
+!hapus status (ok)
 
 app_sms/phonebook
 -Table ubah ke datatable (ok)
@@ -45,8 +45,8 @@ app_sms/phonebook_group_add
 -Nama ortu berdasarkan kelas
 
 app_sms/setting
-#tambahkan last seen device
--id device
+#tambahkan last seen device (ok)
+-id device (ok)
 
 app_sms/sms_ortu
 - [bug] ketika pilih group sudah dipilih kemudian kembali pilih ortu / sebaliknya

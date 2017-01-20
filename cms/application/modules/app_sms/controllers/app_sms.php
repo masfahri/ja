@@ -165,6 +165,45 @@ class App_sms extends MX_Controller {
       }
     }
 
+
+    /* get Siswa dari Kelas */
+    public function getSiswaInKelas() {
+      $kelas = $this->input->post('kelas');
+      $action = $this->input->post('action');
+      $nis = $this->input->post('nis');      
+      $siswa =  $this->coredb->getSiswa($kelas);
+
+      if($siswa != '' && $action == ''){
+        echo '
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
+              <div class="col-sm-10">
+                <select id="nis_siswa"  name="nis_siswa" class="form-control select2" style="width: 100%;">
+                    <option>Pilih siswa</option>';
+                    foreach ($siswa as $row) {
+                      echo  '<option value="'.$row['nis'].'">'.$row['nama_siswa'].'</option>';  
+                    }
+                echo '</select>
+              </div>
+            </div>';
+      }
+
+      if($siswa != '' && $action != ''){
+
+      $nama_siswa =  $this->coredb->grapSiswaByNis($nis);  
+        echo '
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
+              <div class="col-sm-10">
+                <select id="nis_siswa"  name="nis_siswa" class="form-control select2" style="width: 100%;" disabled>';
+               echo  '<option value="'.$nama_siswa['nis'].'">'.$nama_siswa['nama_siswa'].'</option>';  
+                echo '</select>
+              </div>
+            </div>';
+      }
+
+    }
+
     /* get Ortu dari siswa */
     public function getNoOrtu() {
       $nis = $this->input->post('nama_ortu');
@@ -605,6 +644,7 @@ class App_sms extends MX_Controller {
         $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();      
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['datadb'] = $this->coredb->grapPhonebook($id_finger);
+        $params['kelas'] =  $this->coredb->getKelas();        
         $validate = 'true';           
         if( $_POST ){
             

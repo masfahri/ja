@@ -91,8 +91,10 @@ class Mapp_sms extends CI_Model{
         else return null;
     }
 
-    public function getSiswa(){
-        
+    public function getSiswa($kelas=''){
+        if($kelas != '') {
+            $this->db->where('ja_siswa.id_kelas', $kelas);
+        }
         $this->db->select('*')
                  ->from('ja_siswa')
                  ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
@@ -108,6 +110,16 @@ class Mapp_sms extends CI_Model{
         $this->db->select('*')
                  ->from('ja_siswa');
         $this->db->where('id', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }
+
+    public function grapSiswaByNis($initial_id){
+        
+        $this->db->select('*')
+                 ->from('ja_siswa');
+        $this->db->where('nis', $initial_id);
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->row_array();
         else return null;

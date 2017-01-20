@@ -116,21 +116,22 @@
             <!-- form start -->
             <form action="<?= base_url('app_sms/phonebook_add') ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
+
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
-
-
+                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Kelas</label>
                   <div class="col-sm-10">
-                    <select id="nis_siswa"  name="nis_siswa" class="form-control select2" style="width: 100%;">
-                        <option>Pilih siswa</option>
-                      <?php if ( count($siswaKelas) > 0 ) {     
-                          foreach ($siswaKelas as $row) { ?>
-                          <option value="<?php echo $row['nis'] ?>"><?php echo $row['nama_siswa'] ?></option>
+                    <select id="id_kelas"  name="id_kelas" class="form-control select2" style="width: 100%;">
+                        <option>Pilih Kelas</option>
+                      <?php if ( count($kelas) > 0 ) {     
+                          foreach ($kelas as $row) { ?>
+                          <option value="<?php echo $row['id_kelas'] ?>"><?php echo $row['Nama_Kelas'] ?></option>
                       <?php }
                          } ?>    
                     </select>
                   </div>
                 </div>
+
+                <div id="siswa"> </div>
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Nama Ortu</label>
 
@@ -186,21 +187,22 @@
             <!-- form start -->
             <form action="<?= base_url( $this->app_name ).'/phonebook_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
+
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
-
-
+                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Kelas</label>
                   <div class="col-sm-10">
-                    <select id="nis_siswa" class="form-control select2" style="width: 100%;">
-                        <option>Pilih siswa</option>
-                      <?php if ( count($siswaKelas) > 0 ) {     
-                          foreach ($siswaKelas as $row) { ?>
-                          <option <?php if($datadb['nis_siswa'] == $row['nis']) echo "selected"; ?>  value="<?php echo $row['nis'] ?>"><?php echo $row['nama_siswa'] ?></option>
+                    <select id="id_kelas"  name="id_kelas" class="form-control select2" style="width: 100%;" disabled>
+                        <option>Pilih Kelas</option>
+                      <?php if ( count($kelas) > 0 ) {     
+                          foreach ($kelas as $row) { ?>
+                          <option <?php if($datadb['group_id'] == $row['id_kelas']) echo "selected"; ?>  value="<?php echo $row['id_kelas'] ?>"><?php echo $row['Nama_Kelas'] ?></option> 
                       <?php }
                          } ?>    
                     </select>
                   </div>
                 </div>
+                <div id="siswa"></div>
+                <input type="hidden" id="action" value="edit" />
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Nama Ortu</label>
 
@@ -240,6 +242,22 @@
       </div>
       <!-- /.row -->
     </section>    
+  <script type="text/javascript">
+    
+      var id = $('#id_kelas').val();
+      var action = $('#action').val();    
+      var nis = '<?php echo $datadb['nis_siswa']; ?>';  
+       $.ajax({
+              type:'POST',
+              url:'<?php echo base_url("app_sms/getSiswaInKelas"); ?>',
+              data:{'kelas':id, 'action': action, 'nis':nis},
+              success:function(data){
+                  $('#siswa').html(data);
+              }
+          });
+
+  </script>
+
     <?php elseif( $this->initial_template == 'phonebook_group'): ?>
     <!-- Main content -->
     <section class="content">
@@ -399,17 +417,31 @@
 
     $(".select2").select2();
 
-      $( "#nama_ortu" ).change(function() {
-      
-      var id = $('#nama_ortu').val();
-         $.ajax({
-                type:'POST',
-                url:'<?php echo base_url("app_sms/getNoOrtu"); ?>',
-                data:{'nama_ortu':id},
-                success:function(data){
-                    $('#ortu').html(data);
-                }
-            });
+    $( "#id_kelas" ).change(function() {
+    
+    var id = $('#id_kelas').val();
+       $.ajax({
+              type:'POST',
+              url:'<?php echo base_url("app_sms/getSiswaInKelas"); ?>',
+              data:{'kelas':id},
+              success:function(data){
+                  $('#siswa').html(data);
+              }
+          });
+    });
+
+
+    $( "#nama_ortu" ).change(function() {
+    
+    var id = $('#nama_ortu').val();
+       $.ajax({
+              type:'POST',
+              url:'<?php echo base_url("app_sms/getNoOrtu"); ?>',
+              data:{'nama_ortu':id},
+              success:function(data){
+                  $('#ortu').html(data);
+              }
+          });
     });
 
     $("#example1").DataTable();

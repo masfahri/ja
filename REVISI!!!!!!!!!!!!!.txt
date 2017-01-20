@@ -30,8 +30,8 @@ app_sms/phonebook
 
 app_sms/phonebook_add
 ##API LAGI DI DISABLE!!!!
--tambahin kelas onchange baru muncul siswa per kelas
---jika kelas diklik siswa perkelas
+-tambahin kelas onchange baru muncul siswa per kelas (ok)
+--jika kelas diklik siswa perkelas (ok)
 
 app_sms/phonebook_group
 -list nama group saja di group by id_kelas 

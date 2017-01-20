@@ -6,14 +6,15 @@ app_master/siswa
 -Table ubah ke datatable (ok)
 
 app_master/siswa_add
--Design Form Pendaftaran User Friendly (belum sempurna)
+-Design Form Pendaftaran User Friendly (ok)
 -kelas pilih duluan (ok)
--auto increment
---Finger ID
+-auto increment (ok)
+--Finger ID (ok)
+--No Absen Auto Increment (ok)
 -Foto Siswa form belum dapet data db
 #Finger ID daftar berdasarkan tahun masuk
 #Finger ID daftar berdasarkan kelas(paketan kelas)
-#Finger ID auto increment dari database (+1)
+#Finger ID auto increment dari database (+1) (ok)
 
 app_websetup/in_out
 - table ubah ke datatable (ok)

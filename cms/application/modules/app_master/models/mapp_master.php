@@ -60,6 +60,35 @@ class Mapp_master extends CI_Model{
         }else return null;
     }
 
+    
+    public function getLastIDFP(){
+        
+        $this->db->select('ja_siswa.pin')
+                 ->from('ja_siswa')
+                 ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
+        $this->db->order_by('ja_siswa.pin', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row()->pin + 1;
+        }else return null;
+    }
+
+    public function getLastIDAbsenInKelas($kelas = ''){
+        if($kelas != '') {
+            $this->db->where('ja_siswa.id_kelas', $kelas);
+        }
+        $this->db->select('ja_siswa.absen')
+                 ->from('ja_siswa')
+                 ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
+        $this->db->order_by('ja_siswa.absen', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+                return $query->row()->absen + 1;
+        }else return null;
+    }
+
     public function grapSiswa($initial_id){
         
         $this->db->select('*')

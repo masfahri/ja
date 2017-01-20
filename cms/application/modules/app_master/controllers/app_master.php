@@ -211,6 +211,7 @@ class App_master extends MX_Controller {
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] =  $this->coredb->getKelas();
         $params['datadb'] = $this->coredb->grapSiswa($this->session->userdata('nis'));
+        $params['lastPin'] = $this->coredb->getLastIDFP();
         $nip = $this->input->post('nis');
         $validate = 'true';       
         if( $_POST ){
@@ -1162,6 +1163,16 @@ class App_master extends MX_Controller {
 
     } 
     /* End Karyawan Function */
+
+    // Ajax get Auto Increment No Absen
+    public function getAbsen() {
+      $kelas = $this->input->post('kelas');     
+      if($kelas != ''){
+        $result = $this->coredb->getLastIDAbsenInKelas($kelas); 
+        echo $result;
+      }
+    }
+
 
     /**                  
     * @desc Encryption String for Password Secure

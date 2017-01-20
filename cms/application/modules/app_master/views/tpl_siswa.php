@@ -107,6 +107,39 @@
         margin-top: -20px;
         font-size: 15px;
       }
+      #layer_data{
+        position: relative;
+      }
+      #layer_data.loading i.fa-spin {
+        display:block;
+      }
+      #layer_data i.fa-spin {
+        position: absolute;
+        z-index: 3;
+        font-size: 20px;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        display:none;
+      }
+      #layer_data:after {
+        content: "";
+        display: none;
+        z-index: 2;
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+        top:0;
+      }
+      #layer_data.loading:after{
+        display: block;
+      }
     </style>
     <!-- Main content -->
     <section class="content">
@@ -128,7 +161,7 @@
                     <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
 
                     <div class="col-sm-10">
-                      <select class="form-control" name="id_kelas">
+                      <select class="form-control" id="kelas" name="id_kelas" onChange="ChangeKelas()">
                         <option value=''>=== PILIH KELAS ===</option>
                         <?php
                           foreach ($kelas as $key => $value) {
@@ -140,79 +173,80 @@
                   </div>              
                 </div>
 
-              <div class="panel panel-primary">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Informasi Siswa</h3>
-                  <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                </div>
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-4">
-                       <label for="inputEmail3" class="control-label">NIS</label>
-                       <input type="text" class="form-control" id="nis" name="nis" placeholder="Input NIS"> 
-                    </div>
-                    <div class="col-md-4">
-                       <label for="inputEmail3" class="control-label">ID Finger</label>
-                       <input type="text" class="form-control" id="pin" name="pin" placeholder="Input ID Finger">
-                    </div>
-                    <div class="col-md-4">
-                       <label for="inputEmail3" class="control-label">No. Absen</label>
-                       <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen">
-                    </div>
+                <div class="panel panel-primary" id="layer_data" style="display: none;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Informasi Siswa</h3>
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <label for="inputEmail3" class="control-label">Nama</label>
-                      <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" placeholder="Input Nama Siswa"> 
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">NIS</label>
+                         <input type="text" class="form-control" id="nis" name="nis" placeholder="Input NIS"> 
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">ID Finger</label>
+                         <input type="text" class="form-control" id="pin" name="pin" value="<?php echo $lastPin ?>" disabled>
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">No. Absen</label>
+                         <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen" disabled>
+                      </div>
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputEmail3" class="control-label">Nama Panggilan</label>
-                      <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" placeholder="Input Nama Panggilan">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="inputEmail3" class="control-label">Nama</label>
+                        <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" placeholder="Input Nama Siswa"> 
+                      </div>
+                      <div class="col-md-6">
+                        <label for="inputEmail3" class="control-label">Nama Panggilan</label>
+                        <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" placeholder="Input Nama Panggilan">
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4">
-                      <label for="inputEmail3" class="control-label">Jenis Kelamin</label>
-                        <select class="form-control" name="kelamin">
-                          <option value=''>== Pilih Jenis Kelamin ==</option>
-                          <option value='L'>LAKI - LAKI</option>
-                          <option value='P'>PEREMPUAN</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                      <label for="inputEmail3" class="control-label">Tempat Lahir</label>
-                      <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Input Tempat Lahir">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="inputEmail3" class="control-label">Tanggal Lahir</label>
-                        <div class="input-group date">
-                          <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Jenis Kelamin</label>
+                          <select class="form-control" name="kelamin">
+                            <option value=''>== Pilih Jenis Kelamin ==</option>
+                            <option value='L'>LAKI - LAKI</option>
+                            <option value='P'>PEREMPUAN</option>
+                          </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Input Tempat Lahir">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Tanggal Lahir</label>
+                          <div class="input-group date">
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir">
                           </div>
-                          <input type="text" class="form-control pull-right" id="datepicker" name="tgl_lahir">
-                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <label for="inputEmail3" class="control-label">Agama</label>
-                      <select class="form-control" name="agama">
-                          <option value=''>== Pilih Agama ==</option>
-                          <option value='I'>ISLAM</option>
-                          <option value='K'>KHATOLIK</option>
-                          <option value='P'>PROTESTAN</option>
-                          <option value='H'>HINDU</option>
-                          <option value='B'>BUDHA</option>
-                          <option value='L'>LAIN NYA</option>
-                        </select>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label for="inputEmail3" class="control-label">Agama</label>
+                        <select class="form-control" name="agama">
+                            <option value=''>== Pilih Agama ==</option>
+                            <option value='I'>ISLAM</option>
+                            <option value='K'>KHATOLIK</option>
+                            <option value='P'>PROTESTAN</option>
+                            <option value='H'>HINDU</option>
+                            <option value='B'>BUDHA</option>
+                            <option value='L'>LAIN NYA</option>
+                          </select>
+                      </div>
                     </div>
+                    <label for="inputEmail3" class="control-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat"></textarea>                  
+                    <label for="exampleInputFile" class="control-label">Unggah foto</label>
+                    <input id="form-file" type="file" id="file" name="file">
                   </div>
-                  <label for="inputEmail3" class="control-label">Alamat</label>
-                  <textarea class="form-control" id="alamat" name="alamat"></textarea>                  
-                  <label for="exampleInputFile" class="control-label">Unggah foto</label>
-                  <input id="form-file" type="file" id="file" name="file">
-                </div>
-              </div> 
+                  <i class="fa-li fa fa-spinner fa-spin"></i>
+                </div> 
 
                                                                         
               </div>
@@ -234,7 +268,74 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
+
+    <script type="text/javascript">
+      
+      const ChangeKelas = function() {
+        var kelas = document.getElementById("kelas").value;
+        var layer = $("#layer_data");
+        if(kelas != ''){
+          layer.addClass("loading");
+          $.ajax({
+                type:'POST',
+                url:'<?php echo base_url("app_master/getAbsen"); ?>',
+                data:{'kelas':kelas},
+                success:function(data){
+                    $('#absen').val(data);
+                    layer.removeClass("loading");
+                }
+            });          
+          layer.css("display","block");
+        }else{
+          layer.css("display","none");
+        }
+      }
+      $(document).ready(function(){
+        $("#kelas").val("");
+      })
+
+    </script>
     <?php elseif( $this->initial_template == 'siswa_edit'): ?>
+
+    <style>
+      .panel-heading span {
+        margin-top: -20px;
+        font-size: 15px;
+      }
+      #layer_data{
+        position: relative;
+      }
+      #layer_data.loading i.fa-spin {
+        display:block;
+      }
+      #layer_data i.fa-spin {
+        position: absolute;
+        z-index: 3;
+        font-size: 20px;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        display:none;
+      }
+      #layer_data:after {
+        content: "";
+        display: none;
+        z-index: 2;
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+        top:0;
+      }
+      #layer_data.loading:after{
+        display: : block;
+      }
+    </style>      
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -250,114 +351,105 @@
             <!-- form start -->
             <form action="<?= base_url( $this->app_name ).'/siswa_edit/'.$this->initial_id ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
               <div class="box-body">
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">NIS</label>
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
 
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nis" name="nis" value="<?= rebackPost('nis', $datadb['nis']) ?>" placeholder="Input NIS">
-                  </div>
-                </div>              
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Finger ID</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="pin" name="pin" value="<?= rebackPost('pin', $datadb['pin']) ?>" placeholder="Input ID Finger">
-                  </div>
-                </div>  
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">No. Absen</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="absen" name="absen" value="<?= rebackPost('absen', $datadb['absen']) ?>" placeholder="Input No. Absen">
-                  </div>
-                </div> 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Siswa</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" value="<?= rebackPost('nama_siswa', $datadb['nama_siswa']) ?>" placeholder="Input Nama Siswa">
-                  </div>
-                </div>                 
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Nama Panggilan (nama yang muncul pada fingerprint)</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" value="<?= rebackPost('nama_panggilan', $datadb['nama_panggilan']) ?>" placeholder="Input Nama Panggilan">
-                  </div>
-                </div>                                             
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Jenis Kelamin</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="kelamin">
-                    <option value="">-- PILIH KELAMIN --</option>
-                      <option <?php if($kelamin['kelamin'] == "L") echo "selected"; ?>>Laki-Laki</option>
-                      <option <?php if($kelamin['kelamin'] == "P") echo "selected"; ?>>Perempuan</option>
-                    </select>                   
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Tempat Lahir</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?= rebackPost('tempat_lahir', $datadb['tempat_lahir']) ?>" placeholder="Input Tempat Lahir">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Tanggal Lahir</label>
-
-                  <div class="col-sm-10">
-                    <div class="input-group date">
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      <input type="text" class="form-control pull-right" id="datepicker" value="<?= rebackPost('tgl_lahir', $datadb['tgl_lahir']) ?>" name="tgl_lahir">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Agama</label>
-
-                  <div class="col-sm-10">
-                   <input type="text" class="form-control" id="agama" value="<?= rebackPost('agama', $datadb['agama']) ?>" name="agama">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Alamat</label>
-
-                  <div class="col-sm-10">
-                   <textarea class="form-control" id="alamat" name="alamat"><?= rebackPost('alamat', $datadb['alamat']) ?></textarea>
-                  </div>
-                </div>                                               
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Kelas</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="id_kelas">
-                    <option value="">-- CHOOSE TYPE --</option>
-                      <?php
-                         if($kelas != ''){
-                          foreach($kelas as $row){
+                    <div class="col-sm-10">
+                      <select class="form-control" id="kelas" name="id_kelas" onChange="ChangeKelas()" disabled>
+                        <?php
+                          foreach ($kelas as $key => $value) {
                               
-                              if( $row['id_kelas'] == $datadb['id_kelas'])$sel  = 'selected';
-                              else $sel  = '';
-                                
-                                echo '<option value="'.$row['id_kelas'].'" '.$sel.'>'.ucfirst($row['Nama_Kelas']).'</option>';
-                            }                                      
-                         }
-                     ?>
-                    </select>
-                  </div>
-                </div> 
-                <div class="form-group">
-                  <label for="exampleInputFile" class="col-sm-2 control-label">Unggah foto</label>
+                              if( $value['id_kelas'] == $datadb['id_kelas']) {
+                                $sel  = 'selected';
+                                echo '<option value="'.$value['id_kelas'].'" '.$sel.'>'.$value['Nama_Kelas'].'</option>';
+                              }else{
+                                $sel  = '';
+                              }
+                          }
+                          ?>
+                      </select>
+                    </div>
+                  </div>              
+                </div>
 
-                  <div class="col-sm-10">
+                <div class="panel panel-primary" id="layer_data" style="display: none;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Informasi Siswa</h3>
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">NIS</label>
+                         <input type="text" class="form-control" id="nis" name="nis"  value="<?= rebackPost('nis', $datadb['nis']) ?>" placeholder="Input NIS"> 
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">ID Finger</label>
+                         <input type="text" class="form-control" id="pin" name="pin"  value="<?= rebackPost('pin', $datadb['pin']) ?>"  disabled>
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">No. Absen</label>
+                         <input type="text" class="form-control" id="absen" name="absen" value="<?= rebackPost('absen', $datadb['absen']) ?>" placeholder="Input No. Absen" disabled>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="inputEmail3" class="control-label">Nama</label>
+                        <input type="text" class="form-control" id="nama_siswa" name="nama_siswa" value="<?= rebackPost('nama_siswa', $datadb['nama_siswa']) ?>" placeholder="Input Nama Siswa"> 
+                      </div>
+                      <div class="col-md-6">
+                        <label for="inputEmail3" class="control-label">Nama Panggilan</label>
+                        <input type="text" class="form-control" id="nama_panggilan" name="nama_panggilan" value="<?= rebackPost('nama_panggilan', $datadb['nama_panggilan']) ?>" placeholder="Input Nama Panggilan">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Jenis Kelamin</label>
+                          <select class="form-control" name="kelamin">
+                            <option value=''>== Pilih Jenis Kelamin ==</option>
+                            <option <?php if($kelamin['kelamin'] == "L") echo "selected"; ?>>Laki-Laki</option>
+                            <option <?php if($kelamin['kelamin'] == "P") echo "selected"; ?>>Perempuan</option>
+                          </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" value="<?= rebackPost('tempat_lahir', $datadb['tempat_lahir']) ?>" placeholder="Input Tempat Lahir">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Tanggal Lahir</label>
+                          <div class="input-group date">
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" value="<?= rebackPost('tgl_lahir', $datadb['tgl_lahir']) ?>" id="datepicker" name="tgl_lahir">
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <label for="inputEmail3" class="control-label">Agama</label>
+                        <select class="form-control" name="agama">
+                            <option value=''>== Pilih Agama ==</option>
+                            <option <?php if($datadb['kelamin'] == "I") echo "selected"; ?> value='I'>ISLAM</option>
+                            <option <?php if($datadb['kelamin'] == "K") echo "selected"; ?> value='K'>KHATOLIK</option>
+                            <option <?php if($datadb['kelamin'] == "P") echo "selected"; ?>  value='P'>PROTESTAN</option>
+                            <option <?php if($datadb['kelamin'] == "H") echo "selected"; ?> value='H'>HINDU</option>
+                            <option <?php if($datadb['kelamin'] == "B") echo "selected"; ?> value='B'>BUDHA</option>
+                            <option <?php if($datadb['kelamin'] == "L") echo "selected"; ?> value='L'>LAIN NYA</option>
+                          </select>
+                      </div>
+                    </div>
+                    <label for="inputEmail3" class="control-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat"><?= rebackPost('alamat', $datadb['alamat']) ?></textarea>                  
+                    <label for="exampleInputFile" class="control-label">Unggah foto</label>
                     <input id="form-file" type="file" id="file" name="file">
                   </div>
-                </div>                       
+                  <i class="fa-li fa fa-spinner fa-spin"></i>
+                </div> 
+
+                                                                        
               </div>
-       
               <!-- /.box-body -->
               <div class="box-footer">
                 <a class="btn btn-default" href="javascript:window.history.go(-1);">Batal</a>
@@ -374,7 +466,36 @@
       </div>
       <!-- /.row -->
     </section>
-    <!-- /.content -->    
+    <!-- /.content -->   
+
+    <script type="text/javascript">
+      
+      const ChangeKelas = function() {
+        var kelas = document.getElementById("kelas").value;
+        var layer = $("#layer_data");
+        if(kelas != ''){
+          layer.addClass("loading");
+          $.ajax({
+                type:'POST',
+                url:'<?php echo base_url("app_master/getAbsen"); ?>',
+                data:{'kelas':kelas},
+                success:function(data){
+                  
+                    layer.removeClass("loading");
+                }
+            });          
+          layer.css("display","block");
+        }else{
+          layer.css("display","none");
+        }
+      }
+      $(document).ready(function(){
+        if($("#kelas").val() !== ''){
+            ChangeKelas();
+        }
+      })
+
+    </script>     
     <?php endif; ?>
   </div>
   <!-- /.content-wrapper -->

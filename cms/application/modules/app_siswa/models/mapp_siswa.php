@@ -144,6 +144,7 @@ class Mapp_siswa extends CI_Model{
                      ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
                      ->where_in('kehadiran', array(2,3,4))
+                     ->where('date(jam_masuk)', $tgl)
                      ->group_by('ja_siswa.nis')
                      ->order_by('ja_siswa.pin', 'ASC');
             $query = $this->db->get();
@@ -156,6 +157,8 @@ class Mapp_siswa extends CI_Model{
     {
         if ($initial_id != '') {
             $this->db->where('ja_siswa.id_kelas', $initial_id);
+            $tgl = date('Y-m-d');
+            $this->db->where('date(ja_data_absen.jam_masuk)', $tgl);
         }
         $tgl = date('Y-m-d');
         $this->db->select('ja_data_absen.*, ja_siswa.*, ja_kelas.*,ja_siswa.absen as absen2, ja_siswa.pin as pin2')

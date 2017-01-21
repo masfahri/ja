@@ -102,9 +102,8 @@ class App_laporan extends MX_Controller {
         $hasil = $this->coredb->getAbsensiswa($kelas, $tanggal, $pin);
 
         if(count($hasil) > 0){
-        echo '
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        echo '  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <div id="nis2" ></div>
                     <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel">'.$hasil[0]->nama_siswa.'</h4>
                   '.$hasil[0]->nis.'
@@ -155,14 +154,50 @@ class App_laporan extends MX_Controller {
                         } );
                       </script>";
         }
-    }else{
-            echo '<tr>
-                    <td></td>
-                    <td></td>
-                    <td>DATA ORA ADA</td>
-                    <td></td>
-                    <td></td>
-                  </tr>';
+    }elseif(count($hasil) == 0){
+            echo '<div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <div id="nis2" ></div>
+                    <h4 style="font-weight:bold;" class="modal-title" id="myModalLabel"></h4>
+                  </div>
+                <div class="modal-body">
+                  <div class="uk-width-medium-1-2">
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Hari</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Pulang</th>
+                        <th>Status</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                    <tr>
+                      <td><span></span></td>
+                      <td></td>
+                      <td><span>MAAF ABSEN BeLuM DI UPDATE</span></td>
+                      <td><span></span></td>
+                      <td><span></span></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Hari</th>
+                            <th>Jam Masuk</th>
+                            <th>Jam Pulang</th>
+                            <th>Status</th>
+                        </tr>
+                    </tfoot>
+                    </table>
+                    </div>
+                    </div>';
+            echo " <script type='text/javascript'>
+                        $(document).ready(function() {
+                            $('#example1').DataTable();
+                        } );
+                      </script>";
         }
 
     }

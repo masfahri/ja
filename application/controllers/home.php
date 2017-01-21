@@ -26,6 +26,9 @@ class Home extends CI_Controller {
     }
 
     public function index(){
+        $newURL = '/cms/';
+        redirect($newURL,'location',301);
+
         $this->load->model('mevent');
         $params['event'] = $this->mevent->getEvent();
         $params['slide'] = $this->mevent->getSlide();

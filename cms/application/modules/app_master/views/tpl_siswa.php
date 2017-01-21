@@ -110,9 +110,15 @@
       #layer_data{
         position: relative;
       }
+      #layer_ortu{
+        position: relative;
+      }      
       #layer_data.loading i.fa-spin {
         display:block;
       }
+      #layer_ortu.loading i.fa-spin {
+        display:block;
+      }      
       #layer_data i.fa-spin {
         position: absolute;
         z-index: 3;
@@ -126,6 +132,19 @@
         height: 20px;
         display:none;
       }
+      #layer_ortu i.fa-spin {
+        position: absolute;
+        z-index: 3;
+        font-size: 20px;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        display:none;
+      }      
       #layer_data:after {
         content: "";
         display: none;
@@ -137,9 +156,23 @@
         margin: auto;
         top:0;
       }
+      #layer_ortu:after {
+        content: "";
+        display: none;
+        z-index: 2;
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+        top:0;
+      }      
       #layer_data.loading:after{
         display: block;
       }
+      #layer_ortu.loading:after{
+        display: block;
+      }      
     </style>
     <!-- Main content -->
     <section class="content">
@@ -186,11 +219,11 @@
                       </div>
                       <div class="col-md-4">
                          <label for="inputEmail3" class="control-label">ID Finger</label>
-                         <input type="text" class="form-control" id="pin" name="pin" value="<?php echo $lastPin ?>" disabled>
+                         <input type="text" class="form-control" id="pin" name="pin" value="<?php echo $lastPin ?>" readonly>
                       </div>
                       <div class="col-md-4">
                          <label for="inputEmail3" class="control-label">No. Absen</label>
-                         <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen" disabled>
+                         <input type="text" class="form-control" id="absen" name="absen" placeholder="Input No. Absen" readonly>
                       </div>
                     </div>
                     <div class="row">
@@ -239,6 +272,15 @@
                             <option value='L'>LAIN NYA</option>
                           </select>
                       </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail3" class="control-label">Tahun Ajaran</label>
+                          <div class="input-group date">
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" name="tahun_ajaran">
+                          </div>
+                      </div>                      
                     </div>
                     <label for="inputEmail3" class="control-label">Alamat</label>
                     <textarea class="form-control" id="alamat" name="alamat"></textarea>                  
@@ -248,6 +290,38 @@
                   <i class="fa-li fa fa-spinner fa-spin"></i>
                 </div> 
 
+                <div class="panel panel-primary" id="layer_ortu" style="display: none;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Informasi Orang Tua / Wali murid</h3>
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">Nama Ortu / Wali murid</label>
+                         <input type="text" class="form-control" id="nama_ortu" name="nama_ortu" placeholder="Input Nama"> 
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">No. HP</label>
+                         <input type="text" class="form-control" id="no_hp" name="no_hp">
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">Hubungan Keluarga</label>
+                          <select class="form-control" name="keterangan">
+                            <option value='Ayah'>Ayah</option>
+                            <option value='Ibu'>Ibu</option>
+                            <option value='Paman'>Paman</option>
+                            <option value='Bibi'>Bibi</option>                              
+                            <option value='Kakak'>Kakak</option>
+                            <option value='Adik'>Adik</option>                                                          
+                          </select>
+                      </div>
+                    </div>
+                    <label for="inputEmail3" class="control-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat_ortu"></textarea>
+                  </div>
+                  <i class="fa-li fa fa-spinner fa-spin"></i>
+                </div>
                                                                         
               </div>
        
@@ -274,8 +348,10 @@
       const ChangeKelas = function() {
         var kelas = document.getElementById("kelas").value;
         var layer = $("#layer_data");
+        var layer_ortu = $("#layer_ortu");        
         if(kelas != ''){
           layer.addClass("loading");
+          layer_ortu.addClass("loading");          
           $.ajax({
                 type:'POST',
                 url:'<?php echo base_url("app_master/getAbsen"); ?>',
@@ -283,11 +359,14 @@
                 success:function(data){
                     $('#absen').val(data);
                     layer.removeClass("loading");
+                    layer_ortu.removeClass("loading");
                 }
             });          
           layer.css("display","block");
+          layer_ortu.css("display","block");
         }else{
           layer.css("display","none");
+          layer_ortu.css("display","none");
         }
       }
       $(document).ready(function(){
@@ -305,9 +384,15 @@
       #layer_data{
         position: relative;
       }
+      #layer_ortu{
+        position: relative;
+      }      
       #layer_data.loading i.fa-spin {
         display:block;
       }
+      #layer_ortu.loading i.fa-spin {
+        display:block;
+      }      
       #layer_data i.fa-spin {
         position: absolute;
         z-index: 3;
@@ -321,6 +406,19 @@
         height: 20px;
         display:none;
       }
+      #layer_ortu i.fa-spin {
+        position: absolute;
+        z-index: 3;
+        font-size: 20px;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        display:none;
+      }      
       #layer_data:after {
         content: "";
         display: none;
@@ -332,9 +430,23 @@
         margin: auto;
         top:0;
       }
+      #layer_ortu:after {
+        content: "";
+        display: none;
+        z-index: 2;
+        background: rgba(0,0,0,0.1);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin: auto;
+        top:0;
+      }      
       #layer_data.loading:after{
         display: : block;
       }
+      #layer_ortu.loading:after{
+        display: : block;
+      }      
     </style>      
     <!-- Main content -->
     <section class="content">
@@ -448,6 +560,38 @@
                   <i class="fa-li fa fa-spinner fa-spin"></i>
                 </div> 
 
+                <div class="panel panel-primary" id="layer_ortu" style="display: none;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Informasi Orang Tua / Wali murid</h3>
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                  </div>
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">Nama Ortu / Wali murid</label>
+                         <input type="text" class="form-control" id="nama_ortu" value="<?= rebackPost('nama_ortu', $datadb['nama_ortu']) ?>" name="nama_ortu" placeholder="Input Nama"> 
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">No. HP</label>
+                         <input type="text" class="form-control" id="no_hp" value="<?= rebackPost('no_hp', $datadb['no_hp']) ?>" name="no_hp">
+                      </div>
+                      <div class="col-md-4">
+                         <label for="inputEmail3" class="control-label">Hubungan Keluarga</label>
+                          <select class="form-control" name="keterangan">
+                            <option value='Ayah'>Ayah</option>
+                            <option value='Ibu'>Ibu</option>
+                            <option value='Paman'>Paman</option>
+                            <option value='Bibi'>Bibi</option>                              
+                            <option value='Kakak'>Kakak</option>
+                            <option value='Adik'>Adik</option>                                                          
+                          </select>
+                      </div>
+                    </div>
+                    <label for="inputEmail3" class="control-label">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat_ortu"><?= rebackPost('alamat', $datadb['alamat']) ?></textarea>
+                  </div>
+                  <i class="fa-li fa fa-spinner fa-spin"></i>
+                </div>
                                                                         
               </div>
               <!-- /.box-body -->
@@ -473,8 +617,10 @@
       const ChangeKelas = function() {
         var kelas = document.getElementById("kelas").value;
         var layer = $("#layer_data");
+        var layer_ortu = $("#layer_ortu");        
         if(kelas != ''){
           layer.addClass("loading");
+          layer_ortu.addClass("loading");
           $.ajax({
                 type:'POST',
                 url:'<?php echo base_url("app_master/getAbsen"); ?>',
@@ -482,11 +628,14 @@
                 success:function(data){
                   
                     layer.removeClass("loading");
+                    layer_ortu.removeClass("loading");
                 }
             });          
           layer.css("display","block");
+          layer_ortu.css("display","block");
         }else{
           layer.css("display","none");
+          layer_ortu.css("display","none");
         }
       }
       $(document).ready(function(){

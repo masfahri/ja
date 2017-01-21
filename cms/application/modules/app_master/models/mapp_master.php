@@ -71,7 +71,7 @@ class Mapp_master extends CI_Model{
         $query = $this->db->get();
         if($query->num_rows() > 0){
                 return $query->row()->pin + 1;
-        }else return null;
+        }else return 1;
     }
 
     public function getLastIDAbsenInKelas($kelas = ''){
@@ -84,16 +84,17 @@ class Mapp_master extends CI_Model{
         $this->db->order_by('ja_siswa.absen', 'desc');
         $this->db->limit(1);
         $query = $this->db->get();
-        if($query->num_rows() > 0){
-                return $query->row()->absen + 1;
-        }else return null;
+        if($query->num_rows() > 0){ 
+                    return $query->row()->absen + 1;           
+        }else return 1;
     }
 
     public function grapSiswa($initial_id){
         
         $this->db->select('*')
-                 ->from('ja_siswa');
-        $this->db->where('id', $initial_id);
+                 ->from('ja_siswa')
+                 ->join('ja_ortu', 'ja_siswa.nis=ja_ortu.nis_siswa');
+        $this->db->where('ja_siswa.id', $initial_id);
         $query = $this->db->get();
         if($query->num_rows() > 0)return $query->row_array();
         else return null;

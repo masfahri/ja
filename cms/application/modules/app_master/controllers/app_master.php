@@ -276,21 +276,38 @@ class App_master extends MX_Controller {
                         $_POST['foto']     = $this->fileupload->path_directory;
                    }
                }
-
-               # processing password
-               if( $_POST['pasword'] ){
-                  //$_POST['salt'] = date('ymdhis').session_id();
-                  $_POST['pasword'] = $this->hash_password( $_POST['pasword'] );
-                  //unset($_POST['repassword']);
-               }               
+             
              # -------------------------------------------------------------------------------------
 
 
 
             if( $validate !== 'false' ){
+                $dataSiswa = array(
+                              'nis'             => $_POST['nis'],
+                              'pin'             => $_POST['pin'],
+                              'nama_siswa'      => $_POST['nama_siswa'],
+                              'nama_panggilan'  => $_POST['nama_panggilan'],
+                              'kelamin'         => $_POST['kelamin'],
+                              'tempat_lahir'    => $_POST['tempat_lahir'],
+                              'tgl_lahir'       => $_POST['tgl_lahir'],
+                              'agama'           => $_POST['agama'],
+                              'alamat'          => $_POST['alamat'],
+                              'id_kelas'        => $_POST['id_kelas'],
+                              'absen'           => $_POST['absen'],
+                              'foto'            => $_POST['foto'],
+                              'tahun_ajaran'    => $_POST['tahun_ajaran']
+                            );
+                $dataOrtu = array(
+                              'group_id'        => $_POST['id_kelas'],
+                              'nis_siswa'       => $_POST['nis'],
+                              'nama_ortu'       => $_POST['nama_ortu'],
+                              'no_hp'           => $_POST['no_hp'],
+                              'alamat'          => $_POST['alamat_ortu'],
+                              'keterangan'      => $_POST['keterangan']
+                            );                
                 # record database    
                 $this->load->library('uidcontroll');
-                if( $this->uidcontroll->insertData('ja_siswa', bindProcessing($_POST) ) !== FALSE){
+                if( $this->uidcontroll->insertData('ja_siswa', $dataSiswa ) !== FALSE && $this->uidcontroll->insertData('ja_ortu', $dataOrtu ) !== FALSE){
                     $this->session->set_flashdata('msg_success', 'Success Save Data');  
                     redirect( base_url($this->app_name).'/siswa' );
                 

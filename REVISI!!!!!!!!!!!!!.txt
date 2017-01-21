@@ -41,8 +41,8 @@ app_sms/phonebook_group_view/$initial_id (untuk modal)
 -- TIDAK jadi di pakai karena sudah pakai modal
 
 app_sms/phonebook_group_add (sementara di disable, karena data ortu mau diinput dari app_master/siswa)
-#Group berdasarkan kelas (automatis)
--Nama ortu berdasarkan kelas
+#Group berdasarkan kelas (automatis) (ok)
+-Nama ortu berdasarkan kelas (ok)
 
 app_sms/setting
 #tambahkan last seen device (ok)

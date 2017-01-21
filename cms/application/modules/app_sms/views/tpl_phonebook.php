@@ -265,20 +265,18 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Phonebook Groups</h3>
+              <h3 class="box-title">Phonebook Group</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
             <!-- OUTPUT MESSAGE -->
             <?= $this->messagecontroll->showMessage() ?>
-              <a href="<?= base_url($this->app_name) ?>/phonebook_group_add" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah baru</a>
-              <br /><br />
+              <!--a href="<?= base_url($this->app_name) ?>/phonebook_group_add" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah baru</a -->
 
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Nama Ortu</th>                  
+                  <th>ID</th>              
                   <th>Nama Group</th>
                   <th>Aksi</th>                
                 </tr>
@@ -290,14 +288,13 @@
 
                           ?>         
                                 <tr>  
-                                    <td><span><?php echo $row['id2'] ?></span></td>
+                                    <td><span><?php echo $row['id_kelas'] ?></span></td>                                       
                                     <td>
-                                        <?php echo $row['nama_ortu']; ?>
-                                    </td>                                         
-                                    <td>
-                                        <a href="<?php echo base_url($this->app_name).'/phonebook_group_view/'.$row['id_kelas']; ?>"><?php echo $row['Nama_Kelas']?></a>
+                                        <span><?php echo $row['Nama_Kelas']?></span>
                                     </td>                                                             
-                                    <td><a href="<?php echo base_url($this->app_name).'/phonebook_group_view/'.$row['id_kelas']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> View</a></td>        
+                                    <td><button type="button" class="btn btn-primary btn-xs" onclick="showPhonebook(<?php echo $row['id_kelas'] ?>)">
+                                      View
+                                    </button></td>        
                                 </tr>
                       <?php  }}else{ ?>
                                 <tr>
@@ -314,8 +311,7 @@
 
                 <tfoot>
                 <tr>
-                  <th>ID</th>
-                  <th>Nama Ortu</th>                  
+                  <th>ID</th>                
                   <th>Nama Group</th>
                   <th>Aksi</th>         
                 </tr>
@@ -331,6 +327,44 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Phonebook Detail</h4>
+          </div>
+          <div class="modal-body">
+            <div id="nis2"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      
+    function showPhonebook(id_kelas) {
+      var kelas = id_kelas;
+       $.ajax({
+              type:'POST',
+              url:'<?php echo base_url("app_sms/getOrtuPerKelas"); ?>',
+              data:{'kelas':kelas},
+              success:function(data){
+                  $('#myModal').modal('show');
+                  //$('#ortu2').html(data);
+                  $('#nis2').html(data);
+              }
+          });
+
+    }
+
+
+
+    </script>
     <?php elseif( $this->initial_template == 'phonebook_group_add'): ?>
     <!-- Main content -->
     <section class="content">
@@ -409,7 +443,6 @@
     <?php endif; ?>
   </div>
   <!-- /.content-wrapper -->
-
   <!-- page script -->
 <script>
 

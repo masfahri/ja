@@ -20,13 +20,13 @@ app_websetup/in_out
 - table ubah ke datatable (ok)
 	
 app_websetup/in_out_add
--Pemilihan Tipe kelas tidak muncul List Kelas
+-Pemilihan Tipe kelas tidak muncul List Kelas (ok)
 #Jika Pendalaman Materi UN (Sync ke ja_data_absen.tipeMasuk)
 !hapus status (ok)
 
 app_sms/phonebook
 -Table ubah ke datatable (ok)
-#tampilkan kelas di table
+#tampilkan kelas di table (sudah di buatkan di edit)
 
 app_sms/phonebook_add
 ##API LAGI DI DISABLE!!!!
@@ -34,13 +34,13 @@ app_sms/phonebook_add
 --jika kelas diklik siswa perkelas (ok)
 
 app_sms/phonebook_group
--list nama group saja di group by id_kelas 
-kemudian muncul modal semua list ortu
+-list nama group saja di group by id_kelas (ok)
+kemudian muncul modal semua list ortu (ok)
 	
-app_sms/phonebook_group_view/$initial_id (untuk modal)
--404 NOT FOUND
+app_sms/phonebook_group_view/$initial_id (untuk modal) 
+-- TIDAK jadi di pakai karena sudah pakai modal
 
-app_sms/phonebook_group_add
+app_sms/phonebook_group_add (sementara di disable, karena data ortu mau diinput dari app_master/siswa)
 #Group berdasarkan kelas (automatis)
 -Nama ortu berdasarkan kelas
 

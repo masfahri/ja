@@ -226,6 +226,62 @@ class App_sms extends MX_Controller {
         }
     }
 
+    /* get Ortu perkelas */
+    public function getOrtuPerKelas() {
+      $kelas = $this->input->post('kelas');
+      
+      $ortu =  $this->coredb->grapOrtuByKelas($kelas);      
+
+        if(count($ortu) > 0){
+        echo '
+                <h2>Nama Group : '.$ortu[0]->Nama_Kelas.'</h2>
+
+                    <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nama Ortu</th>
+                        <th>No HP</th>
+                        <th>Ortu Dari</th> 
+                        <th>Keterangan</th>
+                      </tr>
+                      </thead>
+                      <tbody>';
+
+        if(count($ortu) > 0){
+            $i = 1;
+            foreach ($ortu as $key => $value) {
+              echo '<tr>
+                      <td><span>'.$i++.'</span></td>
+                      <td>'.$value->nama_ortu.'</td>
+                      <td><span>'.$value->no_hp.'</span></td>
+                      <td><span>'.$value->nama_siswa.'</span></td>                      
+                      <td><span>'.$value->keterangan.'</span></td>
+                    </tr>';
+            }
+                echo '</tbody>
+                              <tfoot>
+                              <tr>
+                                <th>ID</th>
+                                <th>Nama Ortu</th>
+                                <th>No HP</th>
+                                <th>Ortu Dari</th>                                
+                                <th>Keterangan</th>
+                              </tr>
+                              </tfoot>
+                            </table>';
+        }
+    }else{      
+            echo '<tr>
+                    <td></td>
+                    <td></td>
+                    <td>Data Belum tersedia.</td>
+                    <td></td>
+                    <td></td>
+                  </tr>';
+        }
+    }
+
 
     /* get Ortu dari siswa */
     public function getSiswa() {
@@ -437,7 +493,7 @@ class App_sms extends MX_Controller {
     }
 
     public function phonebook_group(){
-        $params['datadb'] =  $this->coredb->getPhonebookKelas(); 
+        $params['datadb'] =  $this->coredb->getKelas(); 
         $params['siswaKelas']         =  $this->Mapp_siswa->allSiswaInKelas();
         $params['datadbkelas'] =  $this->Mapp_siswa->getKelas();   
         $params['kelas'] =  $this->coredb->getKelas();

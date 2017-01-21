@@ -35,7 +35,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Hari</th>
-                  <th>Kelas</th>
+                  <th>Tipe</th>
                   <th>Jam Masuk</th>
                   <th>Jam Pulang</th>
                   <th>Aksi</th>
@@ -50,7 +50,20 @@
                                     <td>
                                         <a href="<?php echo base_url($this->app_name).'/in_out_edit/'.$row['id']; ?>"><?php echo $row['hari']?></a>
                                     </td>
-                                    <td><span><?php echo $row['id_kelas'] ?></span></td>
+                                    <td><span><?php 
+                                      if($row['id_kelas'] == '0')
+                                        { 
+                                            echo 'Sekolah';
+                                        } else{ 
+
+                                          $this->load->model('app_siswa/mapp_siswa');
+                                          $kelas = $this->mapp_siswa->getKelas();
+                                          foreach ($kelas as $key => $value) {
+                                            if($value['id_kelas'] == $row['id_kelas']) {
+                                                print_r($value['Nama_Kelas']);
+                                            }
+                                          } 
+                                        } ?></span></td>
                                     <td><span><?php echo $row['jam_masuk'] ?></span></td>
                                     <td><span><?php echo $row['jam_keluar'] ?></span></td>                                                                  
                                     <td><a href="<?php echo base_url($this->app_name).'/in_out_edit/'.$row['id']; ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="<?php echo base_url($this->app_name).'/in_out_remove/'.$row['id']; ?>"  class="btn btn-danger   btn-xs"><i class="fa fa-delete"></i> Delete</a></td>        
@@ -72,7 +85,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Hari</th>
-                  <th>Kelas</th>
+                  <th>Tipe</th>
                   <th>Jam Masuk</th>
                   <th>Jam Pulang</th>
                   <th>Aksi</th>
@@ -123,7 +136,6 @@
 
                   <div class="col-sm-10">
                     <select class="form-control" name="type" onchange="showDiv(this)">
-                    <option value=''>== Pilih Tipe ==</option>
                     <option value='1'>Sekolah</option>
                     <option value='0'>Kelas</option>                                                                       
                     </select>                   
@@ -194,18 +206,7 @@
                   <div class="col-sm-10">
                    <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Status</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="status">
-                    <option value=''>== Pilih Status ==</option>
-                    <option value='active'>Active</option>
-                    <option value='disabled'>Disabled</option>
-                    </select>                   
-                  </div>
-                </div>                               
+                </div>                              
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
@@ -226,8 +227,6 @@
     <!-- /.content -->
     <script type="text/javascript">
 
-
-    $(document).ready(function(){
     document.getElementById('id_kelas').style.display = "none";
           function showDiv(select){
              if(select.value != 0) {
@@ -238,8 +237,6 @@
              }
 
           }  
-
-    });
     </script>
     
     <?php elseif( $this->initial_template == 'in_out_edit'): ?>
@@ -263,7 +260,7 @@
                   <label for="type" class="col-sm-2 control-label">Tipe</label>
 
                   <div class="col-sm-10">
-                    <select class="form-control" id="type" name="type" onchange="showDiv(this)">
+                    <select class="form-control" id="type" name="type" onchange="showDiv(this.value)">
                     <option <?php if($datadb[0]['type'] == "") echo "selected"; ?> value=''>== Pilih Tipe ==</option>
                     <option <?php if($datadb[0]['type'] == "1") echo "selected"; ?> value='1'>Sekolah</option>
                     <option <?php if($datadb[0]['type'] == "0") echo "selected"; ?> value='0'>Kelas</option>                                                                       
@@ -340,18 +337,7 @@
                   <div class="col-sm-10">
                    <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Status</label>
-
-                  <div class="col-sm-10">
-                    <select class="form-control" name="status">
-                    <option value=''>== Pilih Status ==</option>
-                    <option  <?php if($datadb[0]['status'] == 'active') { echo 'selected';}else{ echo '';} ?> value='active'>Active</option>
-                    <option <?php if($datadb[0]['status'] == 'disabled') { echo 'selected';}else{ echo '';} ?> value='disabled'>Disabled</option>
-                    </select>                   
-                  </div>
-                </div>                               
+                </div>                            
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
@@ -374,9 +360,8 @@
 
 
     $(document).ready(function(){
-    document.getElementById('id_kelas').style.display = "none";
           function showDiv(select){
-             if(select.value != 0) {
+             if(select.value == 1 || select.value == '') {
                 document.getElementById('id_kelas').style.display = "none";
              }
             else {

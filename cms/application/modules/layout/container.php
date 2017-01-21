@@ -368,8 +368,8 @@
                     </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/phonebook') ?>"><i class="fa fa-circle-o"></i> Phonebook</a></li>                        
                             <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/phonebook_group') ?>"><i class="fa fa-circle-o"></i> Group</a></li>
-                            <li class="<?php if($this->uri->segment(1)=="app_sms"){echo "active ";}?>"><a href="<?= base_url('app_sms/phonebook') ?>"><i class="fa fa-circle-o"></i> Phone</a></li>
                         </ul>
                     </li>
                     <li class="treeview">

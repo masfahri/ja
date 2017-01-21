@@ -34,6 +34,7 @@ class Mapp_sms extends CI_Model{
         $this->db->from('ja_ortu');
         $this->db->join('ja_kelas', 'ja_kelas.id_kelas=ja_ortu.group_id', 'inner');
         $this->db->order_by('ja_kelas.id_kelas');
+        $this->db->group_by('ja_kelas.id_kelas');
         $query = $this->db->get();
         if($query->num_rows() > 0){
                 return $query->result_array();
@@ -158,6 +159,19 @@ class Mapp_sms extends CI_Model{
         else return null;
     }    
 
+    public function grapOrtuByKelas($initial_id=''){
+        if($initial_id != ''){
+            $this->db->where('ja_siswa.id_kelas', $initial_id);
+        }
+        $this->db->select('ja_ortu.*, ja_siswa.*, ja_kelas.*')
+                 ->from('ja_ortu')
+                 ->join('ja_siswa', 'ja_ortu.nis_siswa=ja_siswa.nis')
+                 ->join('ja_kelas', 'ja_siswa.id_kelas=ja_kelas.id_kelas');
+        $this->db->order_by('ja_siswa.absen');
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->result();
+        else return null;
+    }   
 
     public function getKelamin($initial_id = ''){
         $this->db->select('kelamin')

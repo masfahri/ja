@@ -116,6 +116,17 @@ class Mapp_sms extends CI_Model{
         else return null;
     }
 
+    public function grapSiswaByPin($initial_id){
+        
+        $this->db->select('ja_siswa.*, ja_ortu.*')
+                 ->from('ja_siswa')
+                 ->join('ja_ortu', 'ja_siswa.nis=ja_ortu.nis_siswa');
+        $this->db->where('ja_siswa.pin', $initial_id);
+        $query = $this->db->get();
+        if($query->num_rows() > 0)return $query->row_array();
+        else return null;
+    }
+
     public function grapSiswaByNis($initial_id){
         
         $this->db->select('*')

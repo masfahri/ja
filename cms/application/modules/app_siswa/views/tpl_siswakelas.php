@@ -130,8 +130,7 @@
                                                 $jamMasuk2 = date($row['jam']);
                                                 $this->load->model('app_websetup/Mapp_websetup');        
                                                 $jam_masuk = $this->Mapp_websetup->grapInOut();
-
-                                            /*Table*/
+                                                /*Table*/
                                                 echo "<script type='text/javascript'>
                                                             document.addEventListener('DOMContentLoaded', function() {
 
@@ -185,9 +184,7 @@
                                                                         }
                                                                 });
 
-                                                            }  
-                                                           
-                                                        </script>";
+                                                            }       </script>";
                                             ?>
                                                  <tr>
                                                 <td><a href='pages/examples/invoice.html'><?php echo $row['absen2']?></a></td>
@@ -212,13 +209,13 @@
                                                 </td> -->
                                                 <td>
                                                     <input type='radio' 
-                                                    <?php if ($row['kehadiran'] == 2 && date('Y-m-d', strtotime($row['jam_masuk'])) == $tgl) {
+                                                    <?php if ($row['kehadiran'] == 2 && date($row['jm']) == $tgl) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
                                                 </td>
                                                 <td>
                                                     <input type="radio"  
-                                                    <?php if ($row['kehadiran'] == 3 && date('Y-m-d', strtotime($row['jam_masuk'] == $tgl))) {
+                                                    <?php if ($row['kehadiran'] == 3 && date($row['jm']) == $tgl) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'];?>' value='3'
                                                     />
@@ -326,12 +323,8 @@
 
                                             /*Table*/
                                                 echo "<script type='text/javascript'>
-                                                            document.addEventListener('DOMContentLoaded', function() {
-
-
-
-                                                            });
-                                                           function myFunction_".$row['nis']."() {
+                                                            document.addEventListener('DOMContentLoaded', function() {});
+                                                            function myFunction_".$row['nis']."() {
                                                                 var x = document.getElementById('myCheck_".$row['nis']."').checked;
                                                                 document.getElementById('jam_".$row['nis']."').disabled= false;
                                                                 document.getElementById('menit_".$row['nis']."').disabled= false;

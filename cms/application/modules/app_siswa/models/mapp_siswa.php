@@ -129,14 +129,11 @@ class Mapp_siswa extends CI_Model{
      */
     public function allSiswaInKelas($initial_id='')
     {
-
-        
         if ($initial_id != '') {
             $this->db->where('ja_siswa.id_kelas', $initial_id);
         }
             $tgl = date('Y-m-d');
             $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.absen as absen2, ja_siswa.pin as pin2, ja_siswa.id_kelas')
-
                      ->select('max(date(jam_masuk)) as jm')
                      ->select('date(jam_pulang) as jp')
                      ->select('ja_data_absen.jam_masuk as jam')
@@ -144,6 +141,7 @@ class Mapp_siswa extends CI_Model{
                      ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
                      ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
                      ->where_in('kehadiran', array(2,3,4))
+                     ->where('date(jam_masuk)', $tgl)
                      ->group_by('ja_siswa.nis')
                      ->order_by('ja_siswa.pin', 'ASC');
             $query = $this->db->get();
@@ -183,19 +181,19 @@ class Mapp_siswa extends CI_Model{
             $this->db->where('ja_siswa.id_kelas', $initial_id);
         }
             $tgl = date('Y-m-d');
-            $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.absen as absen2, ja_siswa.pin as pin2, ja_siswa.id_kelas, ja_kategori_izin.*')
-
-                     ->select('max(date(jam_masuk)) as jm')
+            $this->db->select('ja_kelas.*,ja_siswa.*, ja_data_absen.*, ja_siswa.absen, ja_siswa.id_kelas, ja_kategori_izin.*')
+                     ->select('ja_siswa.absen as absen2, ja_siswa.pin as pin2, ja_data_absen.jam_masuk as jam')
+                     ->select('max(date(jam_masuk)) as tglmasuk')
                      ->select('time(jam_masuk) as jammasuk')
-                     ->select('date(jam_pulang) as jp')
-                     ->select('ja_data_absen.jam_masuk as jam')
+                     ->select('date(jam_pulang) as jp,')
                      ->from('ja_siswa')
-                     ->join('ja_data_absen','ja_data_absen.pin=ja_siswa.pin','LEFT')
-                     ->join('ja_kelas','ja_siswa.id_kelas=ja_kelas.id_kelas','INNER')
-                     ->join('ja_kategori_izin','ja_data_absen.kehadiran = ja_kategori_izin.id','LEFT')
+                     ->join('ja_data_absen','ja_data_absen.pin = ja_siswa.pin','LEFT')
+                     ->join('ja_kelas','ja_siswa.id_kelas = ja_kelas.id_kelas','INNER')
+                     ->join('ja_kategori_izin','ja_data_absen.kehadiran = ja_kategori_izin.id' ,'LEFT')
+                     ->where('date(jam_masuk) IS NULL OR (date(jam_masuk)='.$tgl.' OR date(jam_masuk) IS NOT NULL)')
                      ->group_by('ja_siswa.nis')
-                     ->order_by('ja_siswa.pin', 'ASC');
-            $query = $this->db->get();
+                     ->order_by('ja_siswa.pin');
+                $query = $this->db->get();           
                 if($query->num_rows() > 0){
                         return $query->result_array();
                 }else return null;
@@ -350,7 +348,7 @@ class Mapp_siswa extends CI_Model{
                         //     // var_dump($dapet);
                         //     // var_dump($data2['nama_panggilan']);
                         // }    
-                                for($ad=0;$ad<=$dapet2;$ad++){
+                                for($ad=1;$ad<=$dapet2;$ad++){
                                 switch ($Status2[$ad]) {
 
                                     case '0':
@@ -405,35 +403,44 @@ class Mapp_siswa extends CI_Model{
                                         $this->db->update('ja_data_absen', $ins2);
                                         // // //extract data from the post
                                         // // //set POST variables
-                                        // $url    = 'http://smsgateway.me/api/v3/messages/send';
-                                        // $fields = array(
-                                        //     'email'     => 'hsevfakhri@gmail.com',
-                                        //     'password'  => 'H4rdjump',
-                                        //     'device'    => '33026',
-                                        //     'number'    => '087887496695',
-                                        //     'message'   => 'Anak anda '.$data2['nama_panggilan'].' Sudah Masuk kelas',
-                                        //     'send_at'   => date()
-                                        // );
+                                        var_dump($PIN2[$ad]); // mati lu
+                                        $this->load->model('app_sms/mapp_sms');
+                                        $email = $this->mapp_sms->grapSettings('email');
+                                        $password = $this->mapp_sms->grapSettings('password');
+                                        $device = $this->mapp_sms->grapSettings('device');
+                                        $getNoOrtu = $this->mapp_sms->grapSiswaByPin($PIN2[$ad]);
+                                        $url    = 'http://smsgateway.me/api/v3/messages/send';
+                                        $fields = array(
+                                            'email'     => $email[0]->value,
+                                            'password'  => $password[0]->value,
+                                            'device'    => $device[0]->value,
+                                            'number'    => $getNoOrtu['no_hp'],
+                                            'message'   => 'Anak anda '.$getNoOrtu['nama_siswa'].' Sudah Masuk kelas ',
+                                            'send_at'   => strtotime('+30 seconds'),
+                                            'expired_at'    => strtotime('+30 minutes')
+                                        );
 
-                                        // //url-ify the data for the POST
-                                        // foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-                                        // rtrim($fields_string, '&');
+                                        $fields_string = '';
+                                        //url-ify the data for the POST
+                                        foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+                                        rtrim($fields_string, '&');
 
-                                        // //open connection
-                                        // $ch = curl_init();
+                                        //open connection
+                                        $ch = curl_init();
 
-                                        // //set the url, number of POST vars, POST data
-                                        // curl_setopt($ch,CURLOPT_URL, $url);
-                                        // curl_setopt($ch,CURLOPT_POST, count($fields));
-                                        // curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                                        //set the url, number of POST vars, POST data
+                                        curl_setopt($ch,CURLOPT_URL, $url);
+                                        curl_setopt($ch,CURLOPT_POST, count($fields));
+                                        curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                                        // //execute post
-                                        // $result = curl_exec($ch);
+                                        //execute post
+                                        $result = curl_exec($ch);
 
-                                        // //close connection
-                                        // curl_close($ch);
+                                        //close connection
+                                        curl_close($ch);
 
-                                        // //var_dump($data2['nama_panggilan']);
+                                        //var_dump($data2['nama_panggilan']);
 
                                         if ($result) {
                                             $upd = array('sms_status' => '1', );
@@ -488,16 +495,23 @@ class Mapp_siswa extends CI_Model{
 
                                             // //extract data from the post
                                             //set POST variables
+                                            $this->load->model('app_sms/mapp_sms');
+                                            $email = $this->mapp_sms->grapSettings('email');
+                                            $password = $this->mapp_sms->grapSettings('password');
+                                            $device = $this->mapp_sms->grapSettings('device');
+                                            $getNoOrtu = $this->mapp_sms->grapSiswaByPin($PIN2[$ad]);
                                             $url    = 'http://smsgateway.me/api/v3/messages/send';
                                             $fields = array(
-                                                'email'     => 'hsevfakhri@gmail.com',
-                                                'password'  => 'H4rdjump',
-                                                'device'    => '33026',
-                                                'number'    => '087887496695',
-                                                'message'   => 'Anak anda '.$data2['nama_panggilan'].' Sudah keluar dari kelas',
-                                                'send_at'   => date()
+                                                'email'     => $email[0]->value,
+                                                'password'  => $password[0]->value,
+                                                'device'    => $device[0]->value,
+                                                'number'    => $getNoOrtu['no_hp'],
+                                                'message'   => 'Anak anda '.$getNoOrtu['nama_siswa'].' Sudah NGEHE',
+                                                'send_at'   => strtotime('+30 seconds'),
+                                                'expired_at'    => strtotime('+30 minutes')
                                             );
 
+                                            $fields_string = '';
                                             //url-ify the data for the POST
                                             foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
                                             rtrim($fields_string, '&');
@@ -509,6 +523,7 @@ class Mapp_siswa extends CI_Model{
                                             curl_setopt($ch,CURLOPT_URL, $url);
                                             curl_setopt($ch,CURLOPT_POST, count($fields));
                                             curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
                                             //execute post
                                             $result = curl_exec($ch);

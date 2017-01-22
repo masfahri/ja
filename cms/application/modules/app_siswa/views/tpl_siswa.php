@@ -163,9 +163,12 @@
                                             echo "<td>".$row['nama_siswa']."</td>";
                                             echo "<td style='display:none;'>".$row['nama_panggilan']."</td>";
 
-                                            echo "<td>".(($row['id']==2)? "<span class='label label-info'>".$row['keterangan']."</span>":(($row['id']==3)? "<span class='label label-warning'>".$row['keterangan']."</span>":(($row['id']==4)? "<span class='label label-success'>".$row['keterangan']."</span>":"<span class='label label-danger'>Alpha</span>")))."</td>";
+                                            echo "<td>".
+                                            (($row['id']==2 && date($row['tglmasuk']) == $tgl)? "<span class='label label-info'>".$row['keterangan']."</span>":
+                                            (($row['id']==3 && date($row['tglmasuk']) == $tgl)? "<span class='label label-warning'>".$row['keterangan']."</span>":
+                                            (($row['id']==4 && date($row['tglmasuk']) == $tgl)? "<span class='label label-success'>".$row['keterangan']."</span>":"<span class='label label-danger'>Alpha</span>")))."</td>";
 
-                                            echo "<td>".(($row['id']==4)?"".$row['jammasuk']."":"")."</td>";
+                                            echo "<td>".(($row['id']==4 && date($row['tglmasuk']) == $tgl)?"".$row['jammasuk']."":"")."</td>";
                                             echo "<td><a href='".base_url('app_siswa/').'/kelas/'.$row['id_kelas']."'>".$row['Nama_Kelas']."</a></td>";
                                             //<a href="'.base_url('app_siswa/').'/kelas/'.$row['id_kelas'].'">
                                             // echo "<td><button onclick='check()'>Check Checkbox</button><td>";

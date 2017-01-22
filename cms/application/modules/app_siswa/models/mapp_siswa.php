@@ -154,6 +154,8 @@ class Mapp_siswa extends CI_Model{
     {
         if ($initial_id != '') {
             $this->db->where('ja_siswa.id_kelas', $initial_id);
+            $tgl = date('Y-m-d');
+            $this->db->where('date(ja_data_absen.jam_masuk)', $tgl);
         }
         $tgl = date('Y-m-d');
         $this->db->select('ja_data_absen.*, ja_siswa.*, ja_kelas.*,ja_siswa.absen as absen2, ja_siswa.pin as pin2')

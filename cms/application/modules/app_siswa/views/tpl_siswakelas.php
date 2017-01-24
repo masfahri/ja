@@ -426,13 +426,13 @@
                                                 </td>
                                                 <td>
                                                     <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
-                                                    <?php if ($row['kehadiran'] == 2 && date('Y-m-d', strtotime($row['jam_masuk'])) == $tgl) {
+                                                    <?php if ($row['kehadiran'] == 2 && date($row['jm']) == $tgl) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
                                                 </td>
                                                 <td>
                                                     <input type="radio" id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
-                                                    <?php if ($row['kehadiran'] == 3 && date('Y-m-d', strtotime($row['jam_masuk'] == $tgl))) {
+                                                    <?php if ($row['kehadiran'] == 3 && date($row['jm']) == $tgl) {
                                                         echo "checked";
                                                     } ?> name='kehadiran_<?php echo $row['nis'];?>' value='3'
                                                     />
@@ -440,7 +440,7 @@
                                                 <td>
                                                     <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
                                                     <?php 
-                                                    if ($row['telat']==1) {
+                                                    if ($row['telat']==1 && date($row['jm']) == $tgl) {
                                                         echo "checked";
                                                     }
 
@@ -451,7 +451,7 @@
                                                     Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
                                                     <?php 
                                                         $jamTelat = (date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])));
-                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4) {
+                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['jm']) == $tgl) {
                                                                 echo "<option value='$x'>".str_replace('-', '', $jamTelat)."</option>";
                                                             } else {
                                                                 for ($x = 0; $x < 24; $x++) {
@@ -464,7 +464,7 @@
                                                     <select id='menit_<?php echo $row['nis'] ?>' disabled>
                                                         <?php 
                                                             $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
-                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4) {
+                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['tglmasuk']) == $tgl) {
                                                                 echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
                                                             } else {
                                                                 for ($x = 0; $x < 59; $x++) {

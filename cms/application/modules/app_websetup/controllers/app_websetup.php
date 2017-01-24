@@ -15,7 +15,8 @@ class App_websetup extends MX_Controller {
     'container' => '../../layout/container',
     'template'  => 'tpl',
     'template_fp' => 'tpl_fp',
-    'template_in_out' => 'tpl_in_out'  
+    'template_in_out' => 'tpl_in_out',
+    'template_check' => 'tpl',  
     );
     
     # method
@@ -60,7 +61,10 @@ class App_websetup extends MX_Controller {
             }
             elseif($this->uri->segment(2)=="in_out" || $this->uri->segment(2)=="in_out_add" || $this->uri->segment(2)=="in_out_edit"){
                 $body_data['contents'] = $this->load->view($this->base_template['template_in_out'], $args, TRUE);
-            }                  
+            }
+            elseif($this->uri->segment(2)=="check_for_update"){
+                $body_data['contents'] = $this->load->view($this->base_template['template_check'], $args, TRUE);
+            }                                  
             else{
             $body_data['contents'] = $this->load->view($this->base_template['template'], $args, TRUE);
           }
@@ -73,9 +77,15 @@ class App_websetup extends MX_Controller {
     /* Start Update server Function */    
     public function check_for_update() {
       if($_POST){
-        echo "checking...";
           $this->load->library('github_updater');
-          echo $this->github_updater->update() ? 'SUCCESS' : 'FAILED';
+          $check_version = $this->github_updater->has_update();
+          if($check_version == 1){ // ada update versi terbaru
+            //proccess the update
+            $success = $this->github_updater->update();
+            $this->session->set_flashdata('msg_success', 'Success Update Patch!');   
+            $this->session->set_flashdata('msg_success', $this->session->userdata
+              ('hash'));                 
+          }
 
       }
       $this->getContent();

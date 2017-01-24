@@ -1,0 +1,12 @@
+.flexslider {
+    overflow: hidden;
+    ol.flex-control-nav {
+        li a {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+    }
+    .slide-wrap{
+        height: 110%;
+    }
+}

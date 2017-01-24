@@ -1,0 +1,75 @@
+app_master/kelas
+#jurusan ilangin
+-add kelas harus update guru (ok)
+
+app_master/siswa
+-Table ubah ke datatable (ok)
+
+app_master/siswa_add
+-Design Form Pendaftaran User Friendly (ok)
+-kelas pilih duluan (ok)
+-auto increment (ok)
+--Finger ID (ok)
+--No Absen Auto Increment (ok)
+-Foto Siswa form belum dapet data db
+#Finger ID daftar berdasarkan tahun masuk
+#Finger ID daftar berdasarkan kelas(paketan kelas)
+#Finger ID auto increment dari database (+1) (ok)
+
+app_websetup/in_out
+- table ubah ke datatable (ok)
+	
+app_websetup/in_out_add
+-Pemilihan Tipe kelas tidak muncul List Kelas (ok)
+#Jika Pendalaman Materi UN (Sync ke ja_data_absen.tipeMasuk)
+!hapus status (ok)
+
+app_sms/phonebook
+-Table ubah ke datatable (ok)
+#tampilkan kelas di table (sudah di buatkan di edit)
+
+app_sms/phonebook_add
+##API LAGI DI DISABLE!!!!
+-tambahin kelas onchange baru muncul siswa per kelas (ok)
+--jika kelas diklik siswa perkelas (ok)
+
+app_sms/phonebook_group
+-list nama group saja di group by id_kelas (ok)
+kemudian muncul modal semua list ortu (ok)
+	
+app_sms/phonebook_group_view/$initial_id (untuk modal) 
+-- TIDAK jadi di pakai karena sudah pakai modal
+
+app_sms/phonebook_group_add (sementara di disable, karena data ortu mau diinput dari app_master/siswa)
+#Group berdasarkan kelas (automatis) (ok)
+-Nama ortu berdasarkan kelas (ok)
+
+app_sms/setting
+#tambahkan last seen device (ok)
+-id device (ok)
+
+app_sms/sms_ortu
+- [bug] ketika pilih group sudah dipilih kemudian kembali pilih ortu / sebaliknya
+kolom message masih terhidden
+- [bug] ketika sudah pilih group dan kemudian pilih group yg masih kosong maka
+nomor masih tetap group sebelumnya
+- [bug] sms group error_report dihilangkan
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+app_siswa
+-Ubah datatable
+-TOTAL Siswa izin dan sakit belum di count
+-Alpha belum terinsert
+-SMS belum pernomor siswa
+-nama siswa, jam_masuk, jam_keluar, status belum ada di dalam SMS 
+-
+
+app_siswa/kelas/$initial_id
+-buat table alpha dibawah table utama(hadir)
+
+app_laporan
+-Belum ada Menu
+-menu export ketika belum ada pilihan kelas & bulan di hidden
+- bugs pada ajax kelas sebelum pilih kelas & bulan di hidden
+-Bug jika siswa belum masuk sama sekali dalam sebulan tidak muncul list Laporan
+#export styling

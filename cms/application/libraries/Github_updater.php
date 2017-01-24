@@ -41,8 +41,13 @@ class Github_updater
      */
     public function has_update()
     {
-        $branches = json_decode($this->_connect(self::API_URL.'repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/branches'));
-        return $branches[0]->commit->sha !== $this->ci->config->item('current_commit');
+        $branches = json_decode($this->_connect('https://api.github.com/repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/branches'));
+        if($branches[0]->commit->sha !== $this->ci->config->item('current_commit')) {
+            return 1;            
+        }else{
+            return 0;
+        }
+
     }
 
     /**
@@ -52,14 +57,15 @@ class Github_updater
      */
     public function update()
     {
-        $branches = json_decode($this->_connect(self::API_URL.'repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/branches'));
+        $branches = json_decode($this->_connect('https://api.github.com/repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/branches'));
         $hash = $branches[0]->commit->sha;
         if($hash !== $this->ci->config->item('current_commit'))
         {
-            $commits = json_decode($this->_connect(self::API_URL.'repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/compare/'.$this->ci->config->item('current_commit').'...'.$hash));
-            $files = $commits->files;
+            $commits = json_decode($this->_connect('https://api.github.com/repos/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/compare/'.$this->ci->config->item('current_commit').'...'.$hash));
+            $files = $commits->files;       
             if($dir = $this->_get_and_extract($hash))
             {
+                var_dump($dir);die;
                 //Loop through the list of changed files for this commit
                 foreach($files as $file)
                 {
@@ -73,14 +79,14 @@ class Github_updater
                     }
                 }
                 //Clean up
-                if($this->ci->config->item('clean_update_files'))
+                if($this->ci->config->item('clean_update_files') === true)
                 {
-                    shell_exec("rm -rf {$dir}");
-                    unlink("{$hash}.zip");
+                    shell_exec("sudo rm -rf ".str_replace($_SERVER['SCRIPT_NAME'],'', $_SERVER['SCRIPT_FILENAME'])."/jempolasik/patch/update.zip");
+                    unlink(str_replace($_SERVER['SCRIPT_NAME'],'', $_SERVER['SCRIPT_FILENAME'])."/jempolasik/patch/update.zip");
                 }
                 //Update the current commit hash
                 $this->_set_config_hash($hash);
-
+                $this->sessions->set_user_data('hash', $hash);
                 return true;
             }
         }
@@ -89,7 +95,7 @@ class Github_updater
 
     private function _set_config_hash($hash)
     {
-        $lines = file(self::CONFIG_FILE, FILE_IGNORE_NEW_LINES);
+        $lines = file('application/config/github_updater.php', FILE_IGNORE_NEW_LINES);
         $count = count($lines);
         for($i=0; $i < $count; $i++)
         {
@@ -98,7 +104,7 @@ class Github_updater
             {
                 $lines[$i] = $configline.' = \''.$hash.'\';';
                 $file = implode(PHP_EOL, $lines);
-                $handle = @fopen(self::CONFIG_FILE, 'w');
+                $handle = @fopen('application/config/github_updater.php', 'w');
                 fwrite($handle, $file);
                 fclose($handle);
                 return true;
@@ -109,28 +115,27 @@ class Github_updater
 
     private function _get_and_extract($hash)
     {
-        copy(self::GITHUB_URL.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/zipball/'.$this->ci->config->item('github_branch'), "{$hash}.zip");
-        shell_exec("unzip {$hash}.zip");
-        $files = scandir('.');
-        foreach($files as $file)
-            if(strpos($file, $this->ci->config->item('github_user').'-'.$this->ci->config->item('github_repo')) !== FALSE)return $file;
 
-        return false;
+        copy('https://github.com/'.$this->ci->config->item('github_user').'/'.$this->ci->config->item('github_repo').'/zipball/'.$this->ci->config->item('github_branch'), str_replace($_SERVER['SCRIPT_NAME'],'', $_SERVER['SCRIPT_FILENAME'])."/jempolasik/patch/update.zip");
+        shell_exec("unzip " .str_replace($_SERVER['SCRIPT_NAME'],'', $_SERVER['SCRIPT_FILENAME'])."/jempolasik/patch/update.zip -d ".str_replace($_SERVER['SCRIPT_NAME'],'', $_SERVER['SCRIPT_FILENAME'])."/jempolasik/patch/");
+        $files = scandir('.');
+        foreach($files as $file) {
+            $shorthash = $hash[0] . $hash[1] . $hash[2] . $hash[3] . $hash[4] . $hash[5] . $hash[6];
+            if(strpos($file, $this->ci->config->item('github_user').'-'.$this->ci->config->item('github_repo').'-'.$shorthash) !== FALSE){
+                return $file;
+            }
+        }
     }
 
     private function _connect($url)
     {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC ) ;
-        curl_setopt($ch, CURLOPT_SSLVERSION,3);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-
-        $response = curl_exec($ch);
-
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+        $data = curl_exec($ch);
         curl_close($ch);
-        return $response;
+        return $data;
     }
 }

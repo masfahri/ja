@@ -1,0 +1,22 @@
+ADMIN
+-Teacher
+--ID list teacher mulai dari 1
+-Kelas
+--Penambahan kelas (Guru Kelas jadiin modal)
+--Penambahan kelas (filter guru kelas, jika sudah ada tidak muncul lagi)
+-Siswa
+--Tambahkan PIN FP
+--Tambahkan Nomor Absen perkelas
+--Taruh kelas diatas seperti JA CI
+#INTINYA SAMA PERSIS TAMPILAN CI
+
+
+
+
+
+
+
+
+-Perpus Disabled
+-Media
+--Berkas Sekolahan (Laporan Absensi, Pengumuman)

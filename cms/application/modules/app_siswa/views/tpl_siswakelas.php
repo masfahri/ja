@@ -320,7 +320,7 @@
                                                 $jamMasuk2 = date($row['jam']);
                                                 $this->load->model('app_websetup/Mapp_websetup');        
                                                 $jam_masuk = $this->Mapp_websetup->grapInOut();
-
+                                                
                                             /*Table*/
                                                 echo "<script type='text/javascript'>
                                                             document.addEventListener('DOMContentLoaded', function() {});
@@ -403,101 +403,103 @@
                                                            
                                                         </script>";
                                             ?>
-                                                 <tr>
-                                                <td><a href='pages/examples/invoice.html'><?php echo $row['absen2']?></a></td>
-                                                <td>
-                                                    <?php echo $row['nis']; ?>
-                                                        <input type='hidden' id='nis' name='nis[]' value='<?php echo $row["nis"]; ?>' />
-                                                        <input type='hidden' id="pin"  name='pin<?php echo $row["pin2"]; ?>' value='<?php echo $row["pin2"]; ?>' >
-                                                        <input type='hidden' id="id_kelas" name='id_kelas2<?php echo $row["pin2"]; ?>' value='<?php echo $row["id_kelas"]; ?>' >                                                        
-                                                </td>
-                                                <td><?php echo $row['nama_siswa']; ?></td>
-                                                <!-- <td>
-                                                    <input type='radio' id='radioHadir_<?php echo $row['nis']?>' onclick='myRadio_<?php echo $row['nis']?>()' 
-                                                    <?php if ($row['jm'] == $tgl) {
-                                                        echo "checked";
-                                                    } ?> name='kehadiran_<?php echo $row['nis'] ;?>' value='4' disabled>
-                                                </td> -->
-                                                <td>
-                                                    <input type='radio' id='radioAlpha_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
-                                                    <?php if ($row['jm'] != $tgl) {
-                                                        echo "checked";
-                                                    } ?>  name='kehadiran2_<?php echo $row['nis']?>' value='1'>
-                                                </td>
-                                                <td>
-                                                    <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
-                                                    <?php if ($row['kehadiran'] == 2 && date($row['jm']) == $tgl) {
-                                                        echo "checked";
-                                                    } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
-                                                </td>
-                                                <td>
-                                                    <input type="radio" id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
-                                                    <?php if ($row['kehadiran'] == 3 && date($row['jm']) == $tgl) {
-                                                        echo "checked";
-                                                    } ?> name='kehadiran_<?php echo $row['nis'];?>' value='3'
-                                                    />
-                                                </td>      
-                                                <td>
-                                                    <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
-                                                    <?php 
-                                                    if ($row['telat']==1 && date($row['jm']) == $tgl) {
-                                                        echo "checked";
-                                                    }
-
-                                                     ?> disabled>
-                                                </td>
-
-                                                <td>
-                                                    Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
-                                                    <?php 
-                                                        $jamTelat = (date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])));
-                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['jm']) == $tgl) {
-                                                                echo "<option value='$x'>".str_replace('-', '', $jamTelat)."</option>";
-                                                            } else {
-                                                                for ($x = 0; $x < 24; $x++) {
-                                                                  echo "<option value='$x' >$x</option>";
-                                                                }
-                                                            }
-                                                    ?>
-                                                    </select>
-                                                    Menit :
-                                                    <select id='menit_<?php echo $row['nis'] ?>' disabled>
+                                                <tr>
+                                                    <td><a href='pages/examples/invoice.html'><?php echo $row['absen2']?></a></td>
+                                                    <td>
+                                                        <?php echo $row['nis']; ?>
+                                                            <input type='hidden' id='nis' name='nis[]' value='<?php echo $row["nis"]; ?>' />
+                                                            <input type='hidden' id="pin"  name='pin<?php echo $row["pin2"]; ?>' value='<?php echo $row["pin2"]; ?>' >
+                                                            <input type='hidden' id="id_kelas" name='id_kelas2<?php echo $row["pin2"]; ?>' value='<?php echo $row["id_kelas"]; ?>' >                                                        
+                                                    </td>
+                                                    <td><?php echo $row['nama_siswa']; ?></td>
+                                                    <!-- <td>
+                                                        <input type='radio' id='radioHadir_<?php echo $row['nis']?>' onclick='myRadio_<?php echo $row['nis']?>()' 
+                                                        <?php if ($row['jm'] == $tgl) {
+                                                            echo "checked";
+                                                        } ?> name='kehadiran_<?php echo $row['nis'] ;?>' value='4' disabled>
+                                                    </td> -->
+                                                    <td>
+                                                        <input type='radio' id='radioAlpha_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
+                                                        <?php if ($row['jm'] != $tgl) {
+                                                            echo "checked";
+                                                        } ?>  name='kehadiran2_<?php echo $row['nis']?>' value='1'>
+                                                    </td>
+                                                    <td>
+                                                        <input type='radio' id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis'] ?>()' 
+                                                        <?php if ($row['kehadiran'] == 2 && date($row['jm']) == $tgl) {
+                                                            echo "checked";
+                                                        } ?> name='kehadiran_<?php echo $row['nis'] ?>' value='2'>
+                                                    </td>
+                                                    <td>
+                                                        <input type="radio" id='radio_<?php echo $row['nis'] ?>' onclick='myRadio_<?php echo $row['nis']?>()' 
+                                                        <?php if ($row['kehadiran'] == 3 && date($row['jm']) == $tgl) {
+                                                            echo "checked";
+                                                        } ?> name='kehadiran_<?php echo $row['nis'];?>' value='3'
+                                                        />
+                                                    </td>      
+                                                    <td>
+                                                        <input type='checkbox' id='myCheck_<?php echo $row['nis'] ?>' onclick='myFunction_<?php echo $row['nis'] ?>()' 
                                                         <?php 
-                                                            $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
-                                                            if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['tglmasuk']) == $tgl) {
-                                                                echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
-                                                            } else {
-                                                                for ($x = 0; $x < 59; $x++) {
-                                                                  echo "<option value='$x' >$x</option>";
-                                                                }
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </td>
+                                                        if ($row['telat']==1 && date($row['jm']) == $tgl) {
+                                                            echo "checked";
+                                                        }
 
-                                                <!-- <td>
-                                                    Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
-                                                    <?php 
-                                                        if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                            for ($i=0; $i < 24 ; $i++) { 
-                                                              echo "<option value='$i' >$i</option>";
-                                                            }
-                                                        } else {
-                                                            echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
-                                                    }?>
-                                                    </select>
-                                                    Menit :
-                                                    <select id='menit_<?php echo $row['nis'] ?>' disabled>
+                                                         ?> disabled>
+                                                    </td>
+
+                                                    <td>
+                                                        Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
+                                                        <?php 
+                                                            $jamTelat = (date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])));
+                                                                if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['jm']) == $tgl) {
+                                                                    echo "<option value='$x'>".str_replace('-', '', $jamTelat)."</option>";
+                                                                } else {
+                                                                    for ($x = 0; $x < 24; $x++) {
+                                                                      echo "<option value='$x' >$x</option>";
+                                                                    }
+                                                                }
+                                                        ?>
+                                                        </select>
+                                                        Menit :
+                                                        <select id='menit_<?php echo $row['nis'] ?>' disabled>
+                                                            <?php 
+                                                                $menitTelat = (date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])));
+                                                                if ($jamMasuk2 > $jam_masuk[0]['jam_masuk'] && $row['kehadiran'] == 4 && date($row['tglmasuk']) == $tgl) {
+                                                                    echo "<option value='$x'>".str_replace('-', '', $menitTelat)."</option>";
+                                                                } else {
+                                                                    for ($x = 0; $x < 59; $x++) {
+                                                                      echo "<option value='$x' >$x</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </td>
+
+                                                    <!-- <td>
+                                                        Jam :<select id='jam_<?php echo $row['nis'] ?>' disabled>
                                                         <?php 
                                                             if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
-                                                            for ($i=0; $i < 60 ; $i++) { 
-                                                              echo "<option value='$i' >$i</option>";
-                                                            }
-                                                        } else {
-                                                            echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
+                                                                for ($i=0; $i < 24 ; $i++) { 
+                                                                  echo "<option value='$i' >$i</option>";
+                                                                }
+                                                            } else {
+                                                                echo "<option value='$i'>".(date('H', strtotime($row['jam_masuk']))-date('H', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
                                                         }?>
-                                                    </select>
-                                                </td> -->
+                                                        </select>
+                                                        Menit :
+                                                        <select id='menit_<?php echo $row['nis'] ?>' disabled>
+                                                            <?php 
+                                                                if ($jamMasuk2 == '07:00:00' && $jamMasuk2 > $jam_masuk[0]['jam_masuk']) {
+                                                                for ($i=0; $i < 60 ; $i++) { 
+                                                                  echo "<option value='$i' >$i</option>";
+                                                                }
+                                                            } else {
+                                                                echo "<option value='$i'>".(date('i', strtotime($row['jam_masuk']))-date('i', strtotime($jam_masuk[0]['jam_masuk'])))."</option>";
+                                                            }?>
+                                                        </select>
+                                                    </td> -->
+                                                </tr>
+                                            
                                             <?php 
                                             }
                                         }
